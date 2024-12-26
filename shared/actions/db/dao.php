@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../php/connect.php");
+require_once("../shared/php/connect.php");
 
 class sqlHelper
 {
@@ -8,7 +8,7 @@ class sqlHelper
 
     public function __construct()
     {
-        if (session_id()) {
+        if (!session_id()) {
             session_start();
         }
         $this->f = "sql_error.log";

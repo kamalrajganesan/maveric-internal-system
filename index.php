@@ -34,18 +34,18 @@
                 </div>
                 <h4>Hello! let's get started</h4>
                 <h6 class="fw-light">Sign in to continue.</h6>
-                <form class="pt-3">
+                <form class="pt-3" id="loginForm">
                   <div class="form-group">
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">@</span>
                       </div>
-                      <input type="email" class="form-control" id="inputEmail" placeholder="Username" aria-label="Username" required>
+                      <input type="email" class="form-control" id="inputEmail" placeholder="Username" name="username" aria-label="Username" required>
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="input-group">
-                      <input type="password" class="form-control" placeholder="Password" id="inputPassword" aria-label="Your pass phrase....">
+                      <input type="password" class="form-control" placeholder="Password" id="inputPassword" name="password" aria-label="Your pass phrase....">
                       <div class="input-group-append">
                         <span class="input-group-text make-text-visible"> <i class="fa fa-eye"></i> </span>
                         <span class="input-group-text make-text-invisible d-none"> <i class="fa fa-eye-slash"></i> </span>
@@ -53,7 +53,7 @@
                     </div>
                   </div>
                   <div class="mt-3 d-grid gap-2">
-                    <a class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn" href="./index.html">SIGN IN</a>
+                    <button type="submit" class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn">SIGN IN</a>
                   </div>
                 </form>
               </div>
@@ -72,6 +72,7 @@
     <!-- Plugin js for this page -->
     <!-- End plugin js for this page -->
     <!-- inject:js -->
+    <script src="./assets/custom-js/loginHelper.js"></script>
     <script src="../../assets/js/off-canvas.js"></script>
     <script src="../../assets/js/template.js"></script>
     <script src="../../assets/js/settings.js"></script>

@@ -1,4 +1,17 @@
 </head>
+
+<?php
+  if(!session_id()) {
+    session_start();
+  }
+
+  // Check if user is logged in / Redirect to login page if not
+  if (!isset($_SESSION['user'])) {
+    header("Location: ./index.php");
+    exit();
+  }
+?>
+
   <body class="with-welcome-text">
     <div class="container-scroller">
       <!-- partial:../../partials/_navbar.html -->
@@ -10,11 +23,11 @@
             </button>
           </div>
           <div>
-            <a class="navbar-brand brand-logo" href="./index.html">
-              <img src="./assets/images/logo.svg" alt="logo" />
+            <a class="navbar-brand brand-logo" href="#">
+              <img src="./assets/images/logoipsum.svg" alt="logo" width="100%"  />
             </a>
-            <a class="navbar-brand brand-logo-mini" href="./index.html">
-              <img src="./assets/images/logo-mini.svg" alt="logo" />
+            <a class="navbar-brand brand-logo-mini" href="#">
+              <img src="./assets/images/logoipsum.svg" alt="logo" width="100%" />
             </a>
           </div>
         </div>
@@ -164,7 +177,7 @@
                 <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-message-text-outline text-primary me-2"></i> Messages</a>
                 <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-calendar-check-outline text-primary me-2"></i> Activity</a>
                 <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-help-circle-outline text-primary me-2"></i> FAQ</a>
-                <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
+                <a class="dropdown-item" href="./logout.php"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
               </div>
             </li>
           </ul>
@@ -184,6 +197,13 @@
                 <span class="menu-title">Dashboard</span>
               </a>
             </li>
+            
+            
+            <?php 
+
+              if ($_SESSION['userType'] == 'admin') {
+                echo '
+                
             <li class="nav-item nav-category">Admin Area</li>
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#agents-submenus" aria-expanded="false" aria-controls="agents-submenus">
@@ -193,9 +213,9 @@
               </a>
               <div class="collapse" id="agents-submenus">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="./all-agents.php">All Agents</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./agent-stats.php">Agent Statistics</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./agent-reviews.php">Agent Reviews</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./all-agents-admnvw.php">All Agents</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./agent-stats-admnvw.php">Agent Statistics</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./agent-reviews-admnvw.php">Agent Reviews</a></li>
                 </ul>
               </div>
             </li>
@@ -205,6 +225,11 @@
                 <span class="menu-title">Customers</span>
               </a>
             </li>
+
+                ';
+              }
+            
+            ?>
             
             <li class="nav-item nav-category"> Menus </li>
             <li class="nav-item">
@@ -261,7 +286,7 @@
               </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./docs/documentation.html">
+              <a class="nav-link" href="#">
                 <i class="menu-icon mdi mdi-file-document"></i>
                 <span class="menu-title">Reference Docs</span>
               </a>
