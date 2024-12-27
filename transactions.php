@@ -25,7 +25,7 @@
                 <div class="d-sm-flex align-items-center justify-content-end border-bottom">
                     <div>
                         <div class="btn-wrapper">
-                            <button class="btn btn-otline-dark align-items-center" data-bs-toggle="modal" data-bs-target="#addTransactionModal" id="addTransactionModalBtn">
+                            <button class="btn btn-otline-dark align-items-center" onclick="onClickAddTransaction()">
                                 <i class="fa fa-plus"></i> Add New Transaction
                             </button>
                         </div>
@@ -84,46 +84,63 @@
                     <form id="addTransactionForm" class="form-sample">
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="form-group view-form-group">
 
-                                    <label for="customerId">Customer Name</label>
-                                    <input type="number" class="form-control" id="customerId" name="customerId" placeholder="Customer ID" required>
+                                    <label for="customerId">Customer</label>
+                                    <select class="form-control" id="customerId" name="customerId" required>
+                                        <option value="" disabled selected>Select Customer</option>
+                                        <!-- Add all customers options here -->
+                                    </select>
+                                    
+                                    <label for="problemStmt">Requirement(in brief) </label>
+                                    <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" required>
+
+                                    <label for="problemDesc">Requirement Description</label>
+                                    <textarea class="form-control" id="problemDesc" name="problemDesc" placeholder="Problem Description" required></textarea>
 
                                     <label for="comments">Comments</label>
                                     <textarea class="form-control" id="comments" name="comments" placeholder="Comments" required></textarea>
 
-                                    <label for="problemDesc">Problem Description</label>
-                                    <textarea class="form-control" id="problemDesc" name="problemDesc" placeholder="Problem Description" required></textarea>
-
                                     <label for="status">Status</label>
-                                    <input type="text" class="form-control" id="status" name="status" placeholder="Status" required>
-
-                                    <label for="problemStmt">Problem Statement</label>
-                                    <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" required>
+                                    <select class="form-control" id="status" name="status" disabled>
+                                        <option value="">Select Status</option>
+                                        <option value="New" selected>New</option>
+                                        <option value="Contacted/Pending">Contacted/ Pending</option>
+                                        <option value="Following Up">Following Up</option>
+                                        <option value="Converted">Converted</option>
+                                        <option value="Lost">Lost</option>
+                                    </select>
 
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="form-group view-form-group">
 
                                     <label for="serviceType">Service Type</label>
-                                    <input type="text" class="form-control" id="serviceType" name="serviceType" placeholder="Service Type" required>
-
+                                    <select class="form-control" id="serviceType" name="serviceType" required>
+                                        <option value="" disabled selected>Select Service</option>
+                                        <option value="AMC">AMC</option>
+                                        <option value="Tally">Tally</option>
+                                        <option value="On Call">On Call</option>
+                                        <option value="One Time">One Time</option>
+                                        <option value="Digital">Digital</option>
+                                    </select>
                                    
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="isUnderAMC" value="1"> Is Under AMC </label>
+                                    <div class="form-group view-form-group">
+                                        <label for="isUnderAMC">Is client under AMC</label>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCYES" value="1"> Yes </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCNO" value="0" checked> No </label>
+                                        </div>
                                     </div>
 
-                                    <label for="solvedBy">Solved By</label>
-                                    <input type="number" class="form-control" id="solvedBy" name="solvedBy" placeholder="Solved By" required>
-
                                     <label for="notes">Notes</label>
-                                    <textarea class="form-control" id="notes" name="notes" placeholder="Notes" required></textarea>
-
-                                    <label for="assignedAgentId">Assigned Agent ID</label>
-                                    <input type="number" class="form-control" id="assignedAgentId" name="assignedAgentId" placeholder="Assigned Agent ID" required>
+                                    <textarea class="form-control" id="notes" name="notes" placeholder="Notes"></textarea>
 
                                 </div>
                             </div>
@@ -140,6 +157,117 @@
         </div>
     </div>
     <!-- end add transaction modal -->
+
+    <!-- edit transaction modal -->
+    <div class="modal fade" id="editTransactionModal" tabindex="-1" role="dialog" aria-labelledby="editTransactionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="editTransactionModalLabel">Edit Transaction Details of <strong id="currentTransactionCode"></strong> </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="editTransactionForm" class="form-sample">
+                        <div class="row justify-content-center">
+                            <div class="col-sm-5">
+                                
+                                <div class="form-group view-form-group">
+                                    <label for="customerId">Customer</label>
+                                    <select class="form-control" id="customerId" name="customerId">
+                                        <option value="" disabled selected>Select Customer</option>
+                                        <!-- Add all customers options here -->
+                                    </select>
+                                </div>
+                                    
+                                <div class="form-group view-form-group">
+                                    <label for="problemStmt">Requirement(in brief) </label>
+                                    <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" readonly>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="problemDesc">Requirement Description</label>
+                                    <textarea class="form-control" id="problemDesc" name="problemDesc" placeholder="Problem Description" readonly></textarea>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <strong> Past Comments </strong>
+                                    <div id="pastCommentsOfThisTransaction"></div>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <strong>  Past Notes </strong>
+                                    <div id="pastNotesOfThisTransaction"></div>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="serviceType">Service Type</label>
+                                    <select class="form-control" id="serviceType" name="serviceType" aria-readonly="true" disabled>
+                                        <option value="" disabled selected>Select Service</option>
+                                        <option value="AMC">AMC</option>
+                                        <option value="Tally">Tally</option>
+                                        <option value="On Call">On Call</option>
+                                        <option value="One Time">One Time</option>
+                                        <option value="Digital">Digital</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-5">       
+
+                                <div class="form-group view-form-group">
+                                    <label for="createdDate">Transaction Created Date</label>
+                                    <input type="text" class="form-control" id="createdDate" name="createdDate" placeholder="Created Date" readonly>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="isUnderAMC">Is Client Under AMC</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCYES" value="1"> Yes </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCNO" value="0"> No </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="status">Transaction Status</label>
+                                    <select class="form-control" id="status" name="status">
+                                        <option value="">Select Status</option>
+                                        <option value="New">New</option>
+                                        <option value="Contacted/Pending">Contacted/ Pending</option>
+                                        <option value="Following Up">Following Up</option>
+                                        <option value="Closed">Closed</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="comments">New Comment</label>
+                                    <textarea class="form-control" id="comments" name="comments" placeholder="Comments" required></textarea>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="notes">New Notes</label>
+                                    <textarea class="form-control" id="notes" name="notes" placeholder="Notes"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"> Close</button>
+                    <button type="submit" class="btn btn-primary" id="editTransactionDataBtn" data-loading-text="Loading..." autocomplete="off"> Update Transaction </button>
+                </div> <!-- /modal-footer -->
+            </div>
+        </div>
+    </div>
+    <!-- end edit transaction modal -->
 
     <!-- end modals -->
 

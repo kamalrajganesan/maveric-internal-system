@@ -12,8 +12,11 @@ class sqlHelper
             session_start();
         }
         $this->f = "sql_error.log";
-        $this->conn = createConn();
-        
+        $this->conn = createConn();        
+    }
+
+    public function __destruct() {
+        $this->conn->close();
     }
 
     public function prepareStatement($sql) {
