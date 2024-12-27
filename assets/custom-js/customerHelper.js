@@ -35,7 +35,7 @@ $(document).ready(function() {
 });
 
 function removeCustomer(params = null) {
-    console.log("params: ", params);
+    // console.log("params: ", params);
     if(params) {
         $.ajax({
             type: "POST",
@@ -96,6 +96,83 @@ function viewCustomer(params = null) {
                     $('#viewCustomerForm #customerUniqCode').val(response.data[0].customer_uniq_code).attr('readonly', true);
 
                     
+                } else {
+                    alert('Failed to Fetch Customer...!');
+                }
+            },
+            error: function() {
+                alert('Failed to Fetch Customer');
+            }
+        });
+    }
+}
+
+function editCustomer(params = null) {
+    if(params) {
+        $.ajax({
+            type: "POST",
+            url: './services/customer_fetch_single.php',
+            data: {customerId: params},
+            dataType: 'json',
+            success: function(response) {
+                if(response.success == true) {
+                    console.log("response: ", response);
+                    $('#editCustomerModal').modal('show');
+
+                    $('#editCustomerForm #customerId').val(response.data[0].customer_id);
+                    $('#editCustomerForm #customerName').val(response.data[0].customer_nm);
+                    $('#editCustomerForm #companyName').val(response.data[0].company_nm);
+                    $('#editCustomerForm #address').val(response.data[0].address_ln);
+                    $('#editCustomerForm #contact').val(response.data[0].contact);
+                    $('#editCustomerForm #email').val(response.data[0].email);
+                    $('#editCustomerForm #systemEmail').val(response.data[0].sys_email);
+                    $('#editCustomerForm #pincode').val(response.data[0].pincode);
+                    $('#editCustomerForm #city').val(response.data[0].city);
+                    $('#editCustomerForm #area').val(response.data[0].area);
+                    
+                    $('#editCustomerForm input[name="serviceType"][value="AMC"]').prop('checked', response.data[0].service_type == 'AMC');
+                    $('#editCustomerForm input[name="serviceType"][value="Tally"]').prop('checked', response.data[0].service_type == 'Tally');
+                    $('#editCustomerForm input[name="serviceType"][value="On Call"]').prop('checked', response.data[0].service_type == 'On Call');
+                    $('#editCustomerForm input[name="serviceType"][value="One Time"]').prop('checked', response.data[0].service_type == 'One Time');
+
+                    $('#editCustomerForm #customerStatus').val(response.data[0].is_active);
+
+                    $('#editCustomerForm #licenseType').val(response.data[0].license_typ);
+                    $('#editCustomerForm #serviceStartDate').val(response.data[0].service_st_date);
+                    $('#editCustomerForm #specialNote').val(response.data[0].spl_cust_note);
+                    $('#editCustomerForm #isActive').val(response.data[0].is_active);
+                    $('#editCustomerForm #createdBy').val(response.data[0].created_by);
+                    $('#editCustomerForm #createdOn').val(response.data[0].created_on);
+                    $('#editCustomerForm #updatedBy').val(response.data[0].updated_by);
+                    $('#editCustomerForm #customerUniqCode').val(response.data[0].customer_uniq_code);
+
+                    $("#editCustomerForm").append('<input type="hidden" name="cId" id="cId" value="'+ response.data[0].id +'" />');
+
+                    $("#editCustomerDataBtn").on('click', function(e) {
+                        
+                        e.preventDefault();
+                        var data = $('#editCustomerForm').serialize();
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: './services/customer_edit.php',
+                            data: data,
+                            dataType: 'json',
+                            success: function(response) {
+                                if(response.success == true) {
+                                    $("#editCustomerForm")[0].reset();
+                                    $('#editCustomerModal').modal('hide');
+                                    manageCustDataTbl.ajax.reload(null, true);
+                                } else {
+                                    alert('Failed to Edit Customer...!');
+                                }
+                            },
+                            error: function() {
+                                alert('Failed to Edit Customer');
+                            }
+                        });
+                    });
+
                 } else {
                     alert('Failed to Fetch Customer...!');
                 }
