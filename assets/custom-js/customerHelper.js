@@ -1,6 +1,8 @@
+var manageCustDataTbl;
+
 $(document).ready(function() {
 
-    $('#customerMasterTbl').DataTable( {
+    manageCustDataTbl = $('#customerMasterTbl').DataTable( {
         type: "Post",
         ajax: './services/customer_fetch_all.php',
     } );
@@ -10,7 +12,7 @@ $(document).ready(function() {
         e.preventDefault();
         
         var data = $('#addCustomerForm').serialize();
-        console.log('Form Submitted:', data);
+        // console.log('Form Submitted:', data);
         
         $.ajax({
             type: "POST",
@@ -18,9 +20,10 @@ $(document).ready(function() {
             data: data,
             dataType: 'json',
             success: function(response) {
-                if(response == 'success') {
-                    alert('Customer Added Successfully');
-                    location.reload();
+                if(response.success == 'success') {
+                    $("#addCustomerForm")[0].reset();
+                    $('#addTrackDataModal').modal('hide');
+                    manageCustDataTbl.ajax.reload(null, true);
                 } else {
                     alert('Failed to Add Customer');
                 }

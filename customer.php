@@ -116,7 +116,6 @@
                                     </div>
                                     
                                     <div class="form-group">
-
                                         <label for="city">City</label>
                                         <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
 
@@ -134,7 +133,6 @@
 
                                         <label for="customerUniqCode">Customer Unique Code</label>
                                         <input type="text" class="form-control" id="customerUniqCode" name="customerUniqCode" placeholder="Customer Unique Code" required>
-
                                     </div>
                                 </div>
                             </div>
