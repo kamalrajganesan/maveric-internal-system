@@ -16,6 +16,7 @@ class SessUsers {
         $agent['nm'] = $usr["agent_nm"];
         $agent['email'] = $usr["email"];
         $agent['phone'] = $usr["primary_contact"];
+        $agent['id'] = $usr["id"];
      
         $_SESSION['user'] = $agent;
         $_SESSION['userType'] = "agent";
