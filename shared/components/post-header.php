@@ -139,7 +139,7 @@
               </a>
               <div class="collapse" id="transac-submeuns">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"><a class="nav-link" href="./services.php">All Services</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php">All Services</a></li>
                   <li class="nav-item"><a class="nav-link" href="./tally-services.php">Tally</a></li>
                   <li class="nav-item"><a class="nav-link" href="./amc-services.php">AMC</a></li>
                   <li class="nav-item"><a class="nav-link" href="./digital-services.php">Digital</a></li>

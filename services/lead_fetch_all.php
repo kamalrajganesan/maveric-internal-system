@@ -6,7 +6,7 @@ $page = "";
 if (isset($_POST['param'])) {
     $page = htmlspecialchars($_POST['param']);
 } else {
-    echo $_POST;
+    echo "param not found";
 }
 
 $db = new sqlHelper();
