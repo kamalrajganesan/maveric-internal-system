@@ -9,6 +9,12 @@ $db = new sqlHelper();
 // Check if the form data is posted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+
+    if (!session_id()) {
+        session_start();
+    }
+
+
     // Capture form data
     $leadNm = isset($_POST['leadNm']) ? htmlspecialchars($_POST['leadNm']) : '';
     $contact = isset($_POST['contact']) ? htmlspecialchars($_POST['contact']) : '';
@@ -80,4 +86,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Return the response as JSON
 echo json_encode($response);
-?>
