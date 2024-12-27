@@ -120,7 +120,7 @@
               </a>
               <div class="collapse" id="customer-submenus">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="./customers.php">All Customers</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php">All Customers</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./tally-customers.php">Tally</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./amc-customers.php">AMC</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./on-call-customers.php">On Call</a></li>
@@ -173,10 +173,10 @@
               </a>
               <div class="collapse" id="lead-menus">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="./newy-added-lead.php"> Newly Added </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./my-lead.php"> My Leads </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./follwing-up-lead.php"> On Follow Ups </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./lost-lead.php"> Lost </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=new"> Newly Added </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=leads"> My Leads </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=follow"> On Follow Ups </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=lost"> Lost </a></li>
                 </ul>
               </div>
             </li>
