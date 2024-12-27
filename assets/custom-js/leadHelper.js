@@ -1,5 +1,6 @@
+var manageLeadDatatable;
 $(document).ready(function () {
-  $("#leadMasterTbl").DataTable({
+  manageLeadDatatable = $("#leadMasterTbl").DataTable({
     method: "POST",
     ajax: {
       url: "./services/lead_fetch_all.php",
@@ -25,10 +26,12 @@ $(document).ready(function () {
       data: data, // Send the form data
       dataType: "json", // Expect JSON response
       success: function (response) {
-        console.log(response)
+        console.log(response);
         if (response["success"] == true) {
+          $("#addLeadForm")[0].reset();
+          $("#addLeadForm").modal("hide");
+          manageLeadDatatable.ajax.reload(null, true);
           alert("Lead Added Successfully");
-          location.reload(); // Reload the page to reflect the new data
         } else {
           alert("Failed to Add lead");
         }
@@ -36,3 +39,26 @@ $(document).ready(function () {
     });
   });
 });
+
+
+function removeLead(params = null) {
+  console.log("params: ", params);
+  if (params) {
+    $.ajax({
+      type: "POST",
+      url: "./services/lead_remove.php",
+      data: { leadId: params },
+      dataType: "json",
+      success: function (response) {
+        if (response.success == true) {
+          manageLeadDatatable.ajax.reload(null, false);
+        } else {
+          alert("Failed to Remove Lead...!");
+        }
+      },
+      error: function () {
+        alert("Failed to Remove Lead");
+      },
+    });
+  }
+}

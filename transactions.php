@@ -85,17 +85,8 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    
-                                    <label for="isActive">Is Active</label>
-                                    <input type="checkbox" class="form-control" id="isActive" name="isActive">
 
-                                    <label for="createdBy">Created By</label>
-                                    <input type="text" class="form-control" id="createdBy" name="createdBy" placeholder="Created By" required>
-
-                                    <label for="assignedAgentId">Assigned Agent ID</label>
-                                    <input type="number" class="form-control" id="assignedAgentId" name="assignedAgentId" placeholder="Assigned Agent ID" required>
-
-                                    <label for="customerId">Customer ID</label>
+                                    <label for="customerId">Customer Name</label>
                                     <input type="number" class="form-control" id="customerId" name="customerId" placeholder="Customer ID" required>
 
                                     <label for="comments">Comments</label>
@@ -104,24 +95,26 @@
                                     <label for="problemDesc">Problem Description</label>
                                     <textarea class="form-control" id="problemDesc" name="problemDesc" placeholder="Problem Description" required></textarea>
 
-                                    <label for="newRequirement">New Requirement</label>
-                                    <input type="text" class="form-control" id="newRequirement" name="newRequirement" placeholder="New Requirement" required>
-
                                     <label for="status">Status</label>
                                     <input type="text" class="form-control" id="status" name="status" placeholder="Status" required>
 
                                     <label for="problemStmt">Problem Statement</label>
                                     <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" required>
 
-                                    <label for="serviceType">Service Type</label>
-                                    <input type="text" class="form-control" id="serviceType" name="serviceType" placeholder="Service Type" required>
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="isUnderAMC">Is Under AMC</label>
-                                    <input type="checkbox" class="form-control" id="isUnderAMC" name="isUnderAMC">
+
+                                    <label for="serviceType">Service Type</label>
+                                    <input type="text" class="form-control" id="serviceType" name="serviceType" placeholder="Service Type" required>
+
+                                   
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" name="isUnderAMC" value="1"> Is Under AMC </label>
+                                    </div>
 
                                     <label for="solvedBy">Solved By</label>
                                     <input type="number" class="form-control" id="solvedBy" name="solvedBy" placeholder="Solved By" required>
@@ -129,11 +122,9 @@
                                     <label for="notes">Notes</label>
                                     <textarea class="form-control" id="notes" name="notes" placeholder="Notes" required></textarea>
 
-                                    <label for="closedDate">Closed Date</label>
-                                    <input type="date" class="form-control" id="closedDate" name="closedDate">
+                                    <label for="assignedAgentId">Assigned Agent ID</label>
+                                    <input type="number" class="form-control" id="assignedAgentId" name="assignedAgentId" placeholder="Assigned Agent ID" required>
 
-                                    <label for="isDeleted">Is Deleted</label>
-                                    <input type="checkbox" class="form-control" id="isDeleted" name="isDeleted">
                                 </div>
                             </div>
                         </div>

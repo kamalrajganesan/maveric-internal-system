@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Capture form data
     $uniqId = generateSecureNumericUniqueId();
-    $isActive = isset($_POST['isActive']) ? (int)$_POST['isActive'] : 0; // Checkbox, 0 or 1
     $createdBy = $_SESSION['user']['id'];
     $assignedAgentId = isset($_POST['assignedAgentId']) ? (int)$_POST['assignedAgentId'] : 0;
     $customerId = isset($_POST['customerId']) ? (int)$_POST['customerId'] : 0;
@@ -46,11 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         // Prepare the SQL insert query
         $query = "INSERT INTO ticket (
-                uniq_id, assignd_agent_id, customer_id, 
+                uniq_id, assignd_agent_id, created_by, customer_id, 
                 comments, problem_desc, new_requirement, status, problem_stmt, service_typ, 
-                is_under_amc, solved_by, notes, is_deleted
+                is_under_amc, solved_by, notes, is_active, is_deleted
             ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, 1,0
             )";
 
         try {
@@ -60,24 +59,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Parameters for binding
             $params = [
                 $uniqId,
-                $isActive,
-                $createdBy,
                 $assignedAgentId,
+                $createdBy,
                 $customerId,
                 $comments,
                 $problemDesc,
-                $newRequirement,
                 $status,
                 $problemStmt,
                 $serviceType,
                 $isUnderAMC,
                 $solvedBy,
                 $notes,
-                $isDeleted
+
             ];
 
             // Bind the parameters (types: 's' for string, 'i' for integer, 'd' for double)
-            $types = 'sissssssssssiiisi'; // Adjust types if necessary
+            $types = 'sisisssssiis'; // Adjust types if necessary
             $db->setParameters($params, $types);
 
             // Execute the statement
