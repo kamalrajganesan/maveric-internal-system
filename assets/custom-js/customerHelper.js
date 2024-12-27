@@ -79,7 +79,11 @@ function viewCustomer(params = null) {
                     $('#viewCustomerForm #city').val(response.data[0].city).attr('readonly', true);
                     $('#viewCustomerForm #area').val(response.data[0].area).attr('readonly', true);
                     
-                    $('#viewCustomerForm #serviceType').prop('checked', response.data[0].service_type === '1').attr('disabled', true);
+                    $('#viewCustomerForm input[name="serviceType"][value="AMC"]').prop('checked', response.data[0].service_type == 'AMC').attr('disabled', true);
+                    $('#viewCustomerForm input[name="serviceType"][value="Tally"]').prop('checked', response.data[0].service_type == 'Tally').attr('disabled', true);
+                    $('#viewCustomerForm input[name="serviceType"][value="On Call"]').prop('checked', response.data[0].service_type == 'On Call').attr('disabled', true);
+                    $('#viewCustomerForm input[name="serviceType"][value="One Time"]').prop('checked', response.data[0].service_type == 'One Time').attr('disabled', true);
+
                     $('#viewCustomerForm #customerStatus').val(response.data[0].is_active).attr('disabled', true);
 
                     $('#viewCustomerForm #licenseType').val(response.data[0].license_typ).attr('readonly', true);

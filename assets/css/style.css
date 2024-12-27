@@ -30458,3 +30458,7 @@ dl li {
 .fs-12 {
   font-size: 12px;
 }
+.view-form-group label {
+  margin-bottom: 0rem;
+  font-weight: 600;
+}

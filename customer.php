@@ -160,49 +160,68 @@
 
                     <div class="modal-body">
                         <form id="viewCustomerForm" class="form-sample">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
+                            <div class="row justify-content-center">
+                                <div class="col-sm-5">
+                                    <div class="form-group view-form-group">
                                         <label for="customerName">Customer Name</label>
                                         <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Customer Name" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="companyName">Company Name</label>
                                         <input type="text" class="form-control" id="companyName" name="companyName" placeholder="Company Name" required>
-                                        
+                                    </div>
+
+                                    <div class="form-group view-form-group">
                                         <label for="contact">Contact</label>
                                         <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
-                                        
+                                    </div>
+
+                                    <div class="form-group view-form-group">
                                         <label for="email">Email</label>
                                         <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="address">Address</label>
                                         <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="area">Area</label>
                                         <input type="text" class="form-control" id="area" name="area" placeholder="Area" required>
-                                        
+                                    </div>
+
+                                    <div class="form-group view-form-group">
                                         <label for="pincode">Pincode</label>
                                         <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="Active Status">Customer Status</label>
                                         <select class="form-control" id="customerStatus" name="customerStatus" required aria-readonly="true"> 
                                             <option value="1">Active</option>
                                             <option value="0">Inactive</option>
                                         </select>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="createdBy">Customer Created By</label>
                                         <input type="text" class="form-control" id="createdBy" name="createdBy" placeholder="Created By" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="createdOn">Customer Created On</label>
                                         <input type="text" class="form-control" id="createdOn" name="createdOn" placeholder="Created On" required>
-
                                     </div>
+
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
+                                <div class="col-sm-5">
+                                    <div class="form-group view-form-group">
+                                        <label for="serviceType"> Service Type </label>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType" value="AMC"> AMC </label>
+                                            <input type="checkbox" class="form-check-input"  name="serviceType" value="AMC"> AMC </label>
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
@@ -218,34 +237,47 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="form-group">
+                                    <div class="form-group view-form-group">
                                         <label for="city">City</label>
                                         <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="city">Service Start Date</label>
                                         <input type="date" class="form-control" id="serviceStartDate" name="serviceStartDate" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="specialNote">Special Note</label>
                                         <input type="text" class="form-control" id="specialNote" name="specialNote" placeholder="Special Note" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="licenseType">License Type</label>
                                         <input type="text" class="form-control" id="licenseType" name="licenseType" placeholder="License Type" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="systemEmail">System Email</label>
                                         <input type="email" class="form-control" id="systemEmail" name="systemEmail" placeholder="System Email" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="customerUniqCode">Customer Unique Code</label>
                                         <input type="text" class="form-control" id="customerUniqCode" name="customerUniqCode" placeholder="Customer Unique Code" required>
+                                    </div>
 
+                                    <div class="form-group view-form-group">
                                         <label for="updatedBy">Customer Updated By</label>
                                         <input type="text" class="form-control" id="updatedBy" name="updatedBy" placeholder="Updated By" required>
                                     </div>
+
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-bs-dismiss="modal"> Close</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal"> Close</button>
                     </div> <!-- /modal-footer -->
                 </div>
             </div>
