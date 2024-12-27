@@ -12,7 +12,6 @@ $(document).ready(function() {
             success: function(response) {
                 console.log(response);
                 if(response.success == true) {
-                    console.log(response);   
                     window.location.href = "./dashboard.php"; // Redirect to the index page
                 } else {
                     console.log(response);

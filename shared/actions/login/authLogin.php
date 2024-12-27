@@ -14,7 +14,7 @@ class SessUsers {
         $this->unsetSession();
 
         $agent['nm'] = $usr["agent_nm"];
-        $agent['email'] = $usr["agent_nm"];
+        $agent['email'] = $usr["email"];
         $agent['phone'] = $usr["primary_contact"];
      
         $_SESSION['user'] = $agent;
