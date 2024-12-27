@@ -63,7 +63,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="addCustomerModalLabel">Add New Customer</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
@@ -97,11 +97,30 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="serviceType">Service Type</label>
-                                        <input type="text" class="form-control" id="serviceType" name="serviceType" placeholder="Service Type" required>
-
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" name="serviceType" value="AMC"> AMC </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" name="serviceType" value="Tally"> Tally </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" name="serviceType" value="On Call"> On Call </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" name="serviceType" value="One Time"> One Time </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
                                         <label for="city">City</label>
                                         <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+
+                                        <label for="city">Service Start Date</label>
+                                        <input type="date" class="form-control" id="serviceStartDate" name="serviceStartDate" required>
 
                                         <label for="specialNote">Special Note</label>
                                         <input type="text" class="form-control" id="specialNote" name="specialNote" placeholder="Special Note" required>
@@ -114,14 +133,13 @@
 
                                         <label for="customerUniqCode">Customer Unique Code</label>
                                         <input type="text" class="form-control" id="customerUniqCode" name="customerUniqCode" placeholder="Customer Unique Code" required>
-
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal"> Close</button>
                         <button type="submit" class="btn btn-primary" id="addCustomerDataBtn" data-loading-text="Loading..." autocomplete="off"> Create Customer</button>
                     </div> <!-- /modal-footer -->
                 </div>
