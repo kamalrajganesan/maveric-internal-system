@@ -20,12 +20,12 @@ $(document).ready(function() {
             data: data,
             dataType: 'json',
             success: function(response) {
-                if(response.success == 'success') {
+                if(response.success == true) {
                     $("#addCustomerForm")[0].reset();
-                    $('#addTrackDataModal').modal('hide');
+                    $('#addCustomerModal').modal('hide');
                     manageCustDataTbl.ajax.reload(null, true);
                 } else {
-                    alert('Failed to Add Customer');
+                    alert('Failed to Add Customer...!');
                 }
             },
             error: function() {
