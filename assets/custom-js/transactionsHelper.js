@@ -32,7 +32,7 @@ $(document).ready(function () {
         if (response["success"] == true) {
           $("#addTransactionForm")[0].reset();
           $('#addTransactionForm').modal('hide');
-          manageCustDataTbl.ajax.reload(null, true);
+          manageTicketDataTbl.ajax.reload(null, true);
           
         } else {
           alert("Failed to Add transaction");

@@ -45,10 +45,10 @@
                                         <tr>
                                             <th>Id</th>
                                             <th>Customer Name</th>
-                                            <th>issue</th>
-                                            <th>service type</th>
+                                            <th>Issue</th>
+                                            <th>Service type</th>
                                             <th>Assigned Agent</th>
-                                            <th>created date</th>
+                                            <th>Created date</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>

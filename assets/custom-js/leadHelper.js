@@ -31,7 +31,6 @@ $(document).ready(function () {
           $("#addLeadForm")[0].reset();
           $("#addLeadForm").modal("hide");
           manageLeadDatatable.ajax.reload(null, true);
-          alert("Lead Added Successfully");
         } else {
           alert("Failed to Add lead");
         }
