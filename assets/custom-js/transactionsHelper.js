@@ -74,8 +74,10 @@ function setCustomersDropdown(param) {
         var customerDropdown;
         if(param == 'add') {
           customerDropdown = $("#addTransactionForm #customerId");
-        } else {
+        } else if(param == 'edit') {
           customerDropdown = $("#editTransactionForm #customerId");
+        } else {
+          customerDropdown = $("#viewTransactionForm #customerId");
         }
         customerDropdown.empty(); // Clear existing options
         customerDropdown.append(
@@ -90,7 +92,7 @@ function setCustomersDropdown(param) {
               .text(customer.name)
           );
         });
-        if(param == 'edit') {
+        if(param != 'add') {
           customerDropdown.val(currentTransaction.customer_id).attr('disabled', true);
         }
       } else {
@@ -99,6 +101,44 @@ function setCustomersDropdown(param) {
     },
     error: function () {
       alert("Error fetching customer details");
+    },
+  });
+}
+function setAgentsDropdowns(param) {
+  // Fetch agent details for customerId field
+  $.ajax({
+    type: "GET",
+    url: "./services/agent_fetch_few_details.php",
+    dataType: "json",
+    success: function (response) {
+      if (response.success == true) {
+        
+        var agentDropdown1, agentDropdown2;
+        agentDropdown1 = $("#viewTransactionForm #agentId");
+        agentDropdown2 = $("#viewTransactionForm #aAgentId");
+        
+        agentDropdown1.empty(); // Clear existing options
+        agentDropdown2.empty(); // Clear existing options
+        $.each(response.data, function (key, agent) {
+          agentDropdown1.append(
+            $("<option></option>")
+              .attr("value", agent.id)
+              .text(agent.name)
+          );
+          agentDropdown2.append(
+            $("<option></option>")
+              .attr("value", agent.id)
+              .text(agent.name)
+          );
+        });
+        agentDropdown1.val(currentTransaction.assignd_agent_id).attr('disabled', true);
+        agentDropdown2.val(currentTransaction.updated_by).attr('disabled', true);
+      } else {
+        alert("Failed to fetch agent details");
+      }
+    },
+    error: function () {
+      alert("Error fetching agent details");
     },
   });
 }
@@ -186,6 +226,62 @@ function editTicket(params = null) {
       error: function () {
         alert("Error fetching transaction details");
       },
+    });
+  }
+}
+
+function viewTicket(params = null) {
+  if (params) {
+    $.ajax({
+      type: "POST",
+      url: "./services/transaction_fetch_single.php",
+      data: { tId: params },
+      dataType: "json",
+      success: function (response) {
+        if (response.success == true) {
+          // console.log("transaction: ", response.data);
+          setCustomersDropdown('view');
+          setAgentsDropdowns('view');
+          currentTransaction = response.data[0];
+
+          $("#currentTransactionCode").text(response.data[0].uniq_id);
+          $("#viewTransactionForm #problemStmt").val(response.data[0].problem_stmt);
+          $("#viewTransactionForm #problemDesc").val(response.data[0].problem_desc);
+          let commentsHtml = '';
+          let comments = '['+response.data[0].comments+']';
+          console.log("comments: ", comments, typeof comments);
+          console.log("response.data[0].comments: ", response.data[0].comments, typeof response.data[0].comments);
+          JSON.parse(comments).forEach(function(comment) {
+            commentsHtml += '<div><strong>' + comment.timestamp + ':</strong> ' + comment.message + '</div>';
+          });
+          $("#viewTransactionForm #pastCommentsOfThisTransaction").html(commentsHtml);
+          let notesHtml = '';
+          let notes ='['+response.data[0].notes+']'; 
+          JSON.parse(notes).forEach(function(note) {
+            notesHtml += '<div><strong>' + note.timestamp + ':</strong> ' + note.message + '</div>';
+          });
+          $("#viewTransactionForm #pastNotesOfThisTransaction").html(notesHtml);
+          $("#viewTransactionForm #status").val(response.data[0].status);
+          $("#viewTransactionForm #serviceType").val(response.data[0].service_typ);
+          if (response.data[0].is_under_amc == 1) {
+            $("#viewTransactionForm #isUnderAMCYES").prop("checked", true);
+          } else {
+            $("#viewTransactionForm #isUnderAMCNO").prop("checked", true);
+          }
+          $("#viewTransactionForm input[id^=isUnderAMC]:radio").attr("disabled",true);
+          $("#viewTransactionForm #createdDate").val(response.data[0].created_on).attr('disabled', true);
+          $("#viewTransactionForm #AssignedAgent").val(response.data[0].assignd_agent_id).attr('disabled', true);
+          $("#viewTransactionForm #lastUpdatedOn").val(response.data[0].updated_on).attr('disabled', true);
+          $("#viewTransactionForm #lastUpdatedBy").val(response.data[0].updated_by).attr('disabled', true);
+
+          $("#viewTransactionModal").modal("show");
+        } else {
+          alert("Failed to fetch transaction details");
+        }
+      },
+      error: function () {
+        alert("Error fetching transaction details");
+      }
     });
   }
 }

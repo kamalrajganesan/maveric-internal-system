@@ -29,7 +29,7 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
 
         $btn = '
         <div class="btn-group">
-            <button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#viewTicketModal" id="viewTicketModalBtn" onclick="viewTicket(\'' . $row['uniq_id'] . '\')">
+            <button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#viewTransactionModal" id="viewTransactionModalBtn" onclick="viewTicket(\'' . $row['uniq_id'] . '\')">
                 <i class="fa fa-2x fa-ellipsis-v"></i>
             </button>
             <button type="button" class="btn btn-inverse-secondary btn-fw" data-toggle="modal" data-target="#editTransactionModal" id="editTransactionModalBtn" onclick="editTicket(\'' . $row['uniq_id'] . '\')">
