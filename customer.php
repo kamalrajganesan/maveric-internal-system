@@ -218,22 +218,22 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <div class="form-group view-form-group">
-                                        <label for="serviceType"> Service Type </label>
+                                        <label for="serviceType[]"> Service Type </label>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input"  name="serviceType" value="AMC"> AMC </label>
+                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="AMC"> AMC </label>
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType" value="Tally"> Tally </label>
+                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="Tally"> Tally </label>
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType" value="On Call"> On Call </label>
+                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="On Call"> On Call </label>
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType" value="One Time"> One Time </label>
+                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="One Time"> One Time </label>
                                         </div>
                                     </div>
                                     
@@ -355,22 +355,22 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <div class="form-group view-form-group">
-                                        <label for="serviceType"> Service Type </label>
+                                        <label for="serviceType[]"> Service Type </label>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input"  name="serviceType" value="AMC"> AMC </label>
+                                            <input type="checkbox" class="form-check-input"  name="serviceType[]" value="AMC"> AMC </label>
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType" value="Tally"> Tally </label>
+                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="Tally"> Tally </label>
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType" value="On Call"> On Call </label>
+                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="On Call"> On Call </label>
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType" value="One Time"> One Time </label>
+                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="One Time"> One Time </label>
                                         </div>
                                     </div>
                                     

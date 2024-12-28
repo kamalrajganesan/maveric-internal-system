@@ -130,10 +130,10 @@ function editCustomer(params = null) {
                     $('#editCustomerForm #city').val(response.data[0].city);
                     $('#editCustomerForm #area').val(response.data[0].area);
                     
-                    $('#editCustomerForm input[name="serviceType"][value="AMC"]').prop('checked', response.data[0].service_type == 'AMC');
-                    $('#editCustomerForm input[name="serviceType"][value="Tally"]').prop('checked', response.data[0].service_type == 'Tally');
-                    $('#editCustomerForm input[name="serviceType"][value="On Call"]').prop('checked', response.data[0].service_type == 'On Call');
-                    $('#editCustomerForm input[name="serviceType"][value="One Time"]').prop('checked', response.data[0].service_type == 'One Time');
+                    var serviceTypes = response.data[0].service_type.split(',');
+                    $('#editCustomerForm input[name="serviceType[]"]').each(function() {
+                        $(this).prop('checked', serviceTypes.includes($(this).val()));
+                    });
 
                     $('#editCustomerForm #customerStatus').val(response.data[0].is_active);
 

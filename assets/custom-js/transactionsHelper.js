@@ -129,6 +129,8 @@ function editTicket(params = null) {
           $("#editTransactionForm #problemDesc").val(response.data[0].problem_desc);
           let commentsHtml = '';
           let comments = '['+response.data[0].comments+']';
+          console.log("comments: ", comments, typeof comments);
+          console.log("response.data[0].comments: ", response.data[0].comments, typeof response.data[0].comments);
           JSON.parse(comments).forEach(function(comment) {
             commentsHtml += '<div><strong>' + comment.timestamp + ':</strong> ' + comment.message + '</div>';
           });
@@ -153,7 +155,7 @@ function editTicket(params = null) {
           $("#editTransactionModal").modal("show");
 
           // Handle edit form submission
-          $("#editTransactionDataBtn").on("click", function (e) {
+          $("#editTransactionDataBtn").unbind('click').bind("click", function (e) {
             
             e.preventDefault();
             var data = $("#editTransactionForm").serialize();
