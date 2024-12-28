@@ -16,8 +16,33 @@ $FetchAllSQL = "SELECT ticket.*,
        (SELECT customer_nm FROM cust_mstr WHERE id = ticket.customer_id) AS customer_name,
        (SELECT agent_nm FROM agent WHERE id = ticket.assignd_agent_id) AS assignd_agent
 FROM ticket
-WHERE ticket.is_deleted = 0;
+WHERE ticket.is_deleted = 0
 ";
+
+switch ($page) {
+
+    case 'All':
+        $FetchAllSQL .= " ;";
+        break;
+    case 'Tally':
+        $FetchAllSQL .= " and service_typ = 'Tally';";
+        break;
+    case 'AMC':
+        $FetchAllSQL .= " and service_typ = 'AMC';";
+        break;
+    case 'OnCall':
+        $FetchAllSQL .= " and service_typ = 'On Call';";
+        break;
+    case 'Digital':
+        $FetchAllSQL .= " and service_typ = 'Digital';";
+        break;
+    case 'PhysicalVisits':
+        $FetchAllSQL .= " ;";
+        break;
+    default:
+        echo "Invalid Parm...";
+        break;
+}
 
 $db->prepareStatement($FetchAllSQL);
 $db->execPreparedStatement();
@@ -45,7 +70,7 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
         $data[] = array(
             $row['uniq_id'],  // Customer ID
             $row['customer_name'],  // Customer ID
-            $row['problem_desc'],  
+            $row['problem_desc'],
             $row['service_typ'],  // New require    ment
             $row['assignd_agent'],  // Problem description
             $row['created_on'],  // Ticket status

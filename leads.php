@@ -86,11 +86,11 @@ if (isset($_GET['page'])) {
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                   
+
                                     <label for="leadNm">Lead Name</label>
                                     <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
 
-                                   
+
                                     <label for="contact">Contact</label>
                                     <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
 
@@ -99,19 +99,19 @@ if (isset($_GET['page'])) {
 
                                     <label for="requirement">Requirement</label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
-                                
+
                                     <label for="notes">Notes</label>
                                     <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
 
                                     <label for="description">Description</label>
                                     <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
 
-                                    
+
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                   
+
                                     <label for="addressLn">Address Line</label>
                                     <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line" required>
 
@@ -133,7 +133,7 @@ if (isset($_GET['page'])) {
                                     <label for="leadStatus">Lead Status</label>
                                     <input type="text" class="form-control" id="leadStatus" name="leadStatus" placeholder="Lead Status" required>
 
-                                   
+
                                 </div>
                             </div>
                         </div>

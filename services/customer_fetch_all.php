@@ -2,10 +2,50 @@
 
 require_once("../shared/actions/db/dao.php");
 
-$db = new sqlHelper();
-$customerFetchAllSQL = "SELECT * FROM cust_mstr WHERE is_deleted = 0";
+$page = "";
+if (isset($_POST['param'])) {
+    $page = htmlspecialchars($_POST['param']);
+} else {
+    echo "param not found";
+}
 
-$db->prepareStatement($customerFetchAllSQL);
+
+$db = new sqlHelper();
+$fetchAllSQL = "SELECT * FROM cust_mstr WHERE is_deleted = 0";
+
+
+switch ($page) {
+
+    case 'All':
+        $fetchAllSQL .= " ;";
+        break;
+    case 'Tally':
+        $fetchAllSQL .= " and service_type Like '%Tally%';";
+        break;
+    case 'AMC':
+        $fetchAllSQL .= " and service_type Like '%AMC%';";
+        break;
+    case 'OnCall':
+        $fetchAllSQL .= " and service_type Like '%On Call%';";
+        break;
+    case 'OneTime':
+        $fetchAllSQL .= " and service_type Like '%One Time%';";
+        break;
+    case 'Active':
+        $fetchAllSQL .= " and is_active = true;";
+        break;
+    case 'InActive':
+        $fetchAllSQL .= " and is_active = false;";
+        break;
+    case 'Endangered':
+        $fetchAllSQL .= " and is_active = false;";
+        break;
+    default:
+        echo "Invalid Parm...";
+        break;
+}
+
+$db->prepareStatement($fetchAllSQL);
 $db->execPreparedStatement();
 $custFetchAllSQLResultSet = $db->getResultSet();
 
@@ -46,5 +86,3 @@ if ($custFetchAllSQLResultSet->num_rows > 0) {
 } else {
     echo json_encode(array("success" => false, "data" => [], "message" => "No data found."));
 }
-
-?>
