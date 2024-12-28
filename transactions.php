@@ -1,10 +1,13 @@
 <?php require_once("./shared/components/pre-header.php");
 
-if (isset($_GET['page'])) {
-    $page = htmlspecialchars($_GET['page']);
+if (isset($_GET['type']) && isset($_GET['value'])) {
+    $type = htmlspecialchars($_GET['type']);
+    $value = htmlspecialchars($_GET['value']);
 
     echo "<script>
-        var transaction_page = '" . $page . "'
+        // var transaction_page = '" . $page . "'
+        var transaction_type = '" . $type . "'
+        var transaction_value = '" . $value . "'
     </script>";
 } else {
     echo "No data received.";
