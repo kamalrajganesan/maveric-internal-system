@@ -14,17 +14,17 @@ $FetchAllSQL = "SELECT * FROM lead_tracker WHERE is_deleted = 0";
 
 switch ($page) {
 
-    case 'new':
-        $FetchAllSQL .= " and lead_status = 'New'";
+    case 'New':
+        $FetchAllSQL .= " and lead_status = 'New';";
         break;
-    case 'leads':
-        $FetchAllSQL .= " and lead_status = 'Pending'";
+    case 'Leads':
+        $FetchAllSQL .= " and lead_status = 'Pending';";
         break;
-    case 'follow':
-        $FetchAllSQL .= " and lead_status = 'Completed'";
+    case 'FollowUp':
+        $FetchAllSQL .= " and lead_status = 'Completed';";
         break;
-    case 'lost':
-        $FetchAllSQL .= " and lead_status = 'Lost'";
+    case 'Lost':
+        $FetchAllSQL .= " and lead_status = 'Lost';";
         break;
     default:
         echo "Invalid Parm...";

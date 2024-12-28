@@ -120,14 +120,14 @@
               </a>
               <div class="collapse" id="customer-submenus">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="./customer.php">All Customers</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./tally-customers.php">Tally</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./amc-customers.php">AMC</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./on-call-customers.php">On Call</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./on-time-customers.php">One Time</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./active-customers.php">Active</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./in-active-customers.php">In Active</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./endangered-customers.php">Endangered</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=All">All Customers</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Tally">Tally</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=AMC">AMC</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=OnCall">On Call</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=OneTime">One Time</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Active">Active</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=InActive">In Active</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Endangered">Endangered</a></li>
                 </ul>
               </div>
             </li>
@@ -139,16 +139,16 @@
               </a>
               <div class="collapse" id="transac-submeuns">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"><a class="nav-link" href="./transactions.php">All Services</a></li>
-                  <li class="nav-item"><a class="nav-link" href="./tally-services.php">Tally</a></li>
-                  <li class="nav-item"><a class="nav-link" href="./amc-services.php">AMC</a></li>
-                  <li class="nav-item"><a class="nav-link" href="./digital-services.php">Digital</a></li>
-                  <li class="nav-item"><a class="nav-link" href="./on-call-services.php">On Call</a></li>
-                  <li class="nav-item"><a class="nav-link" href="./physical-visit-services.php">Physical Visits</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?page=All">All Services</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?page=Tally">Tally</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?page=AMC">AMC</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?page=Digital">Digital</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?page=OnCall">On Call</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?page=PhysicalVisits">Physical Visits</a></li>
                 </ul>
               </div>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#requirements-menus" aria-expanded="false" aria-controls="requirements-menus">
                 <i class="menu-icon mdi mdi-chart-line">  </i>
                 <span class="menu-title">Requirements</span>
@@ -164,7 +164,7 @@
                   <li class="nav-item"> <a class="nav-link" href="./lost-requirements.php"> Lost </a></li>
                 </ul>
               </div>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#lead-menus" aria-expanded="false" aria-controls="lead-menus">
                 <i class="menu-icon mdi mdi-chart-line">  </i>
@@ -173,10 +173,10 @@
               </a>
               <div class="collapse" id="lead-menus">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=new"> Newly Added </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=leads"> My Leads </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=follow"> On Follow Ups </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=lost"> Lost </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=New"> Newly Added </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Leads"> My Leads </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=FollowUp"> On Follow Ups </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Lost"> Lost </a></li>
                 </ul>
               </div>
             </li>

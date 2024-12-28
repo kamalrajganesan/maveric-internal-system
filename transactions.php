@@ -1,14 +1,14 @@
 <?php require_once("./shared/components/pre-header.php");
 
-// if (isset($_GET['page'])) {
-//     $page = htmlspecialchars($_GET['page']);
+if (isset($_GET['page'])) {
+    $page = htmlspecialchars($_GET['page']);
 
-//     echo "<script>
-//         var transaction_page = '" . $page . "'
-//     </script>";
-// } else {
-//     echo "No data received.";
-// }
+    echo "<script>
+        var transaction_page = '" . $page . "'
+    </script>";
+} else {
+    echo "No data received.";
+}
 ?>
 
 <title> My Transactions - Tejas </title>

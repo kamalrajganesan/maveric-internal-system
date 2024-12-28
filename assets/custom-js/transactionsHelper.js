@@ -8,7 +8,7 @@ $(document).ready(function () {
       url: "./services/transaction_fetch_all.php",
       type: "POST",
       data: {
-        param: "new",
+        param: transaction_page,
       },
       dataType: "json",
     },

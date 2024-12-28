@@ -40,6 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "message" => $comments,
     );
 
+    $notesArr = array(
+        "timestamp" => date("Y-m-d H:i:s"),
+        "message" => $notes,
+    );
+
     // Make sure all the required fields are filled
     if (empty($uniqId) || empty($createdBy) || empty($assignedAgentId) || empty($customerId)) {
         
@@ -73,12 +78,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $problemStmt,
                 $serviceType,
                 $isUnderAMC,
-                $notes,
+                json_encode($notesArr),
                 $serviceThru
             ];
 
-            // Bind the parameters (types: 's' for string, 'i' for integer, 'd' for double)
-            $types = 'sisisssssiss'; // Adjust types if necessary
+            $types = 'sisisssssiss'; 
             $db->setParameters($params, $types);
 
             // Execute the statement
