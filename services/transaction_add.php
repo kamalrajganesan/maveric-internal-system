@@ -1,7 +1,7 @@
 <?php
 // Include the database connection
 require_once("../shared/actions/db/dao.php");
-
+date_default_timezone_set('Asia/Kolkata');
 // Initialize response variable
 $response = '';
 
@@ -31,10 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $status = "New";    // Default status as it is a new transaction
     $problemStmt = isset($_POST['problemStmt']) ? htmlspecialchars($_POST['problemStmt']) : '';
     $serviceType = isset($_POST['serviceType']) ? htmlspecialchars($_POST['serviceType']) : '';
+    $serviceThru = isset($_POST['serviceThrough']) ? htmlspecialchars($_POST['serviceThrough']) : '';
     $isUnderAMC = isset($_POST['isUnderAMC']) ? (int)$_POST['isUnderAMC'] : 0;
     $notes = isset($_POST['notes']) ? htmlspecialchars($_POST['notes']) : '';
-    $closedDate = isset($_POST['closedDate']) ? htmlspecialchars($_POST['closedDate']) : null;
-    $isDeleted = isset($_POST['isDeleted']) ? (int)$_POST['isDeleted'] : 0;
 
     $commentsArr = array(
         "timestamp" => date("Y-m-d H:i:s"),
@@ -58,9 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $query = "INSERT INTO ticket (
                 uniq_id, assignd_agent_id, created_by, customer_id, 
                 comments, problem_desc, status, problem_stmt, service_typ, 
-                is_under_amc, notes, is_active, is_deleted
+                is_under_amc, notes, is_active, is_deleted, service_thru
             ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 0
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 0, ?
             )";
 
         try {
@@ -80,11 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $serviceType,
                 $isUnderAMC,
                 json_encode($notesArr),
-
+                $serviceThru
             ];
 
-            // Bind the parameters (types: 's' for string, 'i' for integer, 'd' for double)
-            $types = 'sisisssssis'; // Adjust types if necessary
+            $types = 'sisisssssiss'; 
             $db->setParameters($params, $types);
 
             // Execute the statement

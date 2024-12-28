@@ -68,14 +68,14 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
 
         // Adjust the data array to reflect the columns in the ticket table
         $data[] = array(
-            $row['uniq_id'],  // Customer ID
-            $row['customer_name'],  // Customer ID
-            $row['problem_desc'],
-            $row['service_typ'],  // New require    ment
-            $row['assignd_agent'],  // Problem description
-            $row['created_on'],  // Ticket status
-            $row['status'],  // Service type
-            $btn  // Action buttons
+            $row['uniq_id'], 
+            $row['created_on'],  
+            $row['problem_desc'],  
+            $row['customer_name'],  
+            $row['service_typ'],  
+            $row['assignd_agent'], 
+            $row['status'],  
+            $btn  
         );
     }
     echo json_encode(array("success" => true, "data" => $data, "message" => "Data found."));

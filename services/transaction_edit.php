@@ -1,6 +1,7 @@
 <?php
 
-require_once("../shared/php/connect.php");
+require_once("../shared/actions/db/dao.php");
+date_default_timezone_set('Asia/Kolkata');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -9,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     $tId = $_POST['tId']; 
+    $serviceThru = $_POST['serviceThrough'];
     $newComment = $_POST['comments'];
     $newStatus = $_POST['status'];
     $newNotes = $_POST['notes'];
@@ -21,26 +23,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "timestamp" => date("Y-m-d H:i:s"),
         "message" => $newNotes,
     );
-
-
+    $db = new sqlHelper();
+    
     $sql = "UPDATE ticket SET 
-        comments = CONCAT(comments, ',". json_encode($newCommentArr) ."'), 
-        notes = CONCAT(notes, ',". json_encode($newNotesArr) ."'),
-        ticket.status = '". $newStatus ."'";
+        comments = CONCAT(comments, ?), 
+        service_thru = ?,
+        notes = CONCAT(notes, ?),
+        ticket.status = ?";
+        
+        if($newStatus == "Closed") {
+            $newClosedDt = date("Y-m-d H:i:s");
+            $solvedBy = $_SESSION['user']['id'];
+            
+            $sql .= ", closed_date = ?, solved_by = ?";
+        }
+        
+    $sql .= " WHERE uniq_id = ?";
+
+    $db->prepareStatement($sql);
 
     if($newStatus == "Closed") {
-        $newClosedDt = date("Y-m-d H:i:s");
-        $solvedBy = $_SESSION['user']['id'];
-
-        $sql .= ", closed_date = '". $newClosedDt ."', solved_by = ". $solvedBy;
+        $db->setParameters(
+            [
+                ','.json_encode($newCommentArr), 
+                $serviceThru, 
+                ','.json_encode($newNotesArr),
+                $newStatus, 
+                $newClosedDt, 
+                $solvedBy, 
+                $tId
+            ], 
+            "sssssss");
     } else {
-        $newClosedDate = null;
+        $db->setParameters(
+            [
+                ','.json_encode($newCommentArr), 
+                $serviceThru, 
+                ','.json_encode($newNotesArr),
+                $newStatus, 
+                $tId
+            ], 
+            "sssss");
     }
     
-    $sql .= " WHERE uniq_id = '". $tId ."'";
-
-    $connect = createConn();
-    if($connect->query($sql) === TRUE) {
+    if($db->execPreparedStatement()) {
         $valid['success'] = true;
         $valid['message'] = "Successfully updated customer";
     } else {
@@ -48,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $valid['message'] = "Error while updating the data ".$sql;
     }
 
-    $connect->close();
     echo json_encode($valid);
 
 }

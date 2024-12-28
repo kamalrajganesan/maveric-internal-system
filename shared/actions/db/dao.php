@@ -8,6 +8,7 @@ class sqlHelper
 
     public function __construct()
     {
+        date_default_timezone_set('Asia/Kolkata');
         if (!session_id()) {
             session_start();
         }
@@ -33,8 +34,10 @@ class sqlHelper
      
         try {
             $this->query->execute();
+            return true;
         } catch (Exception $e) {
             $this->logError($e->getMessage(), [ 'exception' => $e ]);
+            return false;
         }
     }
 
