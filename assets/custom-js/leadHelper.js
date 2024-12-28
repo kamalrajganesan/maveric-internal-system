@@ -29,7 +29,7 @@ $(document).ready(function () {
         console.log(response);
         if (response["success"] == true) {
           $("#addLeadForm")[0].reset();
-          $("#addLeadForm").modal("hide");
+          $("#addLeadModal").modal("hide");
           manageLeadDatatable.ajax.reload(null, true);
         } else {
           alert("Failed to Add lead");
@@ -38,7 +38,6 @@ $(document).ready(function () {
     });
   });
 });
-
 
 function removeLead(params = null) {
   console.log("params: ", params);
@@ -50,7 +49,7 @@ function removeLead(params = null) {
       dataType: "json",
       success: function (response) {
         if (response.success == true) {
-          manageLeadDatatable.ajax.reload(null, false);
+          manageLeadDatatable.ajax.reload(null, true);
         } else {
           alert("Failed to Remove Lead...!");
         }
@@ -63,10 +62,6 @@ function removeLead(params = null) {
 }
 
 function viewLead(params = null) {
-  console.log("params: ", params);
-  console.log($("#viewLeadForm #leadNm"));
-  console.log($("#leadNm"));
-
   if (params) {
     $.ajax({
       type: "POST",
@@ -95,15 +90,87 @@ function viewLead(params = null) {
           $("#viewLeadForm #followUpDt").val(response.data[0].follow_up_date).attr("readonly", true);
           $("#viewLeadForm #createdBy").val(response.data[0].created_by).attr("readonly", true);
 
-
           $("#viewLeadForm #leadStatus").val(response.data[0].lead_status).attr("disabled", true);
-
         } else {
           alert("Failed to Fetch Lead...!");
         }
       },
       error: function () {
         alert("Failed to Fetch Lead");
+      },
+    });
+  }
+}
+
+function editLead(leadId = null) {
+  if (leadId) {
+    $.ajax({
+      type: "POST",
+      url: "./services/lead_fetch_single.php",
+      data: { leadId: leadId },
+      dataType: "json",
+      success: function (response) {
+        if (response.success === true) {
+          const lead = response.data[0];
+
+          // Populate modal fields
+          $("#currentLeadCode").text(lead.lead_name);
+          $("#editLeadForm #leadNm").val(lead.lead_name);
+          $("#editLeadForm #email").val(lead.email);
+          $("#editLeadForm #companyNm").val(lead.company_name);
+          $("#editLeadForm #contact").val(lead.contact);
+          $("#editLeadForm #requirement").val(lead.requirement);
+          $("#editLeadForm #description").val(lead.description);
+          $("#editLeadForm #notes").val(lead.notes);
+          $("#editLeadForm #addressLn").val(lead.address_line);
+          $("#editLeadForm #area").val(lead.area);
+          $("#editLeadForm #city").val(lead.city);
+          $("#editLeadForm #pincode").val(lead.pincode);
+          $("#editLeadForm #followUpDt").val(lead.follow_up_date);
+          $("#editLeadForm #leadStatus").val(lead.lead_status);
+          $("#editLeadForm").append('<input type="hidden" name="lId" id="lId" value="'+ lead.id +'" />');
+
+
+          // Show the modal
+          $("#editLeadModal").modal("show");
+
+          // Handle edit form submission
+          $("#editLeadDataBtn")
+            .unbind("click")
+            .bind("click", function (e) {
+              console.log("hello");
+
+              e.preventDefault();
+
+              const formData = $("#editLeadForm").serialize();
+
+
+              $.ajax({
+                type: "POST",
+                url: "./services/lead_edit.php",
+                data: formData,
+                dataType: "json",
+                success: function (response) {
+                  if (response.success === true) {
+                    $("#editLeadForm")[0].reset();
+                    $("#editLeadModal").modal("hide");
+                    // Reload lead data table
+                    manageLeadDatatable.ajax.reload(null, true);
+                  } else {
+                    alert("Failed to update lead details.");
+                  }
+                },
+                error: function () {
+                  alert("Error updating lead details.");
+                },
+              });
+            });
+        } else {
+          alert("Failed to fetch lead details.");
+        }
+      },
+      error: function () {
+        alert("Error fetching lead details.");
       },
     });
   }

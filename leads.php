@@ -161,6 +161,7 @@ if (isset($_GET['page'])) {
 
                             </div>
                         </div>
+                    </form>
                 </div>
 
                 <div class="modal-footer">
@@ -269,11 +270,9 @@ if (isset($_GET['page'])) {
                             </div>
                         </div>
                     </form>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal"> Close</button>
-                    <button type="submit" class="btn btn-primary" id="editLeadDataBtn" data-loading-text="Loading..." autocomplete="off"> Update Lead </button>
                 </div> <!-- /modal-footer -->
             </div>
         </div>
@@ -294,16 +293,85 @@ if (isset($_GET['page'])) {
                 <div class="modal-body">
                     <form id="editLeadForm" class="form-sample">
                         <div class="row justify-content-center">
+                        <div class="row justify-content-center">
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
+                                    <label for="leadNm">Lead Name</label>
+                                    <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="companyNm">Company Name</label>
+                                    <input type="text" class="form-control" id="companyNm" name="companyNm" placeholder="Company Name" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="contact">Contact</label>
+                                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="requirement">Requirement</label>
+                                    <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="description">Description</label>
+                                    <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="notes">Notes</label>
+                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
 
                                 </div>
                             </div>
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
 
+                                    <label for="addressLn">Address Line</label>
+                                    <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line" required>
                                 </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="area">Area</label>
+                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="followUpDt">Follow-up Date</label>
+                                    <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="leadStatus">Lead Status</label>
+                                    <select class="form-control" id="leadStatus" name="leadStatus" required aria-readonly="true">
+                                        <option value="New">New</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Completed">Closed</option>
+                                        <option value="Lost">Lost</option>
+
+                                    </select>
+                                </div>
+
+                            
                             </div>
+                        </div>
                         </div>
                     </form>
 
