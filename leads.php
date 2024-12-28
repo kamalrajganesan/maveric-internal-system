@@ -76,63 +76,231 @@ if (isset($_GET['page'])) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="addLeadModalLabel">Add New Lead</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
 
                 <div class="modal-body">
                     <form id="addLeadForm" class="form-sample">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-
+                        <div class="row justify-content-center">
+                            <div class="col-sm-5">
+                                <div class="form-group view-form-group">
                                     <label for="leadNm">Lead Name</label>
                                     <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
+                                </div>
 
+                                <div class="form-group view-form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                </div>
 
-                                    <label for="contact">Contact</label>
-                                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
-
+                                <div class="form-group view-form-group">
                                     <label for="companyNm">Company Name</label>
                                     <input type="text" class="form-control" id="companyNm" name="companyNm" placeholder="Company Name" required>
+                                </div>
 
+                                <div class="form-group view-form-group">
+                                    <label for="contact">Contact</label>
+                                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
                                     <label for="requirement">Requirement</label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
+                                </div>
 
+                                <div class="form-group view-form-group">
+                                    <label for="description">Description</label>
+                                    <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
                                     <label for="notes">Notes</label>
                                     <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
 
-                                    <label for="description">Description</label>
-                                    <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
-
-
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
+                            <div class="col-sm-5">
+                                <div class="form-group view-form-group">
 
                                     <label for="addressLn">Address Line</label>
                                     <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line" required>
+                                </div>
 
-                                    <label for="pincode">Pincode</label>
-                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
-
-                                    <label for="city">City</label>
-                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
-
+                                <div class="form-group view-form-group">
                                     <label for="area">Area</label>
                                     <input type="text" class="form-control" id="area" name="area" placeholder="Area" required>
+                                </div>
 
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                <div class="form-group view-form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                                </div>
 
+                                <div class="form-group view-form-group">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
                                     <label for="followUpDt">Follow-up Date</label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
+                                </div>
 
+                                <div class="form-group view-form-group">
                                     <label for="leadStatus">Lead Status</label>
-                                    <input type="text" class="form-control" id="leadStatus" name="leadStatus" placeholder="Lead Status" required>
+                                    <select class="form-control" id="leadStatus" name="leadStatus" required aria-readonly="true">
+                                        <option value="New">New</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Completed">Closed</option>
+                                        <option value="Lost">Lost</option>
 
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"> Close</button>
+                    <button type="submit" class="btn btn-primary" id="addLeadDataBtn" data-loading-text="Loading..." autocomplete="off"> Create Lead</button>
+                </div> <!-- /modal-footer -->
+            </div>
+        </div>
+    </div>
+    <!-- end add lead modal -->
+
+    <!-- view lead modal -->
+    <div class="modal fade" id="viewLeadModal" tabindex="-1" role="dialog" aria-labelledby="viewLeadModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="viewLeadModalLabel">Lead Details of <strong id="currentViewLeadCode"></strong> </h4>
+                    <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="viewLeadForm" class="form-sample">
+                        <div class="row justify-content-center">
+                            <div class="col-sm-5">
+                                <div class="form-group view-form-group">
+                                    <label for="leadNm">Lead Name</label>
+                                    <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="companyNm">Company Name</label>
+                                    <input type="text" class="form-control" id="companyNm" name="companyNm" placeholder="Company Name" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="contact">Contact</label>
+                                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="requirement">Requirement</label>
+                                    <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="description">Description</label>
+                                    <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="notes">Notes</label>
+                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-group view-form-group">
+
+                                    <label for="addressLn">Address Line</label>
+                                    <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="area">Area</label>
+                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="followUpDt">Follow-up Date</label>
+                                    <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="leadStatus">Lead Status</label>
+                                    <select class="form-control" id="leadStatus" name="leadStatus" required aria-readonly="true">
+                                        <option value="New">New</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Completed">Closed</option>
+                                        <option value="Lost">Lost</option>
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="createdBy">Created By</label>
+                                    <input type="text" class="form-control" id="createdBy" name="createdBy" required>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"> Close</button>
+                    <button type="submit" class="btn btn-primary" id="editLeadDataBtn" data-loading-text="Loading..." autocomplete="off"> Update Lead </button>
+                </div> <!-- /modal-footer -->
+            </div>
+        </div>
+    </div>
+    <!-- end view lead modal -->
+
+    <!-- edit lead modal -->
+    <div class="modal fade" id="editLeadModal" tabindex="-1" role="dialog" aria-labelledby="editLeadModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="editLeadModalLabel">Edit Lead Details of <strong id="currentLeadCode"></strong> </h4>
+                    <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="editLeadForm" class="form-sample">
+                        <div class="row justify-content-center">
+                            <div class="col-sm-5">
+                                <div class="form-group view-form-group">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-group view-form-group">
 
                                 </div>
                             </div>
@@ -142,12 +310,14 @@ if (isset($_GET['page'])) {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal"> Close</button>
-                    <button type="submit" class="btn btn-primary" id="addLeadDataBtn" data-loading-text="Loading..." autocomplete="off"> Create Lead</button>
+                    <button type="submit" class="btn btn-primary" id="editLeadDataBtn" data-loading-text="Loading..." autocomplete="off"> Update Lead </button>
                 </div> <!-- /modal-footer -->
             </div>
         </div>
     </div>
-    <!-- end add lead modal -->
+    <!-- end edit lead modal -->
+
+
 
     <!-- end modals -->
 

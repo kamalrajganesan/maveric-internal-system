@@ -61,3 +61,50 @@ function removeLead(params = null) {
     });
   }
 }
+
+function viewLead(params = null) {
+  console.log("params: ", params);
+  console.log($("#viewLeadForm #leadNm"));
+  console.log($("#leadNm"));
+
+  if (params) {
+    $.ajax({
+      type: "POST",
+      url: "./services/lead_fetch_single.php",
+      data: { leadId: params },
+      dataType: "json",
+      success: function (response) {
+        if (response.success == true) {
+          console.log("response: ", response);
+          console.log("response: ", response.data[0].lead_name);
+
+          $("#viewLeadModal").modal("show");
+
+          $("#viewLeadForm #leadNm").val(response.data[0].lead_name);
+          $("#viewLeadForm #email").val(response.data[0].email).attr("readonly", true);
+          $("#viewLeadForm #companyNm").val(response.data[0].company_name).attr("readonly", true);
+          $("#viewLeadForm #contact").val(response.data[0].contact).attr("readonly", true);
+          $("#viewLeadForm #requirement").val(response.data[0].requirement).attr("readonly", true);
+          $("#viewLeadForm #description").val(response.data[0].description).attr("readonly", true);
+          $("#viewLeadForm #notes").val(response.data[0].notes).attr("readonly", true);
+          $("#viewLeadForm #addressLn").val(response.data[0].address_line).attr("readonly", true);
+          $("#viewLeadForm #area").val(response.data[0].area).attr("readonly", true);
+          $("#viewLeadForm #city").val(response.data[0].city).attr("readonly", true);
+          $("#viewLeadForm #pincode").val(response.data[0].pincode).attr("readonly", true);
+          $("#viewLeadForm #pincode").val(response.data[0].pincode).attr("readonly", true);
+          $("#viewLeadForm #followUpDt").val(response.data[0].follow_up_date).attr("readonly", true);
+          $("#viewLeadForm #createdBy").val(response.data[0].created_by).attr("readonly", true);
+
+
+          $("#viewLeadForm #leadStatus").val(response.data[0].lead_status).attr("disabled", true);
+
+        } else {
+          alert("Failed to Fetch Lead...!");
+        }
+      },
+      error: function () {
+        alert("Failed to Fetch Lead");
+      },
+    });
+  }
+}

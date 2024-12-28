@@ -75,7 +75,7 @@ if (isset($_GET['page'])) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="addCustomerModalLabel">Add New Customer</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
@@ -165,7 +165,7 @@ if (isset($_GET['page'])) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="viewCustomerModalLabel">Customer Details</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
@@ -302,7 +302,7 @@ if (isset($_GET['page'])) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="editCustomerModalLabel">Edit Customer Details</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
