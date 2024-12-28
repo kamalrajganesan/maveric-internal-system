@@ -1,11 +1,10 @@
 <?php require_once("./shared/components/pre-header.php");
 
 if (isset($_GET['type']) && isset($_GET['value'])) {
-    $type = htmlspecialchars($_GET['type']);
-    $value = htmlspecialchars($_GET['value']);
+    $type = htmlspecialchars($_GET['type']);    // serviceType (or) serviceThrough
+    $value = htmlspecialchars($_GET['value']);  // One Time, Tally, AMC (or) On Call, Digital, Physical Visit
 
     echo "<script>
-        // var transaction_page = '" . $page . "'
         var transaction_type = '" . $type . "'
         var transaction_value = '" . $value . "'
     </script>";
@@ -82,7 +81,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
 
                 <div class="modal-body">
                     <form id="addTransactionForm" class="form-sample">
-                        <div class="row">
+                        <div class="row justify-content-center">
                             <div class="col-sm-5">
 
                                 <div class="form-group view-form-group">

@@ -23,7 +23,7 @@ WHERE ticket.is_deleted = 0
 if($type == "serviceType") {
     switch ($value) {
 
-        case 'One Time':
+        case 'OneTime':
             $FetchAllSQL .= "and service_typ = 'One Time';";
             break;
         case 'Tally':
@@ -33,23 +33,23 @@ if($type == "serviceType") {
             $FetchAllSQL .= " and service_typ = 'AMC';";
             break;
         default:
-            echo "Invalid Param...";
+            $FetchAllSQL .= ";";
             break;
     }
 } else {
     switch ($value) {
 
-        case 'On Call':
+        case 'OnCall':
             $FetchAllSQL .= " and service_thru = 'On Call';";
             break;
         case 'Digital':
             $FetchAllSQL .= " and service_thru = 'Digital';";
             break;
-        case 'Physical Visit':
+        case 'PhysicalVisits':
             $FetchAllSQL .= " and service_thru = 'Physical Visit';";
             break;
         default:
-            echo "Invalid Param...";
+            $FetchAllSQL .= ";";
             break;
     }
 } 

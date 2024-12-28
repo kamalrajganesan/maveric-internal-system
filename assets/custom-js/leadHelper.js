@@ -75,7 +75,7 @@ function viewLead(params = null) {
 
           $("#viewLeadModal").modal("show");
 
-          $("#viewLeadForm #leadNm").val(response.data[0].lead_name);
+          $("#viewLeadForm #leadNm").val(response.data[0].lead_name).attr("readonly", true);
           $("#viewLeadForm #email").val(response.data[0].email).attr("readonly", true);
           $("#viewLeadForm #companyNm").val(response.data[0].company_name).attr("readonly", true);
           $("#viewLeadForm #contact").val(response.data[0].contact).attr("readonly", true);
