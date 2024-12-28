@@ -140,6 +140,11 @@ function editCustomer(params = null) {
           $("#editCustomerForm #city").val(response.data[0].city);
           $("#editCustomerForm #area").val(response.data[0].area);
 
+          var serviceTypes = response.data[0].service_type.split(",");
+          $('#editCustomerForm input[name="serviceType[]"]').each(function () {
+            $(this).prop("checked", serviceTypes.includes($(this).val()));
+          });
+
           $('#editCustomerForm input[name="serviceType"][value="AMC"]').prop(
             "checked",
             response.data[0].service_type == "AMC"

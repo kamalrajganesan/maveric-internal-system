@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customerAddress = $_POST['address'];
     $customerArea = $_POST['area'];
     $customerPincode = $_POST['pincode'];
-    $customerServiceType = $_POST['serviceType'];
+    $customerServiceType = implode(',', $_POST['serviceType']);
     $customerCity = $_POST['city'];
     $customerSpecialNote = $_POST['specialNote'];
     $customerLicenseType = $_POST['licenseType'];
@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customerServiceStartDate = $_POST['serviceStartDate'];
 
     $updatedBy = $_SESSION['user']['id'];
+
 
     $sql = "UPDATE cust_mstr SET 
                 customer_nm = '". $customerName ."', 

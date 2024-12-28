@@ -44,11 +44,11 @@ if (isset($_GET['page'])) {
                                     <thead>
                                         <tr>
                                             <th>Id</th>
-                                            <th>Customer Name</th>
-                                            <th>Issue</th>
-                                            <th>Service type</th>
-                                            <th>Assigned Agent</th>
                                             <th>Created date</th>
+                                            <th>Issue</th>
+                                            <th>Customer Name</th>
+                                            <th>Service type</th>
+                                            <th>Created By</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
