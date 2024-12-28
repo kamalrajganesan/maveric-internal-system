@@ -4,7 +4,7 @@
   if(!session_id()) {
     session_start();
   }
-
+  date_default_timezone_set('Asia/Kolkata');
   // Check if user is logged in / Redirect to login page if not
   if (!isset($_SESSION['user'])) {
     header("Location: ./index.php");

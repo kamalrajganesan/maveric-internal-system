@@ -59,9 +59,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-
-                </div>
             </div>
         </div>
     </div>
@@ -75,7 +72,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="addTransactionModalLabel">Add New Transaction</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
@@ -83,66 +80,82 @@
                 <div class="modal-body">
                     <form id="addTransactionForm" class="form-sample">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group view-form-group">
+                            <div class="col-sm-5">
 
+                                <div class="form-group view-form-group">
                                     <label for="customerId">Customer</label>
                                     <select class="form-control" id="customerId" name="customerId" required>
                                         <option value="" disabled selected>Select Customer</option>
-                                        <!-- Add all customers options here -->
                                     </select>
-                                    
-                                    <label for="problemStmt">Requirement(in brief) </label>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="problemStmt">Issue(in brief) </label>
                                     <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" required>
+                                </div>
 
-                                    <label for="problemDesc">Requirement Description</label>
+                                <div class="form-group view-form-group">
+                                    <label for="problemDesc">Issue Description</label>
                                     <textarea class="form-control" id="problemDesc" name="problemDesc" placeholder="Problem Description" required></textarea>
+                                </div>
 
-                                    <label for="comments">Comments</label>
-                                    <textarea class="form-control" id="comments" name="comments" placeholder="Comments" required></textarea>
-
-                                    <label for="status">Status</label>
+                                <div class="form-group view-form-group">
+                                    <label for="status">Transaction Status</label>
                                     <select class="form-control" id="status" name="status" disabled>
                                         <option value="">Select Status</option>
                                         <option value="New" selected>New</option>
                                         <option value="Contacted/Pending">Contacted/ Pending</option>
                                         <option value="Following Up">Following Up</option>
-                                        <option value="Converted">Converted</option>
-                                        <option value="Lost">Lost</option>
+                                        <option value="Closed">Closed</option>
                                     </select>
-
                                 </div>
+
                             </div>
 
-                            <div class="col-sm-6">
-                                <div class="form-group view-form-group">
+                            <div class="col-sm-5">
 
+                                <div class="form-group view-form-group">
                                     <label for="serviceType">Service Type</label>
-                                    <select class="form-control" id="serviceType" name="serviceType" required>
-                                        <option value="" disabled selected>Select Service</option>
+                                    <select class="form-control" id="serviceType" name="serviceType" aria-readonly="true">
+                                        <option value="" hidden selected>Select Service</option>
                                         <option value="AMC">AMC</option>
                                         <option value="Tally">Tally</option>
-                                        <option value="On Call">On Call</option>
                                         <option value="One Time">One Time</option>
-                                        <option value="Digital">Digital</option>
                                     </select>
-                                   
-                                    <div class="form-group view-form-group">
-                                        <label for="isUnderAMC">Is client under AMC</label>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCYES" value="1"> Yes </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCNO" value="0" checked> No </label>
-                                        </div>
-                                    </div>
+                                </div>
 
+                                <div class="form-group view-form-group">
+                                    <label for="serviceThrough">Service Offered Through</label>
+                                    <select class="form-control" id="serviceThrough" name="serviceThrough" aria-readonly="true">
+                                        <option value="" hidden selected>Service Offered Through</option>
+                                        <option value="On Call">On Call</option>
+                                        <option value="Digital">Digital</option>
+                                        <option value="Physical Visit">Physical Visit</option>
+                                    </select>
+                                </div>
+                                   
+                                <div class="form-group view-form-group">
+                                    <label for="isUnderAMC">Is client under AMC</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCYES" value="1"> Yes </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCNO" value="0" checked> No </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="comments">Comments</label>
+                                    <textarea class="form-control" id="comments" name="comments" placeholder="Comments" required></textarea>
+                                </div>
+
+                                <div class="form-group view-form-group">
                                     <label for="notes">Notes</label>
                                     <textarea class="form-control" id="notes" name="notes" placeholder="Notes"></textarea>
-
                                 </div>
+
                             </div>
                         </div>
                     </form>
@@ -164,7 +177,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="viewTransactionModalLabel">Transaction Details of <strong id="currentViewTransactionCode"></strong> </h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
@@ -177,18 +190,18 @@
                                 <div class="form-group view-form-group">
                                     <label for="customerId">Customer</label>
                                     <select class="form-control" id="customerId" name="customerId">
-                                        <option value="" disabled selected>Select Customer</option>
+                                        <option value="" hidden selected>Select Customer</option>
                                         <!-- Add all customers options here -->
                                     </select>
                                 </div>
                                     
                                 <div class="form-group view-form-group">
-                                    <label for="problemStmt">Requirement(in brief) </label>
+                                    <label for="problemStmt">Issue(in brief) </label>
                                     <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" readonly>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="problemDesc">Requirement Description</label>
+                                    <label for="problemDesc">Issue Description</label>
                                     <textarea class="form-control" id="problemDesc" name="problemDesc" placeholder="Problem Description" readonly></textarea>
                                 </div>
 
@@ -201,21 +214,29 @@
                                     <strong>  Past Notes </strong>
                                     <div id="pastNotesOfThisTransaction"></div>
                                 </div>
+                            </div>
+
+                            <div class="col-sm-5">       
 
                                 <div class="form-group view-form-group">
                                     <label for="serviceType">Service Type</label>
                                     <select class="form-control" id="serviceType" name="serviceType" aria-readonly="true" disabled>
-                                        <option value="" disabled selected>Select Service</option>
+                                        <option value="" hidden selected>Select Service</option>
                                         <option value="AMC">AMC</option>
                                         <option value="Tally">Tally</option>
-                                        <option value="On Call">On Call</option>
                                         <option value="One Time">One Time</option>
-                                        <option value="Digital">Digital</option>
                                     </select>
                                 </div>
-                            </div>
 
-                            <div class="col-sm-5">       
+                                <div class="form-group view-form-group">
+                                    <label for="serviceThrough">Service Offered Through</label>
+                                    <select class="form-control" id="serviceThrough" name="serviceThrough" aria-readonly="true" disabled>
+                                        <option value="" hidden selected>Service Offered Through</option>
+                                        <option value="On Call">On Call</option>
+                                        <option value="Digital">Digital</option>
+                                        <option value="Physical Visit">Physical Visit</option>
+                                    </select>
+                                </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="createdDate">Transaction Created Date</label>
@@ -223,7 +244,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="createdDate">Transaction Created Date</label>
+                                    <label for="createdDate">Transaction Created By</label>
                                     <select class="form-control" id="aAgentId" name="aAgentId">
                                         <option value="" hidden>Select Agent</option>
                                     </select>
@@ -271,7 +292,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal"> Close</button>
-                    <button type="submit" class="btn btn-primary" id="editTransactionDataBtn" data-loading-text="Loading..." autocomplete="off"> Update Transaction </button>
                 </div> <!-- /modal-footer -->
             </div>
         </div>
@@ -284,7 +304,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="editTransactionModalLabel">Edit Transaction Details of <strong id="currentTransactionCode"></strong> </h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
@@ -297,18 +317,18 @@
                                 <div class="form-group view-form-group">
                                     <label for="customerId">Customer</label>
                                     <select class="form-control" id="customerId" name="customerId">
-                                        <option value="" disabled selected>Select Customer</option>
+                                        <option value="" hidden selected>Select Customer</option>
                                         <!-- Add all customers options here -->
                                     </select>
                                 </div>
                                     
                                 <div class="form-group view-form-group">
-                                    <label for="problemStmt">Requirement(in brief) </label>
+                                    <label for="problemStmt">Issue(in brief) </label>
                                     <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" readonly>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="problemDesc">Requirement Description</label>
+                                    <label for="problemDesc">Issue Description</label>
                                     <textarea class="form-control" id="problemDesc" name="problemDesc" placeholder="Problem Description" readonly></textarea>
                                 </div>
 
@@ -322,20 +342,29 @@
                                     <div id="pastNotesOfThisTransaction"></div>
                                 </div>
 
+                            </div>
+                            
+                            <div class="col-sm-5">       
+                                
                                 <div class="form-group view-form-group">
                                     <label for="serviceType">Service Type</label>
                                     <select class="form-control" id="serviceType" name="serviceType" aria-readonly="true" disabled>
-                                        <option value="" disabled selected>Select Service</option>
+                                        <option value="" hidden selected>Select Service</option>
                                         <option value="AMC">AMC</option>
                                         <option value="Tally">Tally</option>
-                                        <option value="On Call">On Call</option>
-                                        <option value="One Time">One Time</option>
-                                        <option value="Digital">Digital</option>
+                                        <option value="On Call">One Time</option>
                                     </select>
                                 </div>
-                            </div>
 
-                            <div class="col-sm-5">       
+                                <div class="form-group view-form-group">
+                                    <label for="serviceThrough">Service Offered Through</label>
+                                    <select class="form-control" id="serviceThrough" name="serviceThrough" aria-readonly="true">
+                                        <option value="" hidden selected>Service Offered Through</option>
+                                        <option value="On Call">On Call</option>
+                                        <option value="Digital">Digital</option>
+                                        <option value="Physical Visit">Physical Visit</option>
+                                    </select>
+                                </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="createdDate">Transaction Created Date</label>

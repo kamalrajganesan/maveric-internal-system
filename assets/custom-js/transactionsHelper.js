@@ -161,7 +161,6 @@ function editTicket(params = null) {
         if (response.success == true) {
 
           currentTransaction = response.data[0];
-          // console.log("transaction: ", response.data);
 
           setCustomersDropdown('edit');
           $("#currentTransactionCode").text(response.data[0].uniq_id);
@@ -169,8 +168,6 @@ function editTicket(params = null) {
           $("#editTransactionForm #problemDesc").val(response.data[0].problem_desc);
           let commentsHtml = '';
           let comments = '['+response.data[0].comments+']';
-          console.log("comments: ", comments, typeof comments);
-          console.log("response.data[0].comments: ", response.data[0].comments, typeof response.data[0].comments);
           JSON.parse(comments).forEach(function(comment) {
             commentsHtml += '<div><strong>' + comment.timestamp + ':</strong> ' + comment.message + '</div>';
           });
@@ -183,6 +180,7 @@ function editTicket(params = null) {
           $("#editTransactionForm #pastNotesOfThisTransaction").html(notesHtml);
           $("#editTransactionForm #status").val(response.data[0].status);
           $("#editTransactionForm #serviceType").val(response.data[0].service_typ);
+          $("#editTransactionForm #serviceThrough").val(response.data[0].service_thru);
           if (response.data[0].is_under_amc == 1) {
             $("#editTransactionForm #isUnderAMCYES").prop("checked", true);
           } else {
@@ -263,6 +261,7 @@ function viewTicket(params = null) {
           $("#viewTransactionForm #pastNotesOfThisTransaction").html(notesHtml);
           $("#viewTransactionForm #status").val(response.data[0].status);
           $("#viewTransactionForm #serviceType").val(response.data[0].service_typ);
+          $("#viewTransactionForm #serviceThrough").val(response.data[0].service_thru);
           if (response.data[0].is_under_amc == 1) {
             $("#viewTransactionForm #isUnderAMCYES").prop("checked", true);
           } else {

@@ -97,6 +97,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        <label for="serviceType[]"> Service Type </label>
                                         <div class="form-check">
                                             <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="serviceType" value="AMC"> AMC </label>
