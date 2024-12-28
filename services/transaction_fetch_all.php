@@ -3,8 +3,9 @@
 require_once("../shared/actions/db/dao.php");
 
 $page = "";
-if (isset($_POST['param'])) {
-    $page = htmlspecialchars($_POST['param']);
+if (isset($_POST['type']) && isset($_POST['value'])) {
+    $type = htmlspecialchars($_POST['type']);
+    $value = htmlspecialchars($_POST['value']);
 } else {
     echo $_POST;
 }
@@ -19,30 +20,39 @@ FROM ticket
 WHERE ticket.is_deleted = 0
 ";
 
-switch ($page) {
+if($type == "serviceType") {
+    switch ($value) {
 
-    case 'All':
-        $FetchAllSQL .= " ;";
-        break;
-    case 'Tally':
-        $FetchAllSQL .= " and service_typ = 'Tally';";
-        break;
-    case 'AMC':
-        $FetchAllSQL .= " and service_typ = 'AMC';";
-        break;
-    case 'OnCall':
-        $FetchAllSQL .= " and service_typ = 'On Call';";
-        break;
-    case 'Digital':
-        $FetchAllSQL .= " and service_typ = 'Digital';";
-        break;
-    case 'PhysicalVisits':
-        $FetchAllSQL .= " ;";
-        break;
-    default:
-        echo "Invalid Parm...";
-        break;
-}
+        case 'One Time':
+            $FetchAllSQL .= "and service_typ = 'One Time';";
+            break;
+        case 'Tally':
+            $FetchAllSQL .= " and service_typ = 'Tally';";
+            break;
+        case 'AMC':
+            $FetchAllSQL .= " and service_typ = 'AMC';";
+            break;
+        default:
+            echo "Invalid Param...";
+            break;
+    }
+} else {
+    switch ($value) {
+
+        case 'On Call':
+            $FetchAllSQL .= " and service_thru = 'On Call';";
+            break;
+        case 'Digital':
+            $FetchAllSQL .= " and service_thru = 'Digital';";
+            break;
+        case 'Physical Visit':
+            $FetchAllSQL .= " and service_thru = 'Physical Visit';";
+            break;
+        default:
+            echo "Invalid Param...";
+            break;
+    }
+} 
 
 $db->prepareStatement($FetchAllSQL);
 $db->execPreparedStatement();
