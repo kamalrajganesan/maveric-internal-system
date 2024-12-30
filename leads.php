@@ -141,8 +141,8 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date</label>
-                                    <input type="date" class="form-control" id="followUpDt" name="followUpDt">
+                                    <label for="followUpDt">Follow-up Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -174,7 +174,7 @@ if (isset($_GET['page'])) {
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="viewLeadModalLabel">Lead Details of <strong id="currentViewLeadCode"></strong> </h4>
+                    <h4 class="modal-title" id="viewLeadModalLabel">Lead Details of <strong id="currentLeadCode"></strong> </h4>
                     <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
@@ -185,7 +185,7 @@ if (isset($_GET['page'])) {
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
-                                    <label for="leadNm">Lead Name</label>
+                                    <label for="leadNm">Lead Name <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
                                 </div>
 
@@ -200,12 +200,12 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="contact">Contact</label>
+                                    <label for="contact">Contact <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="requirement">Requirement</label>
+                                    <label for="requirement">Requirement <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
                                 </div>
 
@@ -243,12 +243,12 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date</label>
+                                    <label for="followUpDt">Follow-up Date <strong><code>*</code></strong></label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="leadStatus">Lead Status</label>
+                                    <label for="leadStatus">Lead Status <strong><code>*</code></strong></label>
                                     <select class="form-control" id="leadStatus" name="leadStatus" required aria-readonly="true">
                                         <option value="New">New</option>
                                         <option value="Pending">Pending</option>
@@ -280,7 +280,7 @@ if (isset($_GET['page'])) {
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="editLeadModalLabel">Edit Lead Details of <strong id="currentLeadCode"></strong> </h4>
+                    <h4 class="modal-title" id="editLeadModalLabel">Edit Lead Details of <strong id="currentEditLeadCode"></strong> </h4>
                     <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
@@ -292,7 +292,7 @@ if (isset($_GET['page'])) {
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
-                                    <label for="leadNm">Lead Name</label>
+                                    <label for="leadNm">Lead Name <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
                                 </div>
 
@@ -307,12 +307,12 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="contact">Contact</label>
+                                    <label for="contact">Contact <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="requirement">Requirement</label>
+                                    <label for="requirement">Requirement <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
                                 </div>
 
@@ -350,13 +350,13 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date</label>
+                                    <label for="followUpDt">Follow-up Date <strong><code>*</code></strong></label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="leadStatus">Lead Status</label>
-                                    <select class="form-control" id="leadStatus" name="leadStatus" required aria-readonly="true">
+                                    <label for="leadStatus">Lead Status <strong><code>*</code></strong></label>
+                                    <select class="form-control required" id="leadStatus" name="leadStatus" required aria-readonly="true">
                                         <option value="New">New</option>
                                         <option value="Pending">Pending</option>
                                         <option value="Completed">Closed</option>

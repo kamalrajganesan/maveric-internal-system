@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $leadStatus = isset($_POST['leadStatus']) ? htmlspecialchars($_POST['leadStatus']) : '';
 
     // Make sure all the required fields are filled
-    if (empty($leadNm) || empty($contact) || empty($companyNm) || empty($requirement) || empty($notes) || empty($description) || empty($addressLn) || empty($pincode) || empty($city) || empty($area) || empty($email) || empty($followUpDt) || empty($leadStatus)) {
+    if (empty($leadNm) || empty($contact) || empty($requirement) || empty($followUpDt) || empty($leadStatus)) {
         $response = 'All fields are required.';
     } else {
         // Get the current user ID dynamically (Example, replace with actual user session handling)

@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customerAddress = $_POST['address'];
     $customerArea = $_POST['area'];
     $customerPincode = $_POST['pincode'];
-    $customerServiceType = implode(',', $_POST['serviceType']);
+    // $customerServiceType = implode(',', $_POST['serviceType[]']);
     $customerCity = $_POST['city'];
     $customerSpecialNote = $_POST['specialNote'];
     $customerLicenseType = $_POST['licenseType'];
@@ -41,9 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 sys_email = '". $customerSystemEmail ."', 
                 pincode = '". $customerPincode ."', 
                 city = '". $customerCity ."', 
-                area = '". $customerArea ."', 
-                service_type = '". $customerServiceType ."'
-            WHERE id = '". $cId ."'";
+                area = '". $customerArea ."'
+            WHERE id = ". $cId ."";
 
     $connect = createConn();
     if($connect->query($sql) === TRUE) {

@@ -14,10 +14,10 @@ if($lId) {
 
     if( $connect-> query($sql) === TRUE) {
  	    $valid['success'] = true;
-	    $valid['message'] = "Successfully removed Customer";
+	    $valid['message'] = "Successfully removed a Lead";
     } else {
  	    $valid['success'] = false;
- 	    $valid['message'] = "Error while removing the Customer data";
+ 	    $valid['message'] = "Error while removing the Lead data";
     }
 
     $connect->close();

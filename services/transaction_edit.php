@@ -68,10 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if($db->execPreparedStatement()) {
         $valid['success'] = true;
-        $valid['message'] = "Successfully updated customer";
+        $valid['message'] = "Successfully updated Transaction";
     } else {
         $valid['success'] = false;
-        $valid['message'] = "Error while updating the data ".$sql;
+        $valid['message'] = "Error while updating the transaction data ".$sql;
     }
 
     echo json_encode($valid);

@@ -1,4 +1,4 @@
-var manageLeadDatatable;
+var manageLeadDatatable, currentLead;
 $(document).ready(function () {
   manageLeadDatatable = $("#leadMasterTbl").DataTable({
     method: "POST",
@@ -40,7 +40,7 @@ $(document).ready(function () {
 });
 
 function removeLead(params = null) {
-  console.log("params: ", params);
+  // console.log("params: ", params);
   if (params) {
     $.ajax({
       type: "POST",
@@ -70,10 +70,11 @@ function viewLead(params = null) {
       dataType: "json",
       success: function (response) {
         if (response.success == true) {
-          console.log("response: ", response);
-          console.log("response: ", response.data[0].lead_name);
+
+          currentLead = response.data[0];
 
           $("#viewLeadModal").modal("show");
+          $("#currentLeadCode").text(response.data[0].lead_name);
 
           $("#viewLeadForm #leadNm").val(response.data[0].lead_name).attr("readonly", true);
           $("#viewLeadForm #email").val(response.data[0].email).attr("readonly", true);
@@ -111,10 +112,13 @@ function editLead(leadId = null) {
       dataType: "json",
       success: function (response) {
         if (response.success === true) {
+          
           const lead = response.data[0];
+          currentLead = lead;
+          $("#currentLeadCode").text(response.data[0].lead_name);
 
           // Populate modal fields
-          $("#currentLeadCode").text(lead.lead_name);
+          $("#currentEditLeadCode").text(lead.lead_name);
           $("#editLeadForm #leadNm").val(lead.lead_name);
           $("#editLeadForm #email").val(lead.email);
           $("#editLeadForm #companyNm").val(lead.company_name);

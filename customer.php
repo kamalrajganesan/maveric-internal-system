@@ -298,7 +298,7 @@ if (isset($_GET['page'])) {
 
                                 <div class="form-group view-form-group">
                                     <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
-                                    <select class="form-control required" id="licenseType" name="licenseType" required aria-readonly="true">
+                                    <select class="form-control" id="licenseType" name="licenseType" disabled aria-readonly="true">
                                         <option value="" selected hidden>Select the License Type</option>
                                         <option value="Single User">Single User</option>
                                         <option value="Multi-user">Multi-user</option>
@@ -443,7 +443,7 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group">
                                     <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
                                     <select class="form-control required" id="licenseType" name="licenseType" required aria-readonly="true">
-                                        <option value="" selected hidden>Select the License Type</option>
+                                        <option value="0" selected hidden>Select the License Type</option>
                                         <option value="Single User">Single User</option>
                                         <option value="Multi-user">Multi-user</option>
                                         <option value="Auditor Pack">Auditor Pack</option>

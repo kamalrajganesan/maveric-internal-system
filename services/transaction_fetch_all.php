@@ -80,7 +80,7 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
         $data[] = array(
             $row['uniq_id'], 
             $row['created_on'],  
-            $row['problem_desc'],  
+            $row['problem_stmt'],  
             $row['customer_name'],  
             $row['service_typ'],  
             $row['assignd_agent'], 
