@@ -2,7 +2,7 @@
 
 if (isset($_GET['type']) && isset($_GET['value'])) {
     $type = htmlspecialchars($_GET['type']);    // serviceType (or) serviceThrough
-    $value = htmlspecialchars($_GET['value']);  // One Time, Tally, AMC (or) On Call, Digital, Physical Visit
+    $value = htmlspecialchars($_GET['value']);  // One Time, Tally, AMC (or) Phone Call, Remote, Physical Visit
 
     echo "<script>
         var transaction_type = '" . $type . "'
@@ -85,24 +85,24 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                             <div class="col-sm-5">
 
                                 <div class="form-group view-form-group">
-                                    <label for="customerId">Customer</label>
-                                    <select class="form-control" id="customerId" name="customerId" required>
+                                    <label for="customerId">Customer <strong><code>*</code></strong></label>
+                                    <select class="form-control required" id="customerId" name="customerId" required>
                                         <option value="" disabled selected>Select Customer</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="problemStmt">Issue(in brief) </label>
+                                    <label for="problemStmt">Issue(in brief) <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="problemDesc">Issue Description</label>
-                                    <textarea class="form-control" id="problemDesc" name="problemDesc" placeholder="Problem Description" required></textarea>
+                                    <textarea class="form-control" id="problemDesc" name="problemDesc" placeholder="Problem Description"></textarea>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="status">Transaction Status</label>
+                                    <label for="status">Transaction Status <strong><code>*</code></strong></label>
                                     <select class="form-control" id="status" name="status" disabled>
                                         <option value="">Select Status</option>
                                         <option value="New" selected>New</option>
@@ -117,8 +117,8 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                             <div class="col-sm-5">
 
                                 <div class="form-group view-form-group">
-                                    <label for="serviceType">Service Type</label>
-                                    <select class="form-control" id="serviceType" name="serviceType" aria-readonly="true">
+                                    <label for="serviceType">Service Type <strong><code>*</code></strong></label>
+                                    <select class="form-control required" id="serviceType" name="serviceType" aria-readonly="true" required>
                                         <option value="" hidden selected>Select Service</option>
                                         <option value="AMC">AMC</option>
                                         <option value="Tally">Tally</option>
@@ -127,11 +127,11 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="serviceThrough">Service Offered Through</label>
-                                    <select class="form-control" id="serviceThrough" name="serviceThrough" aria-readonly="true">
+                                    <label for="serviceThrough">Service Offered Through <strong><code>*</code></strong></label>
+                                    <select class="form-control required" id="serviceThrough" name="serviceThrough" aria-readonly="true">
                                         <option value="" hidden selected>Service Offered Through</option>
-                                        <option value="On Call">On Call</option>
-                                        <option value="Digital">Digital</option>
+                                        <option value="Phone Call">Phone Call</option>
+                                        <option value="Remote">Remote</option>
                                         <option value="Physical Visit">Physical Visit</option>
                                     </select>
                                 </div>
@@ -149,7 +149,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="comments">Comments</label>
+                                    <label for="comments">Comments <strong><code>*</code></strong></label>
                                     <textarea class="form-control" id="comments" name="comments" placeholder="Comments" required></textarea>
                                 </div>
 
@@ -190,7 +190,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                             <div class="col-sm-5">
                                 
                                 <div class="form-group view-form-group">
-                                    <label for="customerId">Customer</label>
+                                    <label for="customerId">Customer <strong><code>*</code></strong></label>
                                     <select class="form-control" id="customerId" name="customerId">
                                         <option value="" hidden selected>Select Customer</option>
                                         <!-- Add all customers options here -->
@@ -198,7 +198,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
                                     
                                 <div class="form-group view-form-group">
-                                    <label for="problemStmt">Issue(in brief) </label>
+                                    <label for="problemStmt">Issue(in brief)  <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" readonly>
                                 </div>
 
@@ -223,7 +223,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 <div class="form-group view-form-group">
                                     <label for="serviceType">Service Type</label>
                                     <select class="form-control" id="serviceType" name="serviceType" aria-readonly="true" disabled>
-                                        <option value="" hidden selected>Select Service</option>
+                                        <option value="" hidden selected>Select Service <strong><code>*</code></strong></option>
                                         <option value="AMC">AMC</option>
                                         <option value="Tally">Tally</option>
                                         <option value="One Time">One Time</option>
@@ -231,17 +231,17 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="serviceThrough">Service Offered Through</label>
+                                    <label for="serviceThrough">Service Offered Through <strong><code>*</code></strong></label>
                                     <select class="form-control" id="serviceThrough" name="serviceThrough" aria-readonly="true" disabled>
                                         <option value="" hidden selected>Service Offered Through</option>
-                                        <option value="On Call">On Call</option>
-                                        <option value="Digital">Digital</option>
+                                        <option value="Phone Call">Phone Call</option>
+                                        <option value="Remote">Remote</option>
                                         <option value="Physical Visit">Physical Visit</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="createdDate">Transaction Created Date</label>
+                                    <label for="createdDate">Transaction Created Date <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="createdDate" name="createdDate" placeholder="Created Date" readonly>
                                 </div>
 
@@ -265,7 +265,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="status">Transaction Status</label>
+                                    <label for="status">Transaction Status <strong><code>*</code></strong></label>
                                     <select class="form-control" id="status" name="status" disabled>
                                         <option value="" hidden>Select Status</option>
                                         <option value="New">New</option>
@@ -317,7 +317,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                             <div class="col-sm-5">
                                 
                                 <div class="form-group view-form-group">
-                                    <label for="customerId">Customer</label>
+                                    <label for="customerId">Customer <strong><code>*</code></strong></label>
                                     <select class="form-control" id="customerId" name="customerId">
                                         <option value="" hidden selected>Select Customer</option>
                                         <!-- Add all customers options here -->
@@ -325,7 +325,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
                                     
                                 <div class="form-group view-form-group">
-                                    <label for="problemStmt">Issue(in brief) </label>
+                                    <label for="problemStmt">Issue(in brief)  <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" readonly>
                                 </div>
 
@@ -340,7 +340,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <strong>  Past Notes </strong>
+                                    <strong> Past Notes </strong>
                                     <div id="pastNotesOfThisTransaction"></div>
                                 </div>
 
@@ -349,21 +349,21 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                             <div class="col-sm-5">       
                                 
                                 <div class="form-group view-form-group">
-                                    <label for="serviceType">Service Type</label>
+                                    <label for="serviceType">Service Type <strong><code>*</code></strong></label>
                                     <select class="form-control" id="serviceType" name="serviceType" aria-readonly="true" disabled>
                                         <option value="" hidden selected>Select Service</option>
                                         <option value="AMC">AMC</option>
                                         <option value="Tally">Tally</option>
-                                        <option value="On Call">One Time</option>
+                                        <option value="One Time">One Time</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="serviceThrough">Service Offered Through</label>
+                                    <label for="serviceThrough">Service Offered Through <strong><code>*</code></strong></label>
                                     <select class="form-control" id="serviceThrough" name="serviceThrough" aria-readonly="true">
                                         <option value="" hidden selected>Service Offered Through</option>
-                                        <option value="On Call">On Call</option>
-                                        <option value="Digital">Digital</option>
+                                        <option value="Phone Call">Phone Call</option>
+                                        <option value="Remote">Remote</option>
                                         <option value="Physical Visit">Physical Visit</option>
                                     </select>
                                 </div>
@@ -386,8 +386,8 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="status">Transaction Status</label>
-                                    <select class="form-control" id="status" name="status">
+                                    <label for="status">Transaction Status <strong><code>*</code></strong></label>
+                                    <select class="form-control required" id="status" name="status" required>
                                         <option value="">Select Status</option>
                                         <option value="New">New</option>
                                         <option value="Contacted/Pending">Contacted/ Pending</option>
@@ -397,7 +397,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="comments">New Comment</label>
+                                    <label for="comments">New Comment <strong><code>*</code></strong></label>
                                     <textarea class="form-control" id="comments" name="comments" placeholder="Comments" required></textarea>
                                 </div>
 

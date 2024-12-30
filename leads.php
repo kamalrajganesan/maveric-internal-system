@@ -60,9 +60,6 @@ if (isset($_GET['page'])) {
                         </div>
                     </div>
                 </div>
-                <div class="row">
-
-                </div>
             </div>
         </div>
     </div>
@@ -86,38 +83,38 @@ if (isset($_GET['page'])) {
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
-                                    <label for="leadNm">Lead Name</label>
+                                    <label for="leadNm">Lead Name <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                                 </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="companyNm">Company Name</label>
-                                    <input type="text" class="form-control" id="companyNm" name="companyNm" placeholder="Company Name" required>
+                                    <input type="text" class="form-control" id="companyNm" name="companyNm" placeholder="Company Name">
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="contact">Contact</label>
+                                    <label for="contact">Contact <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="requirement">Requirement</label>
+                                    <label for="requirement">Requirement <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="description">Description</label>
-                                    <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
+                                    <input type="text" class="form-control" id="description" name="description" placeholder="Description">
                                 </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="notes">Notes</label>
-                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
+                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes">
 
                                 </div>
                             </div>
@@ -125,37 +122,36 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group">
 
                                     <label for="addressLn">Address Line</label>
-                                    <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line" required>
+                                    <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line">
                                 </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="area">Area</label>
-                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area" required>
+                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area">
                                 </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="city">City</label>
-                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                                    <input type="text" class="form-control" id="city" name="city" placeholder="City">
                                 </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="pincode">Pincode</label>
-                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode">
                                 </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="followUpDt">Follow-up Date</label>
-                                    <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
+                                    <input type="date" class="form-control" id="followUpDt" name="followUpDt">
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="leadStatus">Lead Status</label>
-                                    <select class="form-control" id="leadStatus" name="leadStatus" required aria-readonly="true">
+                                    <label for="leadStatus">Lead Status <strong><code>*</code></strong></label>
+                                    <select class="form-control required" id="leadStatus" name="leadStatus" aria-readonly="true" required>
                                         <option value="New">New</option>
                                         <option value="Pending">Pending</option>
                                         <option value="Completed">Closed</option>
                                         <option value="Lost">Lost</option>
-
                                     </select>
                                 </div>
 

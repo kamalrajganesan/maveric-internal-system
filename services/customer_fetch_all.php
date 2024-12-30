@@ -26,7 +26,7 @@ switch ($page) {
         $fetchAllSQL .= " and service_type Like '%AMC%';";
         break;
     case 'OnCall':
-        $fetchAllSQL .= " and service_type Like '%On Call%';";
+        $fetchAllSQL .= " and service_type Like '%Phone Call%';";
         break;
     case 'OneTime':
         $fetchAllSQL .= " and service_type Like '%One Time%';";

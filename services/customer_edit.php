@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customerLicenseType = $_POST['licenseType'];
     $customerSystemEmail = $_POST['systemEmail'];
     $customerServiceStartDate = $_POST['serviceStartDate'];
+    $customerServiceEndDate = $_POST['serviceEndDate'];
 
     $updatedBy = $_SESSION['user']['id'];
 
@@ -33,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 contact = '". $customerPhone ."', 
                 updated_by = '". $updatedBy ."', 
                 service_st_date = '". $customerServiceStartDate ."', 
+                service_end_date = '". $customerServiceEndDate ."', 
                 spl_cust_note = '". $customerSpecialNote ."', 
                 license_typ = '". $customerLicenseType ."', 
                 email = '". $customerEmail ."', 

@@ -16,19 +16,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customerAddress = $_POST['address'];
     $customerArea = $_POST['area'];
     $customerPincode = $_POST['pincode'];
-    $customerServiceType = $_POST['serviceType'];
+    $customerServiceType = implode(',', $_POST['serviceType']);
     $customerCity = $_POST['city'];
     $customerSpecialNote = $_POST['specialNote'];
     $customerLicenseType = $_POST['licenseType'];
     $customerSystemEmail = $_POST['systemEmail'];
     $customerUniqCode = $_POST['customerUniqCode'];
     $customerServiceStartDate = $_POST['serviceStartDate'];
+    $customerServiceEndDate = $_POST['serviceEndDate'];
 
     $createdBy = $_SESSION['user']['id'];
     $updatedBy = $_SESSION['user']['id'];
     $createdOn = date('Y-m-d H:i:s');
 
-    $sql = "INSERT INTO cust_mstr( customer_nm, company_nm, address_ln, contact, updated_by, created_by, service_st_date, spl_cust_note, license_typ, email, sys_email, pincode, city, area, service_type, is_active, customer_uniq_code, is_deleted )  VALUES ('". $customerName ."', '". $customerCompanyName ."', '". $customerAddress ."', '". $customerPhone ."', '". $updatedBy ."', '". $createdBy ."', '". $customerServiceStartDate ."', '". $customerSpecialNote ."', '". $customerLicenseType ."', '". $customerEmail ."', '". $customerSystemEmail ."', '". $customerPincode ."', '". $customerCity ."', '". $customerArea ."', '". $customerServiceType ."', 1, '". $customerUniqCode ."', 0)";
+    $sql = "INSERT INTO cust_mstr( customer_nm, company_nm, address_ln, contact, updated_by, created_by, service_st_date, service_end_date, spl_cust_note, license_typ, email, sys_email, pincode, city, area, service_type, is_active, customer_uniq_code, is_deleted )  VALUES ('". $customerName ."', '". $customerCompanyName ."', '". $customerAddress ."', '". $customerPhone ."', '". $updatedBy ."', '". $createdBy ."', '". $customerServiceStartDate ."', '". $customerServiceEndDate ."', '". $customerSpecialNote ."', '". $customerLicenseType ."', '". $customerEmail ."', '". $customerSystemEmail ."', '". $customerPincode ."', '". $customerCity ."', '". $customerArea ."', '". $customerServiceType ."', 1, '". $customerUniqCode ."', 0)";
 
     $connect = createConn();
     if($connect->query($sql) === TRUE) {

@@ -61,7 +61,7 @@ function removeCustomer(params = null) {
 }
 
 function viewCustomer(params = null) {
-  console.log("params: ", params);
+  // console.log("params: ", params);
   if (params) {
     $.ajax({
       type: "POST",
@@ -84,22 +84,20 @@ function viewCustomer(params = null) {
           $("#viewCustomerForm #area").val(response.data[0].area).attr("readonly", true);
 
           $('#viewCustomerForm input[name="serviceType"][value="AMC"]')
-            .prop("checked", response.data[0].service_type == "AMC")
+            .prop("checked", response.data[0].service_type.includes("AMC"))
             .attr("disabled", true);
-          $('#viewCustomerForm input[name="serviceType"][value="Tally"]')
-            .prop("checked", response.data[0].service_type == "Tally")
-            .attr("disabled", true);
-          $('#viewCustomerForm input[name="serviceType"][value="On Call"]')
-            .prop("checked", response.data[0].service_type == "On Call")
+          $('#viewCustomerForm input[name="serviceType"][value="Tally Subscription"]')
+            .prop("checked", response.data[0].service_type.includes("Tally"))
             .attr("disabled", true);
           $('#viewCustomerForm input[name="serviceType"][value="One Time"]')
-            .prop("checked", response.data[0].service_type == "One Time")
+            .prop("checked", response.data[0].service_type.includes("One Time"))
             .attr("disabled", true);
 
           $("#viewCustomerForm #customerStatus").val(response.data[0].is_active).attr("disabled", true);
 
           $("#viewCustomerForm #licenseType").val(response.data[0].license_typ).attr("readonly", true);
           $("#viewCustomerForm #serviceStartDate").val(response.data[0].service_st_date).attr("readonly", true);
+          $("#viewCustomerForm #serviceEndDate").val(response.data[0].service_end_date).attr("readonly", true);
           $("#viewCustomerForm #specialNote").val(response.data[0].spl_cust_note).attr("readonly", true);
           $("#viewCustomerForm #isActive").val(response.data[0].is_active).attr("readonly", true);
           $("#viewCustomerForm #createdBy").val(response.data[0].created_by).attr("readonly", true);
@@ -140,32 +138,21 @@ function editCustomer(params = null) {
           $("#editCustomerForm #city").val(response.data[0].city);
           $("#editCustomerForm #area").val(response.data[0].area);
 
-          var serviceTypes = response.data[0].service_type.split(",");
-          $('#editCustomerForm input[name="serviceType[]"]').each(function () {
-            $(this).prop("checked", serviceTypes.includes($(this).val()));
-          });
-
-          $('#editCustomerForm input[name="serviceType"][value="AMC"]').prop(
-            "checked",
-            response.data[0].service_type == "AMC"
-          );
-          $('#editCustomerForm input[name="serviceType"][value="Tally"]').prop(
-            "checked",
-            response.data[0].service_type == "Tally"
-          );
-          $('#editCustomerForm input[name="serviceType"][value="On Call"]').prop(
-            "checked",
-            response.data[0].service_type == "On Call"
-          );
-          $('#editCustomerForm input[name="serviceType"][value="One Time"]').prop(
-            "checked",
-            response.data[0].service_type == "One Time"
-          );
+          $('#editCustomerForm input[name="serviceType[]"][value="AMC"]')
+            .prop("checked", response.data[0].service_type.includes("AMC"))
+            .attr("disabled", true);
+          $('#editCustomerForm input[name="serviceType[]"][value="Tally Subscription"]')
+            .prop("checked", response.data[0].service_type.includes("Tally"))
+            .attr("disabled", true);
+          $('#editCustomerForm input[name="serviceType[]"][value="One Time"]')
+            .prop("checked", response.data[0].service_type.includes("One Time"))
+            .attr("disabled", true);
 
           $("#editCustomerForm #customerStatus").val(response.data[0].is_active);
 
           $("#editCustomerForm #licenseType").val(response.data[0].license_typ);
           $("#editCustomerForm #serviceStartDate").val(response.data[0].service_st_date);
+          $("#editCustomerForm #serviceEndDate").val(response.data[0].service_end_date);
           $("#editCustomerForm #specialNote").val(response.data[0].spl_cust_note);
           $("#editCustomerForm #isActive").val(response.data[0].is_active);
           $("#editCustomerForm #createdBy").val(response.data[0].created_by);

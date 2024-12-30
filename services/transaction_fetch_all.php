@@ -40,10 +40,10 @@ if($type == "serviceType") {
     switch ($value) {
 
         case 'OnCall':
-            $FetchAllSQL .= " and service_thru = 'On Call';";
+            $FetchAllSQL .= " and service_thru = 'Phone Call';";
             break;
-        case 'Digital':
-            $FetchAllSQL .= " and service_thru = 'Digital';";
+        case 'Remote':
+            $FetchAllSQL .= " and service_thru = 'Remote';";
             break;
         case 'PhysicalVisits':
             $FetchAllSQL .= " and service_thru = 'Physical Visit';";

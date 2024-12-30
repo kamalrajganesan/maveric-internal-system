@@ -142,8 +142,8 @@
                   <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceType&value=Tally">Tally</a></li>
                   <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceType&value=AMC">AMC</a></li>
                   <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceType&value=OneTime">One Time</a></li>
-                  <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceThrough&value=Digital">Digital</a></li>
-                  <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceThrough&value=OnCall">On Call</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceThrough&value=Remote">Remote</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceThrough&value=OnCall">Phone Call</a></li>
                   <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceThrough&value=PhysicalVisits">Physical Visits</a></li>
                 </ul>
               </div>
