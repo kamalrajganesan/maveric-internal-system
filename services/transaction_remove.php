@@ -10,7 +10,7 @@ $tId = $_POST['ticketId'];
 
 if($tId) {
 
-    $sql = "UPDATE ticket set is_deleted = 1 WHERE id = '".$tId."'";
+    $sql = "UPDATE ticket set is_deleted = 1 WHERE uniq_id = '".$tId."'";
 
     if( $connect-> query($sql) === TRUE) {
  	    $valid['success'] = true;

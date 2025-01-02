@@ -9,6 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         session_start();
     }
 
+    print_r($_POST);
+
     $customerName = $_POST['customerName'];
     $customerCompanyName = $_POST['companyName'];
     $customerPhone = $_POST['contact'];
@@ -16,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customerAddress = $_POST['address'];
     $customerArea = $_POST['area'];
     $customerPincode = $_POST['pincode'];
-    $customerServiceType = implode(',', $_POST['serviceType[]']);
+    $customerServiceType = implode(',', $_POST['serviceType']);
     $customerCity = $_POST['city'];
     $customerSpecialNote = $_POST['specialNote'];
     $customerLicenseType = $_POST['licenseType'];
