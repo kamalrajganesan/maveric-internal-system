@@ -93,7 +93,7 @@
               </a>
               <div class="collapse" id="agents-submenus">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="./all-agents-admnvw.php">All Agents</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./agents.php">All Agents</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./agent-stats-admnvw.php">Agent Statistics</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./agent-reviews-admnvw.php">Agent Reviews</a></li>
                 </ul>

@@ -45,10 +45,10 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 <table id="transactionMasterTbl" class="display" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Id</th>
                                             <th>Created date</th>
+                                            <th>Transaction ID</th>
                                             <th>Issue</th>
-                                            <th>Customer Name</th>
+                                            <th>Company</th>
                                             <th>Service type</th>
                                             <th>Created By</th>
                                             <th>Status</th>

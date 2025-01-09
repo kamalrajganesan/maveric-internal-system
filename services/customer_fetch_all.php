@@ -52,7 +52,7 @@ $custFetchAllSQLResultSet = $db->getResultSet();
 if ($custFetchAllSQLResultSet->num_rows > 0) {
     $data = array();
     while ($row = $custFetchAllSQLResultSet->fetch_assoc()) {
-
+        $siVar = 1;
         $btn = '
         <div class="btn-group">
             <button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#viewCustomerModal" id="viewCustomerModalBtn" onclick="viewCustomer(\'' . $row['customer_uniq_code'] . '\')">
@@ -70,6 +70,7 @@ if ($custFetchAllSQLResultSet->num_rows > 0) {
         $link = '<a href="single-customer.php?customer_uniq_code=' . $row['customer_uniq_code'] . '">' . $row['customer_uniq_code'] . '</a>';
 
         $data[] = array(
+            $siVar,
             $link,
             $row['customer_nm'],
             $row['company_nm'],
@@ -79,7 +80,7 @@ if ($custFetchAllSQLResultSet->num_rows > 0) {
             $row['email'],
             $btn
         );
-
+        $siVar++;
         // $data[] = $row;
     }
     echo json_encode(array("success" => true, "data" => $data, "message" => "Data found."));

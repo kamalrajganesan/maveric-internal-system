@@ -6,6 +6,7 @@ $db = new sqlHelper();
 
 // Fetch agents details sql
 $sql = "SELECT id as code, agent_nm as names FROM agent WHERE is_deleted = 0";
+
 $db->prepareStatement($sql);
 $db->execPreparedStatement();
 $result = $db->getResultSet();

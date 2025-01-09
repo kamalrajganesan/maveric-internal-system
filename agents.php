@@ -6,8 +6,6 @@ if (isset($_GET['page'])) {
     echo "<script>
         var agent_page = '" . $page . "'
     </script>";
-} else {
-    echo "Check the URL param";
 }
 
 ?>
@@ -40,13 +38,12 @@ if (isset($_GET['page'])) {
                     <div class="card-body fs-14">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="agentMasterTbl" class="display" style="width:100%">
+                                <table id="manageAgentDataTbl" class="display" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
                                             <th>Phone</th>
                                             <th>Email</th>
-                                            <th>City/ Pincode</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

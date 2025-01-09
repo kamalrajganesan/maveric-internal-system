@@ -43,13 +43,13 @@ if (isset($_GET['page'])) {
                                 <table id="customerMasterTbl" class="display" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Serial No.</th>
-                                            <th>Name</th>
+                                            <th>S. No.</th>
+                                            <th>Serial Number</th>
                                             <th>Company</th>
-                                            <th>City/ Pincode</th>
-                                            <th>Phone</th>
                                             <th>Service(s) Offered</th>
-                                            <th>Email</th>
+                                            <th>Mobile Number</th>
+                                            <th>City/ Pincode</th>
+                                            <th>Communication Email</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -68,7 +68,6 @@ if (isset($_GET['page'])) {
     <!-- content-wrapper ends -->
 
     <!-- modals -->
-
     <!-- add customer modal -->
     <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -84,23 +83,34 @@ if (isset($_GET['page'])) {
                     <form id="addCustomerForm" class="form-sample">
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
-                                <div class="form-group view-form-group">
-                                    <label for="customerName">Customer Name <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Customer Name" required>
-                                </div>
 
+                                <div class="form-group view-form-group">
+                                    <label for="customerUniqCode">Customer Serial Number <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="customerUniqCode" name="customerUniqCode" placeholder="Customer Unique Code" required>
+                                </div>
+                                
                                 <div class="form-group view-form-group">
                                     <label for="companyName">Company Name <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="companyName" name="companyName" placeholder="Company Name" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="contact">Contact <strong><code>*</code></strong></label>
+                                    <label for="customerName">Customer Name </label>
+                                    <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Customer Name">
+                                </div>
+                                
+                                <div class="form-group view-form-group">
+                                    <label for="contact">Mobile Number <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="email">Email <strong><code>*</code></strong></label>
+                                    <label for="telephone">Telephone </label>
+                                    <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telephone">
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="email">Communication Email <strong><code>*</code></strong></label>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                                 </div>
 
@@ -132,6 +142,10 @@ if (isset($_GET['page'])) {
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="Cloud"> Cloud </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="serviceType[]" value="One Time"> One Time </label>
                                     </div>
                                 </div>
@@ -141,14 +155,40 @@ if (isset($_GET['page'])) {
                                     <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
                                 </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="serviceStartDate">Service Start Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="serviceStartDate" name="serviceStartDate" required>
+                                <div class="form-group view-form-group AMCService">
+                                    <label for="amcStartDate">AMC Service Start Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="amcStartDate" name="amcStartDate" >
                                 </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="serviceEndDate">Service End Date <strong><code>*</code></strong> </label>
-                                    <input type="date" class="form-control" id="serviceEndDate" name="serviceEndDate" required>
+                                <div class="form-group view-form-group AMCService">
+                                    <label for="amcEndDate">AMC Service End Date <strong><code>*</code></strong> </label>
+                                    <input type="date" class="form-control" id="amcEndDate" name="amcEndDate" >
+                                </div>
+
+                                <div class="form-group view-form-group tallyService">
+                                    <label for="tallyStartDate">Tally Subscription Start Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="tallyStartDate" name="tallyStartDate" >
+                                </div>
+
+                                <div class="form-group view-form-group tallyService">
+                                    <label for="tallyEndDate">Tally Subscription End Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="tallyEndDate" name="tallyEndDate" >
+                                </div>
+
+                                <div class="form-group view-form-group tallyService">
+                                    <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
+                                    <select class="form-control " id="licenseType" name="licenseType"  aria-readonly="true" >
+                                        <option value="" selected hidden>Select the License Type</option>
+                                        <option value="Single User">Single User</option>
+                                        <option value="Multi-user">Multi-user</option>
+                                        <option value="Auditor Pack">Auditor Pack</option>
+                                        <option value="Rental">Rental</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group view-form-group tallyService">
+                                    <label for="tallyEmail">Tally Mail Id <strong><code>*</code></strong></label>
+                                    <input type="email" class="form-control" id="tallyEmail" name="tallyEmail" placeholder="System Email" >
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -157,24 +197,13 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
-                                    <select class="form-control required" id="licenseType" name="licenseType" required aria-readonly="true" required>
-                                        <option value="" selected hidden>Select the License Type</option>
-                                        <option value="Single User">Single User</option>
-                                        <option value="Multi-user">Multi-user</option>
-                                        <option value="Auditor Pack">Auditor Pack</option>
-                                        <option value="Rental">Rental</option>
-                                    </select>
+                                    <label for="referredBy">Referred by <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="referredBy" name="referredBy" placeholder="Referred by who ?">
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="systemEmail">System Email <strong><code>*</code></strong></label>
-                                    <input type="email" class="form-control" id="systemEmail" name="systemEmail" placeholder="System Email" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="customerUniqCode">Customer Serial Number <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="customerUniqCode" name="customerUniqCode" placeholder="Customer Unique Code" required>
+                                    <label for="auditor">Customer's Auditor </label>
+                                    <input type="text" class="form-control" id="auditor" name="auditor" placeholder="Customer's Auditor">
                                 </div>
                                 
                             </div>
@@ -205,9 +234,15 @@ if (isset($_GET['page'])) {
                     <form id="viewCustomerForm" class="form-sample">
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
+                                
                                 <div class="form-group view-form-group">
-                                    <label for="customerName">Customer Name  <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Customer Name" required>
+                                    <label for="customerUniqCode">Customer Serial Number <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="customerUniqCode" name="customerUniqCode" placeholder="Customer Unique Code" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="customerName">Customer Name </label>
+                                    <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Customer Name">
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -216,12 +251,17 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="contact">Contact <strong><code>*</code></strong></label>
+                                    <label for="contact">Mobile Number <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="email">Email <strong><code>*</code></strong></label>
+                                    <label for="telephone">Telephone </label>
+                                    <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telephone">
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="email">Communication Email <strong><code>*</code></strong></label>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                                 </div>
 
@@ -272,6 +312,10 @@ if (isset($_GET['page'])) {
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="Cloud"> Cloud </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="serviceType" value="One Time"> One Time </label>
                                     </div>
                                 </div>
@@ -281,22 +325,27 @@ if (isset($_GET['page'])) {
                                     <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
                                 </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="city">Service Start Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="serviceStartDate" name="serviceStartDate" required>
+                                <div class="form-group view-form-group AMCService">
+                                    <label for="amcStartDate">AMC Service Start Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="amcStartDate" name="amcStartDate" >
                                 </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="serviceEndDate">Service End Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="serviceEndDate" name="serviceEndDate" required>
+                                <div class="form-group view-form-group AMCService">
+                                    <label for="amcEndDate">AMC Service End Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="amcEndDate" name="amcEndDate" >
                                 </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="specialNote">Special Note</label>
-                                    <input type="text" class="form-control" id="specialNote" name="specialNote" placeholder="Special Note" required>
+                                <div class="form-group view-form-group tallyService">
+                                    <label for="tallyStartDate">Tally Subscription Start Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="tallyStartDate" name="tallyStartDate" >
                                 </div>
 
-                                <div class="form-group view-form-group">
+                                <div class="form-group view-form-group tallyService">
+                                    <label for="tallyEndDate">Tally Subscription End Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="tallyEndDate" name="tallyEndDate" >
+                                </div>
+
+                                <div class="form-group view-form-group tallyService">
                                     <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
                                     <select class="form-control" id="licenseType" name="licenseType" disabled aria-readonly="true">
                                         <option value="" selected hidden>Select the License Type</option>
@@ -307,14 +356,24 @@ if (isset($_GET['page'])) {
                                     </select>
                                 </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="systemEmail">System Email <strong><code>*</code></strong></label>
-                                    <input type="email" class="form-control" id="systemEmail" name="systemEmail" placeholder="System Email" required>
+                                <div class="form-group view-form-group tallyService">
+                                    <label for="tallyEmail">Tally Mail Id <strong><code>*</code></strong></label>
+                                    <input type="email" class="form-control" id="tallyEmail" name="tallyEmail" placeholder="System Email" >
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="customerUniqCode">Customer Serial Number <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="customerUniqCode" name="customerUniqCode" placeholder="Customer Unique Code" required>
+                                    <label for="specialNote">Special Note</label>
+                                    <input type="text" class="form-control" id="specialNote" name="specialNote" placeholder="Special Note" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="referredBy">Referred by <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="referredBy" name="referredBy" placeholder="Referred by who ?">
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="auditor">Customer's Auditor </label>
+                                    <input type="text" class="form-control" id="auditor" name="auditor" placeholder="Customer's Auditor">
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -349,6 +408,12 @@ if (isset($_GET['page'])) {
                     <form id="editCustomerForm" class="form-sample">
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
+
+                                <div class="form-group view-form-group">
+                                    <label for="customerUniqCode">Customer Serial Number <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="customerUniqCode" name="customerUniqCode" placeholder="Customer Unique Code" required>
+                                </div>
+
                                 <div class="form-group view-form-group">
                                     <label for="customerName">Customer Name <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Customer Name" required>
@@ -360,12 +425,17 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="contact">Contact <strong><code>*</code></strong></label>
+                                    <label for="contact">Mobile Number <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="email">Email <strong><code>*</code></strong></label>
+                                    <label for="telephone">Telephone </label>
+                                    <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telephone">
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="email">Communication Email <strong><code>*</code></strong></label>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                                 </div>
 
@@ -416,6 +486,10 @@ if (isset($_GET['page'])) {
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="Cloud"> Cloud </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="serviceType[]" value="One Time"> One Time </label>
                                     </div>
                                 </div>
@@ -425,24 +499,29 @@ if (isset($_GET['page'])) {
                                     <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
                                 </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="city">Service Start Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="serviceStartDate" name="serviceStartDate" required>
+                                <div class="form-group view-form-group AMCService">
+                                    <label for="amcStartDate">AMC Service Start Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="amcStartDate" name="amcStartDate" >
                                 </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="serviceEndDate">Service End Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="serviceEndDate" name="serviceEndDate" required>
+                                <div class="form-group view-form-group AMCService">
+                                    <label for="amcEndDate">AMC Service End Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="amcEndDate" name="amcEndDate" >
                                 </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="specialNote">Special Note</label>
-                                    <input type="text" class="form-control" id="specialNote" name="specialNote" placeholder="Special Note" required>
+                                <div class="form-group view-form-group tallyService">
+                                    <label for="tallyStartDate">Tally Subscription Start Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="tallyStartDate" name="tallyStartDate" >
                                 </div>
 
-                                <div class="form-group view-form-group">
+                                <div class="form-group view-form-group tallyService">
+                                    <label for="tallyEndDate">Tally Subscription End Date <strong><code>*</code></strong></label>
+                                    <input type="date" class="form-control" id="tallyEndDate" name="tallyEndDate" >
+                                </div>
+
+                                <div class="form-group view-form-group tallyService">
                                     <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
-                                    <select class="form-control required" id="licenseType" name="licenseType" required aria-readonly="true">
+                                    <select class="form-control " id="licenseType" name="licenseType"  aria-readonly="true">
                                         <option value="0" selected hidden>Select the License Type</option>
                                         <option value="Single User">Single User</option>
                                         <option value="Multi-user">Multi-user</option>
@@ -451,15 +530,26 @@ if (isset($_GET['page'])) {
                                     </select>
                                 </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="systemEmail">System Email <strong><code>*</code></strong></label>
-                                    <input type="email" class="form-control" id="systemEmail" name="systemEmail" placeholder="System Email" required>
+                                <div class="form-group view-form-group tallyService">
+                                    <label for="tallyEmail">Tally Mail Id <strong><code>*</code></strong></label>
+                                    <input type="email" class="form-control" id="tallyEmail" name="tallyEmail" placeholder="System Email" >
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="customerUniqCode">Customer Serial Number <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="customerUniqCode" name="customerUniqCode" placeholder="Customer Unique Code" required readonly>
+                                    <label for="specialNote">Special Note</label>
+                                    <input type="text" class="form-control" id="specialNote" name="specialNote" placeholder="Special Note" required>
                                 </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="referredBy">Referred by </label>
+                                    <input type="text" class="form-control" id="referredBy" name="referredBy" placeholder="Referred by who ?">
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="auditor">Customer's Auditor </label>
+                                    <input type="text" class="form-control" id="auditor" name="auditor" placeholder="Customer's Auditor">
+                                </div>
+
                             </div>
                         </div>
                     </form>

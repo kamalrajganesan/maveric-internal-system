@@ -40,7 +40,7 @@ $FetchAllSQLResultSet = $db->getResultSet();
 if ($FetchAllSQLResultSet->num_rows > 0) {
     $data = array();
     while ($row = $FetchAllSQLResultSet->fetch_assoc()) {
-
+        $siVar = 1;
         $btn = '
         <div class="btn-group">
             <button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#viewLeadModal" id="viewLeadModalBtn" onclick="viewLead(' . $row['id'] . ')">
@@ -56,6 +56,7 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
         ';
 
         $data[] = array(
+            $siVar,
             $row['lead_nm'],
             $row['contact'],
             $row['company_nm'],
@@ -66,8 +67,7 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
             $row['follow_up_dt'],
             $btn
         );
-
-        // $data[] = $row;
+        $siVar++;
     }
     echo json_encode(array("success" => true, "data" => $data, "message" => "Data found."));
 } else {

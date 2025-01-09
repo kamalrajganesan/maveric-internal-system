@@ -32,8 +32,8 @@
                 <div class="brand-logo">
                   <img src="./assets/images/logoipsum.svg" alt="logo">
                 </div>
-                <h4>Admin Sign</h4>
-                <h6 class="fw-light">Hey! Login to see what's going on</h6>
+                <h4>Hey! Admin Sign</h4>
+                <h6 class="fw-light">Login to see what's going on</h6>
                 <form class="pt-3" id="adminLoginForm">
                   <div class="form-group">
                     <div class="input-group">
@@ -54,6 +54,8 @@
                   </div>
                   <div class="mt-3 d-grid gap-2">
                     <button type="submit" class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn">SIGN IN</a>
+                  </div>
+                  <div class="text-center mt-4 fw-light"> <a href="./" class="text-primary">Go to Agent login</a>
                   </div>
                 </form>
               </div>

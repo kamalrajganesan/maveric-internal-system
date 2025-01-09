@@ -43,6 +43,7 @@ if (isset($_GET['page'])) {
                                 <table id="leadMasterTbl" class="display" style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>S. No.</th>
                                             <th>Lead Name</th>
                                             <th>Contact</th>
                                             <th>Company Name</th>

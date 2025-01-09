@@ -1,14 +1,11 @@
-var manageCustDataTbl;
+var manageAgentDataTbl;
 
 $(document).ready(function () {
-  manageCustDataTbl = $("#agentMasterTbl").DataTable({
+  manageAgentDataTbl = $("#manageAgentDataTbl").DataTable({
     type: "Post",
     ajax: {
       url: "./services/agent_fetch_all.php",
       type: "POST",
-      data: {
-        param: agent_page,
-      },
       dataType: "json",
     },
   });
@@ -26,7 +23,7 @@ $(document).ready(function () {
         if (response.success == true) {
           $("#addAgentForm")[0].reset();
           $("#addAgentModal").modal("hide");
-          manageCustDataTbl.ajax.reload(null, true);
+          manageAgentDataTbl.ajax.reload(null, true);
         } else {
           alert("Failed to Add Agent...!");
         }
@@ -48,7 +45,7 @@ function removeAgent(params = null) {
       dataType: "json",
       success: function (response) {
         if (response.success == true) {
-          manageCustDataTbl.ajax.reload(null, false);
+          manageAgentDataTbl.ajax.reload(null, false);
         } else {
           alert("Failed to Remove Agent...!");
         }
@@ -177,7 +174,7 @@ function editAgent(params = null) {
                 if (response.success == true) {
                   $("#editAgentForm")[0].reset();
                   $("#editAgentModal").modal("hide");
-                  manageCustDataTbl.ajax.reload(null, true);
+                  manageAgentDataTbl.ajax.reload(null, true);
                 } else {
                   alert("Failed to Edit Agent...!");
                 }

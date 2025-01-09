@@ -14,7 +14,7 @@ $db = new sqlHelper();
 
 // Update SQL query for the ticket table
 $FetchAllSQL = "SELECT ticket.*, 
-       (SELECT customer_nm FROM cust_mstr WHERE id = ticket.customer_id) AS customer_name,
+       (SELECT company_nm FROM cust_mstr WHERE id = ticket.customer_id) AS customer_name,
        (SELECT agent_nm FROM agent WHERE id = ticket.assignd_agent_id) AS assignd_agent
 FROM ticket
 WHERE ticket.is_deleted = 0
@@ -78,10 +78,10 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
 
         // Adjust the data array to reflect the columns in the ticket table
         $data[] = array(
-            $row['uniq_id'], 
             $row['created_on'],  
+            $row['uniq_id'], 
             $row['problem_stmt'],  
-            $row['customer_name'],  
+            $row['company_nm'],  
             $row['service_typ'],  
             $row['assignd_agent'], 
             $row['status'],  

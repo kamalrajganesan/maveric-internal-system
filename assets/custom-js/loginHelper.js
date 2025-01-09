@@ -32,7 +32,7 @@ $(document).ready(function() {
         var formData = $(this).serialize(); // Serialize the form data
 
         $.ajax({
-            url: './services/loginService_admin.php.php', // The URL to send the data to
+            url: './services/loginService_admin.php', // The URL to send the data to
             type: 'POST', // The HTTP method to use
             data: formData, // The serialized form data
             dataType: 'json', // The type of data that is being returned
