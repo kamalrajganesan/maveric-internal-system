@@ -297,9 +297,10 @@ if (isset($_GET['page'])) {
                                     <label for="createdOn">Customer Created On</label>
                                     <input type="text" class="form-control" id="createdOn" name="createdOn" placeholder="Created On" required>
                                 </div>
-
                             </div>
+
                             <div class="col-sm-5">
+                                
                                 <div class="form-group view-form-group">
                                     <label for="serviceType"> Service Type  <strong><code>*</code></strong></label>
                                     <div class="form-check">
@@ -312,7 +313,7 @@ if (isset($_GET['page'])) {
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="Cloud"> Cloud </label>
+                                            <input type="checkbox" class="form-check-input" name="serviceType" value="Cloud"> Cloud </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
