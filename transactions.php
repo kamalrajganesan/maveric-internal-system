@@ -42,15 +42,16 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                     <div class="card-body fs-14">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="transactionMasterTbl" class="display" style="width:100%">
+                                <table id="transactionMasterTbl" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Created date</th>
+                                            <th>Created On</th>
                                             <th>Transaction ID</th>
                                             <th>Issue</th>
                                             <th>Company</th>
                                             <th>Service type</th>
                                             <th>Created By</th>
+                                            <th>Last Updated By</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
@@ -122,6 +123,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                         <option value="" hidden selected>Select Service</option>
                                         <option value="AMC">AMC</option>
                                         <option value="Tally">Tally</option>
+                                        <option value="Cloud">Cloud</option>
                                         <option value="One Time">One Time</option>
                                     </select>
                                 </div>
@@ -134,18 +136,6 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                         <option value="Remote">Remote</option>
                                         <option value="Physical Visit">Physical Visit</option>
                                     </select>
-                                </div>
-                                   
-                                <div class="form-group view-form-group">
-                                    <label for="isUnderAMC">Is client under AMC</label>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCYES" value="1"> Yes </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCNO" value="0" checked> No </label>
-                                    </div>
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -226,6 +216,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                         <option value="" hidden selected>Select Service <strong><code>*</code></strong></option>
                                         <option value="AMC">AMC</option>
                                         <option value="Tally">Tally</option>
+                                        <option value="Cloud">Cloud</option>
                                         <option value="One Time">One Time</option>
                                     </select>
                                 </div>
@@ -250,18 +241,6 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                     <select class="form-control" id="aAgentId" name="aAgentId">
                                         <option value="" hidden>Select Agent</option>
                                     </select>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="isUnderAMC">Is Client Under AMC</label>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCYES" value="1"> Yes </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCNO" value="0"> No </label>
-                                    </div>
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -354,6 +333,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                         <option value="" hidden selected>Select Service</option>
                                         <option value="AMC">AMC</option>
                                         <option value="Tally">Tally</option>
+                                        <option value="Cloud">Cloud</option>
                                         <option value="One Time">One Time</option>
                                     </select>
                                 </div>
@@ -371,18 +351,6 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 <div class="form-group view-form-group">
                                     <label for="createdDate">Transaction Created Date</label>
                                     <input type="text" class="form-control" id="createdDate" name="createdDate" placeholder="Created Date" readonly>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="isUnderAMC">Is Client Under AMC</label>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCYES" value="1"> Yes </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="isUnderAMC" id="isUnderAMCNO" value="0"> No </label>
-                                    </div>
                                 </div>
 
                                 <div class="form-group view-form-group">

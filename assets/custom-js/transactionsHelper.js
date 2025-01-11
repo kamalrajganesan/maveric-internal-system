@@ -4,12 +4,13 @@ var manageTicketDataTbl, currentTransaction;
 $(document).ready(function () {
   manageTicketDataTbl = $("#transactionMasterTbl").DataTable({
     method: "POST",
+    scrollX: true,
     ajax: {
       url: "./services/transaction_fetch_all.php",
       type: "POST",
       data: {
         type: transaction_type,
-        value: transaction_value,
+        value: transaction_value
       },
       dataType: "json",
     },
@@ -182,12 +183,12 @@ function editTicket(params = null) {
           $("#editTransactionForm #status").val(response.data[0].status);
           $("#editTransactionForm #serviceType").val(response.data[0].service_typ);
           $("#editTransactionForm #serviceThrough").val(response.data[0].service_thru);
-          if (response.data[0].is_under_amc == 1) {
-            $("#editTransactionForm #isUnderAMCYES").prop("checked", true);
-          } else {
-            $("#editTransactionForm #isUnderAMCNO").prop("checked", true);
-          }
-          $("#editTransactionForm input[id^=isUnderAMC]:radio").attr("disabled",true);
+          // if (response.data[0].is_under_amc == 1) {
+          //   $("#editTransactionForm #isUnderAMCYES").prop("checked", true);
+          // } else {
+          //   $("#editTransactionForm #isUnderAMCNO").prop("checked", true);
+          // }
+          // $("#editTransactionForm input[id^=isUnderAMC]:radio").attr("disabled",true);
           $("#editTransactionForm #createdDate").val(response.data[0].created_on).attr('disabled', true);
           $("#editTransactionForm").append('<input type="hidden" name="tId" id="tId" value="'+ response.data[0].uniq_id +'" />');
 
@@ -263,12 +264,7 @@ function viewTicket(params = null) {
           $("#viewTransactionForm #status").val(response.data[0].status);
           $("#viewTransactionForm #serviceType").val(response.data[0].service_typ);
           $("#viewTransactionForm #serviceThrough").val(response.data[0].service_thru);
-          if (response.data[0].is_under_amc == 1) {
-            $("#viewTransactionForm #isUnderAMCYES").prop("checked", true);
-          } else {
-            $("#viewTransactionForm #isUnderAMCNO").prop("checked", true);
-          }
-          $("#viewTransactionForm input[id^=isUnderAMC]:radio").attr("disabled",true);
+          
           $("#viewTransactionForm #createdDate").val(response.data[0].created_on).attr('disabled', true);
           $("#viewTransactionForm #AssignedAgent").val(response.data[0].assignd_agent_id).attr('disabled', true);
           $("#viewTransactionForm #lastUpdatedOn").val(response.data[0].updated_on).attr('disabled', true);
