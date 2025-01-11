@@ -122,7 +122,7 @@
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <a class="nav-link" href="./customer.php?page=All">All Customers</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./customer.php?page=AMC">AMC</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Tally">Tally Subscriptions</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Tally">Tally Subscription</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Cloud">Cloud</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./customer.php?page=OneTime">One Time</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Active">Active</a></li>
@@ -140,12 +140,13 @@
               <div class="collapse" id="transac-submeuns">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"><a class="nav-link" href="./transactions.php?type=All&value=All">All Services</a></li>
-                  <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceType&value=Tally">Tally</a></li>
                   <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceType&value=AMC">AMC</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceType&value=Tally">Tally Subscription</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceType&value=Cloud">Cloud</a></li>
                   <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceType&value=OneTime">One Time</a></li>
                   <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceThrough&value=Remote">Remote</a></li>
                   <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceThrough&value=OnCall">Phone Call</a></li>
-                  <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceThrough&value=PhysicalVisits">Physical Visits</a></li>
+                  <li class="nav-item"><a class="nav-link" href="./transactions.php?type=serviceThrough&value=PhysicalVisits">Physical Visit</a></li>
                 </ul>
               </div>
             </li>

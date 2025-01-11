@@ -87,7 +87,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 <div class="form-group view-form-group">
                                     <label for="customerId">Customer <strong><code>*</code></strong></label>
                                     <select class="form-control required" id="customerId" name="customerId" required>
-                                        <option value="" disabled selected>Select Customer</option>
+                                        <option value="" selected hidden>Select Customer</option>
                                     </select>
                                 </div>
 

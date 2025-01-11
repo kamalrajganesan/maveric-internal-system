@@ -22,15 +22,17 @@ WHERE ticket.is_deleted = 0
 
 if($type == "serviceType") {
     switch ($value) {
-
-        case 'OneTime':
-            $FetchAllSQL .= "and service_typ = 'One Time';";
+        case 'AMC':
+            $FetchAllSQL .= " and service_typ = 'AMC';";
+            break;
+        case 'Cloud':
+            $FetchAllSQL .= " and service_typ = 'Cloud';";
             break;
         case 'Tally':
             $FetchAllSQL .= " and service_typ = 'Tally';";
             break;
-        case 'AMC':
-            $FetchAllSQL .= " and service_typ = 'AMC';";
+        case 'OneTime':
+            $FetchAllSQL .= " and service_typ = 'One Time';";
             break;
         default:
             $FetchAllSQL .= ";";

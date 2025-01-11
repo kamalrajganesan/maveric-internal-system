@@ -13,7 +13,7 @@ $result = $db->getResultSet();
 $customers = array();
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-        $customer['name'] = $row['customer_nm'] .' - '. $row['company_nm'];
+        $customer['name'] = $row['company_nm'];
         $customer['id'] = $row['id'];
         $customers[] = $customer;
     }
