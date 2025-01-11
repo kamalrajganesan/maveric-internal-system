@@ -56,10 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Prepare the SQL insert query
         $query = "INSERT INTO ticket (
                 uniq_id, assignd_agent_id, created_by, customer_id, 
-                comments, problem_desc, status, problem_stmt, service_typ, 
-                is_under_amc, notes, is_active, is_deleted, service_thru
+                comments, problem_desc, status, problem_stmt, 
+                service_typ, notes, is_active, is_deleted, 
+                service_thru
             ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 0, ?
+                ?, ?, ?, ?, 
+                ?, ?, ?, ?, 
+                ?, ?, 1, 0, 
+                ?
             )";
 
         try {
@@ -68,21 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Parameters for binding
             $params = [
-                $uniqId,
-                $assignedAgentId,
-                $createdBy,
-                $customerId,
-                json_encode($commentsArr),
-                $problemDesc,
-                $status,
-                $problemStmt,
-                $serviceType,
-                $isUnderAMC,
-                json_encode($notesArr),
+                $uniqId, $assignedAgentId, $createdBy, $customerId,
+                json_encode($commentsArr), $problemDesc, $status, $problemStmt,
+                $serviceType, json_encode($notesArr),
                 $serviceThru
             ];
 
-            $types = 'sisisssssiss'; 
+            $types = 'sisisssssss'; 
             $db->setParameters($params, $types);
 
             // Execute the statement

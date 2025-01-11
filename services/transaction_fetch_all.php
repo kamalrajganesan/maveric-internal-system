@@ -13,24 +13,40 @@ if (isset($_POST['type']) && isset($_POST['value'])) {
 $db = new sqlHelper();
 
 // Update SQL query for the ticket table
-$FetchAllSQL = "SELECT ticket.*, 
-       (SELECT company_nm FROM cust_mstr WHERE id = ticket.customer_id) AS customer_name,
-       (SELECT agent_nm FROM agent WHERE id = ticket.assignd_agent_id) AS assignd_agent
-FROM ticket
+$FetchAllSQL = 
+"SELECT
+    ticket.uniq_id,
+    ticket.problem_stmt,
+    ticket.created_on,
+    ticket.status,
+    CONCAT(cust_mstr.company_nm) AS company_nm,
+    ticket.service_typ,
+    CONCAT(created_agent.agent_nm) AS created_by_name,
+    CONCAT(updated_agent.agent_nm) AS updated_by_name
+FROM
+    ticket
+JOIN
+    cust_mstr ON ticket.customer_id = cust_mstr.id
+LEFT JOIN
+    agent AS created_agent ON ticket.created_by = created_agent.id
+LEFT JOIN
+    agent AS updated_agent ON ticket.updated_by = updated_agent.id
 WHERE ticket.is_deleted = 0
 ";
 
 if($type == "serviceType") {
     switch ($value) {
-
         case 'OneTime':
-            $FetchAllSQL .= "and service_typ = 'One Time';";
+            $FetchAllSQL .= "and ticket.service_typ = 'One Time'";
             break;
         case 'Tally':
-            $FetchAllSQL .= " and service_typ = 'Tally';";
+            $FetchAllSQL .= " and ticket.service_typ = 'Tally'";
+            break;
+        case 'Cloud':
+            $FetchAllSQL .= " and ticket.service_typ = 'Cloud'";
             break;
         case 'AMC':
-            $FetchAllSQL .= " and service_typ = 'AMC';";
+            $FetchAllSQL .= " and ticket.service_typ = 'AMC'";
             break;
         default:
             $FetchAllSQL .= ";";
@@ -38,27 +54,29 @@ if($type == "serviceType") {
     }
 } else {
     switch ($value) {
-
         case 'OnCall':
-            $FetchAllSQL .= " and service_thru = 'Phone Call';";
+            $FetchAllSQL .= " and ticket.service_thru = 'Phone Call'";
             break;
         case 'Remote':
-            $FetchAllSQL .= " and service_thru = 'Remote';";
+            $FetchAllSQL .= " and ticket.service_thru = 'Remote'";
             break;
         case 'PhysicalVisits':
-            $FetchAllSQL .= " and service_thru = 'Physical Visit';";
+            $FetchAllSQL .= " and ticket.service_thru = 'Physical Visit'";
             break;
         default:
-            $FetchAllSQL .= ";";
+            $FetchAllSQL .= "";
             break;
     }
 } 
+
+$FetchAllSQL .= " ORDER BY ticket.created_on DESC";
 
 $db->prepareStatement($FetchAllSQL);
 $db->execPreparedStatement();
 $FetchAllSQLResultSet = $db->getResultSet();
 
 if ($FetchAllSQLResultSet->num_rows > 0) {
+    
     $data = array();
     while ($row = $FetchAllSQLResultSet->fetch_assoc()) {
 
@@ -83,7 +101,8 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
             $row['problem_stmt'],  
             $row['company_nm'],  
             $row['service_typ'],  
-            $row['assignd_agent'], 
+            $row['created_by_name'], 
+            $row['updated_by_name'], 
             $row['status'],  
             $btn  
         );
