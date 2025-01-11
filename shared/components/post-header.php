@@ -121,12 +121,13 @@
               <div class="collapse" id="customer-submenus">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <a class="nav-link" href="./customer.php?page=All">All Customers</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Tally">Tally</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./customer.php?page=AMC">AMC</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Tally">Tally Subscriptions</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Cloud">Cloud</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./customer.php?page=OneTime">One Time</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Active">Active</a></li>
                   <li class="nav-item"> <a class="nav-link" href="./customer.php?page=InActive">In Active</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Endangered">Endangered</a></li>
+                  <!-- <li class="nav-item"> <a class="nav-link" href="./customer.php?page=Endangered">Endangered</a></li> -->
                 </ul>
               </div>
             </li>

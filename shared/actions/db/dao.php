@@ -12,7 +12,7 @@ class sqlHelper
         if (!session_id()) {
             session_start();
         }
-        $this->f = "sql_error.log";
+        $this->f = "sql_error.txt";
         $this->conn = createConn();        
     }
 
@@ -32,12 +32,17 @@ class sqlHelper
 
     public function execPreparedStatement() {
      
+        $resp["success"] = false;
+        $resp["message"] = "";
         try {
             $this->query->execute();
-            return true;
+            $resp["success"] = true;
+            $resp["message"] = "Query ran successfully...!";
+            return $resp;
         } catch (Exception $e) {
+            $resp["message"] = $e->getMessage();
             $this->logError($e->getMessage(), [ 'exception' => $e ]);
-            return false;
+            return $resp;
         }
     }
 
@@ -47,7 +52,7 @@ class sqlHelper
     }
 
 
-    private function logError($param1, $param2) {
+    public function logError($param1, $param2) {
         
         file_put_contents($this->f, PHP_EOL, FILE_APPEND | LOCK_EX);
         file_put_contents($this->f, print_r("Error --------------------".PHP_EOL, true), FILE_APPEND | LOCK_EX);

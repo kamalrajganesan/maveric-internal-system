@@ -1,6 +1,7 @@
 <?php
 
-require_once("../shared/php/connect.php");
+require_once("../shared/actions/db/dao.php");
+
 date_default_timezone_set('Asia/Kolkata');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -54,10 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         empty($customerPincode) || empty($customerCity) || empty($customerServiceType)) {
 
         $validationFlag = false;
-        $valid["message"] = "Please fill all the required fields!";
+        $valid["message"] = "Mandatory";
     } 
     
-    if($validationFlag){
+    if($validationFlag) {
         
         $db = new sqlHelper();
         $query = "INSERT INTO cust_mstr( 
@@ -91,14 +92,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $db->setParameters($params, $types);
 
             // Execute the statement
-            $db->execPreparedStatement();
-            
-            $valid["message"] = 'Customer created successfully!';
-            $valid["detailed"] = "";
+            $resp = $db->execPreparedStatement();
+            if($resp['success']){ 
+                $valid['success'] = true;
+                $valid["message"] = 'Customer created successfully!';
+            } else {
+
+                $valid['success'] = false;
+                if(str_contains($resp["message"], 'Duplicate entry') && str_contains($resp["message"], 'customer_uniq_code')) {
+                    $valid["message"] = 'Duplicate entry - Customer Serial Number';
+                } else {
+                    $valid["message"] = 'Default';
+                }
+            }
 
         } catch (Exception $e) {
-            $valid = false;
-            $valid["message"] = 'Error in Storing Customer details';
+            
+            $valid['success'] = false;
+            $valid["message"] = 'Exception';
             $valid["detailed"] = $e->getMessage();
         }
 

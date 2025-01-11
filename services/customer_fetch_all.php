@@ -19,14 +19,14 @@ switch ($page) {
     case 'All':
         $fetchAllSQL .= " ;";
         break;
-    case 'Tally':
-        $fetchAllSQL .= " and service_type Like '%Tally%';";
-        break;
     case 'AMC':
         $fetchAllSQL .= " and service_type Like '%AMC%';";
         break;
-    case 'OnCall':
-        $fetchAllSQL .= " and service_type Like '%Phone Call%';";
+    case 'Tally':
+        $fetchAllSQL .= " and service_type Like '%Tally%';";
+        break;
+    case 'Cloud':
+        $fetchAllSQL .= " and service_type Like '%Cloud%';";
         break;
     case 'OneTime':
         $fetchAllSQL .= " and service_type Like '%One Time%';";
@@ -51,8 +51,8 @@ $custFetchAllSQLResultSet = $db->getResultSet();
 
 if ($custFetchAllSQLResultSet->num_rows > 0) {
     $data = array();
+    $siVar = 1;
     while ($row = $custFetchAllSQLResultSet->fetch_assoc()) {
-        $siVar = 1;
         $btn = '
         <div class="btn-group">
             <button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#viewCustomerModal" id="viewCustomerModalBtn" onclick="viewCustomer(\'' . $row['customer_uniq_code'] . '\')">
@@ -72,11 +72,10 @@ if ($custFetchAllSQLResultSet->num_rows > 0) {
         $data[] = array(
             $siVar,
             $link,
-            $row['customer_nm'],
             $row['company_nm'],
-            $row['city'] . " / " . $row['pincode'],
-            $row['contact'],
             $row['service_type'],
+            $row['contact'],
+            $row['city'] . " / " . $row['pincode'],
             $row['email'],
             $btn
         );

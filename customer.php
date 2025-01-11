@@ -115,7 +115,7 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="address">Address <strong><code>*</code></strong></label>
+                                    <label for="address">Address </label>
                                     <input type="text" class="form-control" id="address" name="address" placeholder="Address">
                                 </div>
 
@@ -156,27 +156,27 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group AMCService">
-                                    <label for="amcStartDate">AMC Service Start Date <strong><code>*</code></strong></label>
+                                    <label for="amcStartDate">AMC Service Start Date </label>
                                     <input type="date" class="form-control" id="amcStartDate" name="amcStartDate" >
                                 </div>
 
                                 <div class="form-group view-form-group AMCService">
-                                    <label for="amcEndDate">AMC Service End Date <strong><code>*</code></strong> </label>
+                                    <label for="amcEndDate">AMC Service End Date  </label>
                                     <input type="date" class="form-control" id="amcEndDate" name="amcEndDate" >
                                 </div>
 
                                 <div class="form-group view-form-group tallyService">
-                                    <label for="tallyStartDate">Tally Subscription Start Date <strong><code>*</code></strong></label>
+                                    <label for="tallyStartDate">Tally Subscription Start Date </label>
                                     <input type="date" class="form-control" id="tallyStartDate" name="tallyStartDate" >
                                 </div>
 
                                 <div class="form-group view-form-group tallyService">
-                                    <label for="tallyEndDate">Tally Subscription End Date <strong><code>*</code></strong></label>
+                                    <label for="tallyEndDate">Tally Subscription End Date </label>
                                     <input type="date" class="form-control" id="tallyEndDate" name="tallyEndDate" >
                                 </div>
 
                                 <div class="form-group view-form-group tallyService">
-                                    <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
+                                    <label for="licenseType"> License Type  </label>
                                     <select class="form-control " id="licenseType" name="licenseType"  aria-readonly="true" >
                                         <option value="" selected hidden>Select the License Type</option>
                                         <option value="Single User">Single User</option>
@@ -187,7 +187,7 @@ if (isset($_GET['page'])) {
                                 </div>
                                 
                                 <div class="form-group view-form-group tallyService">
-                                    <label for="tallyEmail">Tally Mail Id <strong><code>*</code></strong></label>
+                                    <label for="tallyEmail">Tally Mail Id </label>
                                     <input type="email" class="form-control" id="tallyEmail" name="tallyEmail" placeholder="System Email" >
                                 </div>
 
@@ -197,7 +197,7 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="referredBy">Referred by <strong><code>*</code></strong></label>
+                                    <label for="referredBy">Referred by </label>
                                     <input type="text" class="form-control" id="referredBy" name="referredBy" placeholder="Referred by who ?">
                                 </div>
 
@@ -457,7 +457,8 @@ if (isset($_GET['page'])) {
 
                                 <div class="form-group view-form-group">
                                     <label for="Active Status">Customer Status <strong><code>*</code></strong></label>
-                                    <select class="form-control" id="customerStatus" name="customerStatus" required aria-readonly="true">
+                                    <select class="form-control" id="customerStatus" name="customerStatus" required >
+                                        <option value="" selected hidden>Select the Customer Status</option>
                                         <option value="1">Active</option>
                                         <option value="0">Inactive</option>
                                     </select>
@@ -523,7 +524,7 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group tallyService">
                                     <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
                                     <select class="form-control " id="licenseType" name="licenseType"  aria-readonly="true">
-                                        <option value="0" selected hidden>Select the License Type</option>
+                                        <option value="" selected hidden>Select the License Type</option>
                                         <option value="Single User">Single User</option>
                                         <option value="Multi-user">Multi-user</option>
                                         <option value="Auditor Pack">Auditor Pack</option>

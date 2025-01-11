@@ -39,8 +39,8 @@ $FetchAllSQLResultSet = $db->getResultSet();
 
 if ($FetchAllSQLResultSet->num_rows > 0) {
     $data = array();
+    $siVar = 1;
     while ($row = $FetchAllSQLResultSet->fetch_assoc()) {
-        $siVar = 1;
         $btn = '
         <div class="btn-group">
             <button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#viewLeadModal" id="viewLeadModalBtn" onclick="viewLead(' . $row['id'] . ')">

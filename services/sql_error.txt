@@ -1,0 +1,192 @@
+
+Error --------------------
+Duplicate entry 'UNIQ1234560' for key 'customer_uniq_code'Cause ====================
+Array
+(
+    [exception] => mysqli_sql_exception Object
+        (
+            [message:protected] => Duplicate entry 'UNIQ1234560' for key 'customer_uniq_code'
+            [string:Exception:private] => 
+            [code:protected] => 1062
+            [file:protected] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+            [line:protected] => 38
+            [trace:Exception:private] => Array
+                (
+                    [0] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+                            [line] => 38
+                            [function] => execute
+                            [class] => mysqli_stmt
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                    [1] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\services\customer_add.php
+                            [line] => 95
+                            [function] => execPreparedStatement
+                            [class] => sqlHelper
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [previous:Exception:private] => 
+            [sqlstate:protected] => 23000
+        )
+
+)
+
+
+Error --------------------
+Duplicate entry 'UNIQ1234560' for key 'customer_uniq_code'Cause ====================
+Array
+(
+    [exception] => mysqli_sql_exception Object
+        (
+            [message:protected] => Duplicate entry 'UNIQ1234560' for key 'customer_uniq_code'
+            [string:Exception:private] => 
+            [code:protected] => 1062
+            [file:protected] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+            [line:protected] => 38
+            [trace:Exception:private] => Array
+                (
+                    [0] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+                            [line] => 38
+                            [function] => execute
+                            [class] => mysqli_stmt
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                    [1] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\services\customer_add.php
+                            [line] => 95
+                            [function] => execPreparedStatement
+                            [class] => sqlHelper
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [previous:Exception:private] => 
+            [sqlstate:protected] => 23000
+        )
+
+)
+
+
+Error --------------------
+Duplicate entry 'UNIQ1234560' for key 'customer_uniq_code'Cause ====================
+Array
+(
+    [exception] => mysqli_sql_exception Object
+        (
+            [message:protected] => Duplicate entry 'UNIQ1234560' for key 'customer_uniq_code'
+            [string:Exception:private] => 
+            [code:protected] => 1062
+            [file:protected] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+            [line:protected] => 38
+            [trace:Exception:private] => Array
+                (
+                    [0] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+                            [line] => 38
+                            [function] => execute
+                            [class] => mysqli_stmt
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                    [1] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\services\customer_add.php
+                            [line] => 95
+                            [function] => execPreparedStatement
+                            [class] => sqlHelper
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [previous:Exception:private] => 
+            [sqlstate:protected] => 23000
+        )
+
+)
+
+
+Error --------------------
+Duplicate entry 'UNIQ1234560' for key 'customer_uniq_code'Cause ====================
+Array
+(
+    [exception] => mysqli_sql_exception Object
+        (
+            [message:protected] => Duplicate entry 'UNIQ1234560' for key 'customer_uniq_code'
+            [string:Exception:private] => 
+            [code:protected] => 1062
+            [file:protected] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+            [line:protected] => 38
+            [trace:Exception:private] => Array
+                (
+                    [0] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+                            [line] => 38
+                            [function] => execute
+                            [class] => mysqli_stmt
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                    [1] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\services\customer_add.php
+                            [line] => 95
+                            [function] => execPreparedStatement
+                            [class] => sqlHelper
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [previous:Exception:private] => 
+            [sqlstate:protected] => 23000
+        )
+
+)
+

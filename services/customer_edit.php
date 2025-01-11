@@ -1,6 +1,6 @@
 <?php
 
-require_once("../shared/php/connect.php");
+require_once("../shared/actions/db/dao.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -24,21 +24,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customerServiceType = implode(',', $_POST['serviceType']);
     
     // service-type-option-based fields
-    $customerAMCStartDate = $_POST['amcStartDate'];
-    $customerAMCEndDate = $_POST['amcEndDate'];
-    $customerTallySubStartDate = $_POST['tallyStartDate'];
-    $customerTallySubEndDate = $_POST['tallyEndDate'];
-    $customerTallyEmail = $_POST['tallyEmail'];
-    $customerLicenseType = $_POST['licenseType'];
+    $customerAMCStartDate = $_POST['amcStartDate'] ?? "";
+    $customerAMCEndDate = $_POST['amcEndDate'] ?? "";
+    $customerTallySubStartDate = $_POST['tallyStartDate'] ?? "";
+    $customerTallySubEndDate = $_POST['tallyEndDate'] ?? "";
+    $customerTallyEmail = $_POST['tallyEmail'] ?? "";
+    $customerLicenseType = $_POST['licenseType'] ?? "";
     
     // nullable fields
-    $customerName = $_POST['customerName'];
-    $customerTelephone = $_POST['telephone'];
-    $customerAddress = $_POST['address'];
-    $customerArea = $_POST['area'];
-    $customerSpecialNote = $_POST['specialNote'];
-    $customerReferredBy = $_POST['referredBy'];
-    $customersAuditor = $_POST['auditor'];
+    $customerName = $_POST['customerName'] ?? "";
+    $customerTelephone = $_POST['telephone'] ?? "";
+    $customerAddress = $_POST['address'] ?? "";
+    $customerArea = $_POST['area'] ?? "";
+    $customerSpecialNote = $_POST['specialNote'] ?? "";
+    $customerReferredBy = $_POST['referredBy'] ?? "";
+    $customersAuditor = $_POST['auditor'] ?? "";
+    $customerActiveStatus = $_POST["customerStatus"] ?? "";
 
     // auto generating fields
     $updatedBy = $_SESSION['user']['id'];
@@ -88,12 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Execute the statement
             $db->execPreparedStatement();
-            
+            $valid['success'] = true;
             $valid["message"] = 'Customer updated successfully!';
             $valid["detailed"] = "";
 
         } catch (Exception $e) {
-            $valid = false;
+            $valid['success'] = false;
             $valid["message"] = 'Error in updating Customer details';
             $valid["detailed"] = $e->getMessage();
         }
