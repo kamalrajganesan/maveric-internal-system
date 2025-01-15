@@ -29,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customerAMCEndDate = $_POST['amcEndDate'];
     $customerTallySubStartDate = $_POST['tallyStartDate'];
     $customerTallySubEndDate = $_POST['tallyEndDate'];
+    $customerCloudStartDate = $_POST['cloudStartDate'];
+    $customerCloudEndDate = $_POST['cloudEndDate'];
     $customerTallyEmail = $_POST['tallyEmail'];
     $customerLicenseType = $_POST['licenseType'];
     
@@ -66,14 +68,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     created_by, amc_st_date, amc_end_date, spl_cust_note, license_typ, 
                     email, sys_email, pincode, city, area, 
                     service_type, is_active, customer_uniq_code, is_deleted, telephone,
-                    referredBy, auditor, tally_st_date, tally_end_date
+                    referredBy, auditor, tally_st_date, tally_end_date, cloud_st_date,
+                    cloud_end_date
                 )  
                 VALUES (
                     ?, ?, ?, ?, ?,
                     ?, ?, ?, ?, ?, 
                     ?, ?, ?, ?, ?, 
                     ?, 1, ?, 0, ?,
-                    ?, ?, ?, ?
+                    ?, ?, ?, ?, ?,
+                    ?
                 )";
 
         try {
@@ -86,9 +90,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $createdBy, $customerAMCStartDate, $customerAMCEndDate, $customerSpecialNote, $customerLicenseType,
                 $customerEmail, $customerTallyEmail, $customerPincode, $customerCity, $customerArea,
                 $customerServiceType, $customerUniqCode, $customerTelephone,
-                $customerReferredBy, $customersAuditor, $customerTallySubStartDate, $customerTallySubEndDate
+                $customerReferredBy, $customersAuditor, $customerTallySubStartDate, $customerTallySubEndDate, $customerCloudStartDate,
+                $customerCloudEndDate
             ];
-            $types = 'ssssssssssssssssssssss'; 
+            $types = 'ssssssssssssssssssssssss'; 
             $db->setParameters($params, $types);
 
             // Execute the statement
