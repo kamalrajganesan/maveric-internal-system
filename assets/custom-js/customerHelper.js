@@ -3,6 +3,7 @@ var manageCustDataTbl;
 $(document).ready(function () {
   manageCustDataTbl = $("#customerMasterTbl").DataTable({
     type: "Post",
+    scrollX: true,
     ajax: {
       url: "./services/customer_fetch_all.php",
       type: "POST",
@@ -118,6 +119,8 @@ function viewCustomer(params = null) {
           $("#viewCustomerForm #amcEndDate").val(response.data[0].amc_end_date).attr("readonly", true);
           $("#viewCustomerForm #tallyStartDate").val(response.data[0].tally_st_date).attr("readonly", true);
           $("#viewCustomerForm #tallyEndDate").val(response.data[0].tally_end_date).attr("readonly", true);
+          $("#viewCustomerForm #cloudStartDate").val(response.data[0].cloud_st_date).attr("readonly", true);
+          $("#viewCustomerForm #cloudEndDate").val(response.data[0].cloud_end_date).attr("readonly", true);
           $("#viewCustomerForm #licenseType").val(response.data[0].license_typ).attr("readonly", true);
           $("#viewCustomerForm #tallyEmail").val(response.data[0].sys_email).attr("readonly", true);
           $("#viewCustomerForm #specialNote").val(response.data[0].spl_cust_note).attr("readonly", true);
@@ -173,6 +176,8 @@ function editCustomer(params = null) {
           $("#editCustomerForm #amcEndDate").val(response.data[0].amc_end_date);
           $("#editCustomerForm #tallyStartDate").val(response.data[0].tally_st_date);
           $("#editCustomerForm #tallyEndDate").val(response.data[0].tally_end_date);
+          $("#editCustomerForm #cloudStartDate").val(response.data[0].cloud_st_date);
+          $("#editCustomerForm #cloudEndDate").val(response.data[0].cloud_end_date);
           $("#editCustomerForm #licenseType").val(response.data[0].license_typ);
           $("#editCustomerForm #tallyEmail").val(response.data[0].sys_email);
           $("#editCustomerForm #specialNote").val(response.data[0].spl_cust_note);

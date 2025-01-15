@@ -40,7 +40,7 @@ if (isset($_GET['page'])) {
                     <div class="card-body fs-14">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="customerMasterTbl" class="display" style="width:100%">
+                                <table id="customerMasterTbl" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>S. No.</th>
@@ -173,6 +173,16 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group tallyService">
                                     <label for="tallyEndDate">Tally Subscription End Date </label>
                                     <input type="date" class="form-control" id="tallyEndDate" name="tallyEndDate" >
+                                </div>
+
+                                <div class="form-group view-form-group cloudService">
+                                    <label for="cloudStartDate">Cloud Start Date </label>
+                                    <input type="date" class="form-control" id="cloudStartDate" name="cloudStartDate" >
+                                </div>
+
+                                <div class="form-group view-form-group cloudService">
+                                    <label for="cloudEndDate">Cloud End Date </label>
+                                    <input type="date" class="form-control" id="cloudEndDate" name="cloudEndDate" >
                                 </div>
 
                                 <div class="form-group view-form-group tallyService">
@@ -344,6 +354,16 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group tallyService">
                                     <label for="tallyEndDate">Tally Subscription End Date <strong><code>*</code></strong></label>
                                     <input type="date" class="form-control" id="tallyEndDate" name="tallyEndDate" >
+                                </div>
+
+                                <div class="form-group view-form-group cloudService">
+                                    <label for="cloudStartDate">Cloud Start Date </label>
+                                    <input type="date" class="form-control" id="cloudStartDate" name="cloudStartDate" >
+                                </div>
+
+                                <div class="form-group view-form-group cloudService">
+                                    <label for="cloudEndDate">Cloud End Date </label>
+                                    <input type="date" class="form-control" id="cloudEndDate" name="cloudEndDate" >
                                 </div>
 
                                 <div class="form-group view-form-group tallyService">
@@ -519,6 +539,16 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group tallyService">
                                     <label for="tallyEndDate">Tally Subscription End Date <strong><code>*</code></strong></label>
                                     <input type="date" class="form-control" id="tallyEndDate" name="tallyEndDate" >
+                                </div>
+
+                                <div class="form-group view-form-group cloudService">
+                                    <label for="cloudStartDate">Cloud Start Date </label>
+                                    <input type="date" class="form-control" id="cloudStartDate" name="cloudStartDate" >
+                                </div>
+
+                                <div class="form-group view-form-group cloudService">
+                                    <label for="cloudEndDate">Cloud End Date </label>
+                                    <input type="date" class="form-control" id="cloudEndDate" name="cloudEndDate" >
                                 </div>
 
                                 <div class="form-group view-form-group tallyService">

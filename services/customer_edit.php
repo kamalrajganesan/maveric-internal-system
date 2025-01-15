@@ -29,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customerTallySubStartDate = $_POST['tallyStartDate'] ?? "";
     $customerTallySubEndDate = $_POST['tallyEndDate'] ?? "";
     $customerTallyEmail = $_POST['tallyEmail'] ?? "";
+    $customerCloudStartDate = $_POST['cloudStartDate'] ?? "";
+    $customerCloudEndDate = $_POST['cloudEndDate'] ?? "";
     $customerLicenseType = $_POST['licenseType'] ?? "";
     
     // nullable fields
@@ -67,7 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 amc_st_date = ?, amc_end_date = ?, spl_cust_note = ?, license_typ = ?, 
                 email = ?, sys_email = ?, pincode = ?, city = ?, area = ?, 
                 service_type = ?, is_active = ?, customer_uniq_code = ?, telephone = ?,
-                referredBy = ?, auditor = ?, tally_st_date = ?, tally_end_date = ?
+                referredBy = ?, auditor = ?, tally_st_date = ?, tally_end_date = ?,
+                cloud_st_date = ?, cloud_end_date = ?
             WHERE id = ?
         ";
 
@@ -82,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $customerEmail, $customerTallyEmail, $customerPincode, $customerCity, $customerArea,
                 $customerServiceType, $customerActiveStatus, $customerUniqCode, $customerTelephone,
                 $customerReferredBy, $customersAuditor, $customerTallySubStartDate, $customerTallySubEndDate, 
+
                 $cId
             ];
             $types = 'sssssssssssssssissssssi'; 
