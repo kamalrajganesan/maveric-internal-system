@@ -23,55 +23,64 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "timestamp" => date("Y-m-d H:i:s"),
         "message" => $newNotes,
     );
-    $db = new sqlHelper();
-    
-    $sql = "UPDATE ticket SET 
-        comments = CONCAT(comments, ?), 
-        service_thru = ?,
-        notes = CONCAT(notes, ?),
-        ticket.status = ?";
+
+    try {
+        $db = new sqlHelper();
         
-        if($newStatus == "Closed") {
-            $newClosedDt = date("Y-m-d H:i:s");
-            $solvedBy = $_SESSION['user']['id'];
+        $sql = "UPDATE ticket SET 
+            comments = CONCAT(comments, ?), 
+            service_thru = ?,
+            notes = CONCAT(notes, ?),
+            ticket.status = ?";
             
-            $sql .= ", closed_date = ?, solved_by = ?";
+            if($newStatus == "Closed") {
+                $newClosedDt = date("Y-m-d H:i:s");
+                $solvedBy = $_SESSION['user']['id'];
+                $sql .= ", closed_date = ?, solved_by = ?";
+            }
+            
+        $sql .= " WHERE uniq_id = ?";
+
+        $db->prepareStatement($sql);
+
+        if($newStatus == "Closed") {
+            $db->setParameters(
+                [
+                    ','.json_encode($newCommentArr), 
+                    $serviceThru, 
+                    ','.json_encode($newNotesArr),
+                    $newStatus, 
+                    $newClosedDt, 
+                    $solvedBy, 
+                    $tId
+                ], 
+                "sssssss");
+        } else {
+            $db->setParameters(
+                [
+                    ','.json_encode($newCommentArr), 
+                    $serviceThru, 
+                    ','.json_encode($newNotesArr),
+                    $newStatus, 
+                    $tId
+                ], 
+                "sssss");
         }
         
-    $sql .= " WHERE uniq_id = ?";
+        $resp = $db->execPreparedStatement();
 
-    $db->prepareStatement($sql);
-
-    if($newStatus == "Closed") {
-        $db->setParameters(
-            [
-                ','.json_encode($newCommentArr), 
-                $serviceThru, 
-                ','.json_encode($newNotesArr),
-                $newStatus, 
-                $newClosedDt, 
-                $solvedBy, 
-                $tId
-            ], 
-            "sssssss");
-    } else {
-        $db->setParameters(
-            [
-                ','.json_encode($newCommentArr), 
-                $serviceThru, 
-                ','.json_encode($newNotesArr),
-                $newStatus, 
-                $tId
-            ], 
-            "sssss");
-    }
-    
-    if($db->execPreparedStatement()) {
-        $valid['success'] = true;
-        $valid['message'] = "Successfully updated Transaction";
-    } else {
+        if($resp['success']) {
+            $valid['success'] = true;
+            $valid['message'] = "Successfully updated Transaction";
+        } else {
+            $valid['success'] = false;
+            $valid["message"] = 'Default';
+        }
+    } catch (Exception $e) {
+            
         $valid['success'] = false;
-        $valid['message'] = "Error while updating the transaction data ".$sql;
+        $valid["message"] = 'Exception';
+        $valid["detailed"] = $e->getMessage();
     }
 
     echo json_encode($valid);

@@ -12,7 +12,7 @@ class sqlHelper
         if (!session_id()) {
             session_start();
         }
-        $this->f = "sql_error.txt";
+        $this->f = "sql_error.log";
         $this->conn = createConn();        
     }
 
@@ -57,6 +57,7 @@ class sqlHelper
         file_put_contents($this->f, PHP_EOL, FILE_APPEND | LOCK_EX);
         file_put_contents($this->f, print_r("Error --------------------".PHP_EOL, true), FILE_APPEND | LOCK_EX);
         file_put_contents($this->f, print_r($param1, true), FILE_APPEND | LOCK_EX);
+        file_put_contents($this->f, PHP_EOL, FILE_APPEND | LOCK_EX);
         file_put_contents($this->f, print_r("Cause ====================".PHP_EOL, true), FILE_APPEND | LOCK_EX);
         file_put_contents($this->f, print_r($param2, true), FILE_APPEND | LOCK_EX);
         file_put_contents($this->f, PHP_EOL, FILE_APPEND | LOCK_EX);

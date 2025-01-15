@@ -1,27 +1,48 @@
 <?php
 
-require_once("../shared/php/connect.php");
-
-$connect = createConn();
+require_once("../shared/actions/db/dao.php");
+date_default_timezone_set('Asia/Kolkata');
 
 $valid = array('success' => false, 'message' => "");
 
-$tId = $_POST['ticketId'];
+// Check if the form data is posted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+    $tId = $_POST['ticketId'];
+    if($tId) {
 
-if($tId) {
+        $db = new sqlHelper();
+        $query = "UPDATE ticket set is_deleted = 1 WHERE uniq_id = ?";
 
-    $sql = "UPDATE ticket set is_deleted = 1 WHERE uniq_id = '".$tId."'";
+        try {
+            
+            // Prepare the statement
+            $stmt = $db->prepareStatement($query);
 
-    if( $connect-> query($sql) === TRUE) {
- 	    $valid['success'] = true;
-	    $valid['message'] = "Successfully removed Customer";
-    } else {
- 	    $valid['success'] = false;
- 	    $valid['message'] = "Error while removing the Customer data";
+            // Parameters for binding
+            $params = [$tId];
+            $types = 's';
+            $db->setParameters($params, $types);
+
+            // Execute the statement
+            $resp = $db->execPreparedStatement();
+            
+            if( $resp['success'] ) {
+                $valid['success'] = true;
+                $valid['message'] = "Successfully removed the Transaction";
+            } else {
+                $valid['success'] = false;
+                $valid['message'] = "Default";
+            }
+        } catch (Exception $e) {
+            
+            $valid['success'] = false;
+            $valid["message"] = 'Exception';
+            $valid["detailed"] = $e->getMessage();
+        }
+
+        echo json_encode($valid);
     }
-
-    $connect->close();
-    echo json_encode($valid);
 }
 
 ?>
