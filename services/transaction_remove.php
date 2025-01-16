@@ -3,7 +3,7 @@
 require_once("../shared/actions/db/dao.php");
 date_default_timezone_set('Asia/Kolkata');
 
-$valid = array('success' => false, 'message' => "");
+$valid = array('success' => false, 'message' => "", 'detail' => "");
 
 // Check if the form data is posted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -38,11 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             $valid['success'] = false;
             $valid["message"] = 'Exception';
-            $valid["detailed"] = $e->getMessage();
+            $valid["detail"] = $e->getMessage();
         }
 
-        echo json_encode($valid);
     }
 }
+echo json_encode($valid);
 
 ?>

@@ -1,9 +1,11 @@
 <?php
+
 // Include the database connection
 require_once("../shared/actions/db/dao.php");
 date_default_timezone_set('Asia/Kolkata');
+
 // Initialize response variable
-$response = '';
+$valid = array('success' => false, 'message' => "", 'detail' => "");
 
 // Check if the form data is posted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -39,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "timestamp" => date("Y-m-d H:i:s"),
         "message" => $comments,
     );
-
     $notesArr = array(
         "timestamp" => date("Y-m-d H:i:s"),
         "message" => $notes,
@@ -48,7 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Make sure all the required fields are filled
     if (empty($uniqId) || empty($createdBy) || empty($assignedAgentId) || empty($customerId)) {
         
-        $response = 'Some required fields are missing.';
+        $valid['message'] = 'Missing fields';
+        $valid['detail'] = 'Some mandatory fields are missing..!.';
     } else {
         
         $db = new sqlHelper();
@@ -82,15 +84,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $db->setParameters($params, $types);
 
             // Execute the statement
-            $db->execPreparedStatement();
+            $resp = $db->execPreparedStatement();
+            if($resp['success']){ 
+                
+                $valid['success'] = true;
+                $valid["message"] = 'Creation Successfully';
+            } else {
 
-            $response = array("success" => true, "message" => 'Transaction created successfully!');
+                $valid['success'] = false;
+                if(str_contains($resp["message"], 'Duplicate entry') && str_contains($resp["message"], 'customer_uniq_code')) {
+                    $valid["message"] = 'Duplicate entry - Customer Serial Number';
+                } else {
+                    $valid["message"] = 'Default';
+                }
+            }
         } catch (Exception $e) {
-            $response = 'Error: ' . $e->getMessage();
+            $valid["message"] = 'Exception';
+            $valid["detail"] = $e->getMessage();
         }
     }
 } else {
-    $response = 'Invalid request method';
+    $valid["message"] = 'Invalid Request';
 }
 
 // Return the response as JSON

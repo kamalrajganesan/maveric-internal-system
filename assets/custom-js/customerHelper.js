@@ -37,6 +37,9 @@ $(document).ready(function () {
             case "Mandatory":
               errorMessage = "Please make sure you filled all the mandatory fields...!"
               break;
+            case "Invalid Request":
+              errorMessage = "Invalid request...!"
+              break;
             case "Exception":
               errorMessage = "An error occured while creating customer. Please contact system admin...!"
               break;
@@ -210,6 +213,9 @@ function editCustomer(params = null) {
                 switch (response.message) {
                   case "Duplicate entry - Customer Serial Number":
                     errorMessage = "Customer Serial number is repeated...!"
+                    break;
+                  case "Invalid Request":
+                    errorMessage = "Invalid request...!"
                     break;
                   case "Mandatory":
                     errorMessage = "Please make sure you filled all the mandatory fields...!"

@@ -34,9 +34,23 @@ $(document).ready(function () {
           $("#addTransactionForm")[0].reset();
           $('#addTransactionModal').modal('hide');
           manageTicketDataTbl.ajax.reload(null, true);
-          
         } else {
-          alert("Failed to Add transaction");
+          let errorMessage = "";
+          switch (response.message) {            
+            case "Mandatory":
+              errorMessage = "Please make sure you filled all the mandatory fields...!"
+              break;
+            case "Exception":
+              errorMessage = "An error occured while creating a new transaction. Please contact system admin...!"
+              break;
+            case "Invalid Request":
+              errorMessage = "Invalid request...!"
+              break;
+            default:
+              errorMessage = "Failed to create Transaction. Please contact system admin!"
+              break;
+          }
+          alert(errorMessage);
         }
       },
     });
@@ -72,6 +86,8 @@ function setCustomersDropdown(param) {
     url: "./services/customer_fetch_few_details.php",
     dataType: "json",
     success: function (response) {
+      console.log("setCustomersDropdown: ", response);
+      console.log("setCustomersDropdown: ", currentTransaction);
       if (response.success == true) {
         var customerDropdown;
         if(param == 'add') {
@@ -165,7 +181,8 @@ function editTicket(params = null) {
           currentTransaction = response.data[0];
 
           setCustomersDropdown('edit');
-          $("#currentTransactionCode").text(response.data[0].uniq_id);
+
+          $("#currentEditTransactionCode").text(response.data[0].uniq_id);
           $("#editTransactionForm #problemStmt").val(response.data[0].problem_stmt);
           $("#editTransactionForm #problemDesc").val(response.data[0].problem_desc);
           let commentsHtml = '';
@@ -244,7 +261,7 @@ function viewTicket(params = null) {
           setAgentsDropdowns('view');
           currentTransaction = response.data[0];
 
-          $("#currentTransactionCode").text(response.data[0].uniq_id);
+          $("#currentViewTransactionCode").text(response.data[0].uniq_id);
           $("#viewTransactionForm #problemStmt").val(response.data[0].problem_stmt);
           $("#viewTransactionForm #problemDesc").val(response.data[0].problem_desc);
           let commentsHtml = '';

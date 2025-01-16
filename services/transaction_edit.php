@@ -3,6 +3,8 @@
 require_once("../shared/actions/db/dao.php");
 date_default_timezone_set('Asia/Kolkata');
 
+$valid = array('success' => false, 'message' => "", 'detail' => "");
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if(!session_id()) {

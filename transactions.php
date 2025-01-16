@@ -284,7 +284,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="editTransactionModalLabel">Edit Transaction Details of <strong id="currentTransactionCode"></strong> </h4>
+                    <h4 class="modal-title" id="editTransactionModalLabel">Edit Transaction Details of <strong id="currentEditTransactionCode"></strong> </h4>
                     <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>

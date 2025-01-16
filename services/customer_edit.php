@@ -85,10 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $customerEmail, $customerTallyEmail, $customerPincode, $customerCity, $customerArea,
                 $customerServiceType, $customerActiveStatus, $customerUniqCode, $customerTelephone,
                 $customerReferredBy, $customersAuditor, $customerTallySubStartDate, $customerTallySubEndDate, 
-
+                $customerCloudStartDate, $customerCloudEndDate,
                 $cId
             ];
-            $types = 'sssssssssssssssissssssi'; 
+            $types = 'sssssssssssssssissssssssi'; 
             $db->setParameters($params, $types);
 
             // Execute the statement
