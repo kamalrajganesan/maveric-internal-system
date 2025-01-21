@@ -45,14 +45,12 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 <table id="transactionMasterTbl" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Created On</th>
+                                            <th>Last Updated Date</th>
                                             <th>Transaction ID</th>
                                             <th>Issue</th>
                                             <th>Company</th>
-                                            <th>Service type</th>
-                                            <th>Created By</th>
-                                            <th>Last Updated By</th>
                                             <th>Status</th>
+                                            <th>Created On</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -198,14 +196,21 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <strong> Past Comments </strong>
-                                    <div id="pastCommentsOfThisTransaction"></div>
+                                    <label for="pastComments">Past Comments</label>
+                                    <div class="list-wrapper">
+                                        <ul class="todo-list todo-list-rounded" id="pastCommentsOfThisTransaction">
+                                        </ul>
+                                    </div>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <strong>  Past Notes </strong>
-                                    <div id="pastNotesOfThisTransaction"></div>
+                                    <label for="pastNotes">Past Notes</label>
+                                    <div class="list-wrapper">
+                                        <ul class="todo-list todo-list-rounded" id="pastNotesOfThisTransaction">
+                                        </ul>
+                                    </div>
                                 </div>
+
                             </div>
 
                             <div class="col-sm-5">       
@@ -213,7 +218,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 <div class="form-group view-form-group">
                                     <label for="serviceType">Service Type</label>
                                     <select class="form-control" id="serviceType" name="serviceType" aria-readonly="true" disabled>
-                                        <option value="" hidden selected>Select Service <strong><code>*</code></strong></option>
+                                        <option value="" hidden selected>Select Service</option>
                                         <option value="AMC">AMC</option>
                                         <option value="Tally">Tally</option>
                                         <option value="Cloud">Cloud</option>
@@ -314,13 +319,19 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <strong> Past Comments </strong>
-                                    <div id="pastCommentsOfThisTransaction"></div>
+                                    <label for="pastComments">Past Comments</label>
+                                    <div class="list-wrapper">
+                                        <ul class="todo-list todo-list-rounded" id="pastCommentsOfThisTransaction">
+                                        </ul>
+                                    </div>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <strong> Past Notes </strong>
-                                    <div id="pastNotesOfThisTransaction"></div>
+                                    <label for="pastNotes">Past Notes</label>
+                                    <div class="list-wrapper">
+                                        <ul class="todo-list todo-list-rounded" id="pastNotesOfThisTransaction">
+                                        </ul>
+                                    </div>
                                 </div>
 
                             </div>
@@ -356,7 +367,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 <div class="form-group view-form-group">
                                     <label for="status">Transaction Status <strong><code>*</code></strong></label>
                                     <select class="form-control required" id="status" name="status" required>
-                                        <option value="">Select Status</option>
+                                        <option value="" hidden>Select Status</option>
                                         <option value="New">New</option>
                                         <option value="Contacted/Pending">Contacted/ Pending</option>
                                         <option value="Following Up">Following Up</option>

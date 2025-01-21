@@ -26,9 +26,11 @@ class SessUsers {
      
         $this->unsetSession();
 
+
         $agent['nm'] = $usr["nm"];
         $agent['email'] = $usr["email"];
         $agent['phone'] = $usr["phone"];
+        $agent['id'] = "0";
      
         $_SESSION['user'] = $agent;
         $_SESSION['userType'] = "admin";

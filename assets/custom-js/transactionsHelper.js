@@ -5,6 +5,7 @@ $(document).ready(function () {
   manageTicketDataTbl = $("#transactionMasterTbl").DataTable({
     method: "POST",
     scrollX: true,
+    order: [[0, 'desc']],    
     ajax: {
       url: "./services/transaction_fetch_all.php",
       type: "POST",
@@ -12,7 +13,7 @@ $(document).ready(function () {
         type: transaction_type,
         value: transaction_value
       },
-      dataType: "json",
+      dataType: "json"
     },
   });
 
@@ -149,8 +150,8 @@ function setAgentsDropdowns(param) {
               .text(agent.name)
           );
         });
-        agentDropdown1.val(currentTransaction.assignd_agent_id).attr('disabled', true);
-        agentDropdown2.val(currentTransaction.updated_by).attr('disabled', true);
+        agentDropdown1.val(currentTransaction.updated_by).attr('disabled', true);
+        agentDropdown2.val(currentTransaction.assignd_agent_id).attr('disabled', true);
       } else {
         alert("Failed to fetch agent details");
       }
@@ -185,17 +186,35 @@ function editTicket(params = null) {
           $("#currentEditTransactionCode").text(response.data[0].uniq_id);
           $("#editTransactionForm #problemStmt").val(response.data[0].problem_stmt);
           $("#editTransactionForm #problemDesc").val(response.data[0].problem_desc);
+          
           let commentsHtml = '';
           let comments = '['+response.data[0].comments+']';
           JSON.parse(comments).forEach(function(comment) {
-            commentsHtml += '<div><strong>' + comment.timestamp + ':</strong> ' + comment.message + '</div>';
+            commentsHtml += '<li class="d-block">'
+            commentsHtml += '<div class="form-check w-100">'
+            commentsHtml += '<label class="form-check-label m-0">'
+            commentsHtml += comment.message +' <i class="input-helper rounded"></i></label>'
+            commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-warning me-3"> '+ comment.status +' </div>'
+            commentsHtml += '<div class="text-small me-3"> On <strong>'+ comment.date +'</strong></div>'
+            commentsHtml += '<div class="text-small me-3"> By <strong>'+ comment.commentBy +'</strong></div></div></div></li>'
           });
           $("#editTransactionForm #pastCommentsOfThisTransaction").html(commentsHtml);
+
           let notesHtml = '';
-          let notes ='['+response.data[0].notes+']'; 
-          JSON.parse(notes).forEach(function(note) {
-            notesHtml += '<div><strong>' + note.timestamp + ':</strong> ' + note.message + '</div>';
+          let notes = '['+response.data[0].notes+']';
+          JSON.parse(notes).forEach(function(notes) {
+            if(notes.message == "") {
+              return;
+            }
+            notesHtml += '<li class="d-block">'
+            notesHtml += '<div class="form-check w-100">'
+            notesHtml += '<label class="form-check-label m-0">'
+            notesHtml += notes.message +' <i class="input-helper rounded"></i></label>'
+            notesHtml += '<div class="text-small me-3"> On <strong>'+ notes.date +'</strong></div>'
+            notesHtml += '<div class="text-small me-3"> By <strong>'+ notes.noteBy +'</strong></div></div></div></li>'
           });
+          $("#editTransactionForm #pastNotesOfThisTransaction").html(notesHtml);
+
           $("#editTransactionForm #pastNotesOfThisTransaction").html(notesHtml);
           $("#editTransactionForm #status").val(response.data[0].status);
           $("#editTransactionForm #serviceType").val(response.data[0].service_typ);
@@ -228,7 +247,25 @@ function editTicket(params = null) {
                   $("#editTransactionModal").modal("hide");
                   manageTicketDataTbl.ajax.reload(null, true);
                 } else {
-                  alert("Failed to Edit Transaction...!");
+                  let errorMessage = "";
+                  switch (response.message) {
+                    case "Duplicate entry ":
+                      errorMessage = "An Entry is repeated...!"
+                      break;
+                    case "Invalid Request":
+                      errorMessage = "Invalid request...!"
+                      break;
+                    case "Mandatory":
+                      errorMessage = "Please make sure you filled all the mandatory fields...!"
+                      break;
+                    case "Exception":
+                      errorMessage = "An error occured while creating customer. Please contact system admin...!"
+                      break;
+                    default:
+                      errorMessage = "Failed to create customer. Please contact system admin!"
+                      break;
+                  }
+                  alert(errorMessage);
                 }
               },
               error: function () {
@@ -264,26 +301,40 @@ function viewTicket(params = null) {
           $("#currentViewTransactionCode").text(response.data[0].uniq_id);
           $("#viewTransactionForm #problemStmt").val(response.data[0].problem_stmt);
           $("#viewTransactionForm #problemDesc").val(response.data[0].problem_desc);
+
           let commentsHtml = '';
           let comments = '['+response.data[0].comments+']';
-          console.log("comments: ", comments, typeof comments);
-          console.log("response.data[0].comments: ", response.data[0].comments, typeof response.data[0].comments);
           JSON.parse(comments).forEach(function(comment) {
-            commentsHtml += '<div><strong>' + comment.timestamp + ':</strong> ' + comment.message + '</div>';
+            commentsHtml += '<li class="d-block">'
+            commentsHtml += '<div class="form-check w-100">'
+            commentsHtml += '<label class="form-check-label m-0">'
+            commentsHtml += comment.message +' <i class="input-helper rounded"></i></label>'
+            commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-warning me-3"> '+ comment.status +' </div>'
+            commentsHtml += '<div class="text-small me-3"> On <strong>'+ comment.date +'</strong></div>'
+            commentsHtml += '<div class="text-small me-3"> By <strong>'+ comment.commentBy +'</strong></div></div></div></li>'
           });
           $("#viewTransactionForm #pastCommentsOfThisTransaction").html(commentsHtml);
+
           let notesHtml = '';
-          let notes ='['+response.data[0].notes+']'; 
-          JSON.parse(notes).forEach(function(note) {
-            notesHtml += '<div><strong>' + note.timestamp + ':</strong> ' + note.message + '</div>';
+          let notes = '['+response.data[0].notes+']';
+          JSON.parse(notes).forEach(function(notes) {
+            if(notes.message == "") {
+              return;
+            }
+            notesHtml += '<li class="d-block">'
+            notesHtml += '<div class="form-check w-100">'
+            notesHtml += '<label class="form-check-label m-0">'
+            notesHtml += notes.message +' <i class="input-helper rounded"></i></label>'
+            notesHtml += '<div class="text-small me-3"> On <strong>'+ notes.date +'</strong></div>'
+            notesHtml += '<div class="text-small me-3"> By <strong>'+ notes.noteBy +'</strong></div></div></div></li>'
           });
           $("#viewTransactionForm #pastNotesOfThisTransaction").html(notesHtml);
+
           $("#viewTransactionForm #status").val(response.data[0].status);
           $("#viewTransactionForm #serviceType").val(response.data[0].service_typ);
           $("#viewTransactionForm #serviceThrough").val(response.data[0].service_thru);
           
           $("#viewTransactionForm #createdDate").val(response.data[0].created_on).attr('disabled', true);
-          $("#viewTransactionForm #AssignedAgent").val(response.data[0].assignd_agent_id).attr('disabled', true);
           $("#viewTransactionForm #lastUpdatedOn").val(response.data[0].updated_on).attr('disabled', true);
           $("#viewTransactionForm #lastUpdatedBy").val(response.data[0].updated_by).attr('disabled', true);
 

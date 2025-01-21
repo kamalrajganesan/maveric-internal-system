@@ -10,18 +10,28 @@ function getCustomerDetails($dbConn, $param) {
     $assocCustomer = "SELECT * from cust_mstr WHERE is_deleted = 0 and id = ?";
 
     $dbConn->prepareStatement($assocCustomer);
-    $dbConn->setParameters($param, 'i');
+    $dbConn->setParameters([$param], 'i');
 
-    $dbConn->execPreparedStatement();
-    $cSQLResultSet = $dbConn->getResultSet();
-    $cValid = array('success' => false, 'message' => "");
-    if ($cSQLResultSet->num_rows > 0) {
-        $cValid['success'] = true;
-        $cValid['data'] = $cSQLResultSet->fetch_assoc();
-        $cValid['message'] = "Data found.";
+    $resp = $dbConn->execPreparedStatement();
+    if($resp['success'] == TRUE) {
+        
+        $cSQLResultSet = $dbConn->getResultSet();
+        $cValid = array('success' => false, 'message' => "");
+        if ($cSQLResultSet->num_rows > 0) {
+            
+            while ($cRow = $cSQLResultSet->fetch_assoc()) {
+                $cData[] = $cRow;
+            }
+            $cValid['success'] = true;
+            $cValid['data'] = $cData;
+            $cValid['message'] = "Data found.";
+        } else {
+            
+            $cValid['success'] = false;
+            $cValid['message'] = "Default";
+        }
     } else {
-        $cValid['success'] = false;
-        $cValid['message'] = "Default";
+
     }
     return $cValid;
 }
@@ -41,10 +51,15 @@ if(isset($_POST['tId'])) {
         if( $resp['success'] ) {
             $data = array();
             if ($transacFetchSingleSQLResultSet->num_rows > 0) {
+
+                $data = [];
+                while ($row = $transacFetchSingleSQLResultSet->fetch_assoc()) {
+                    $data[] = $row;
+                }
                 $valid['success'] = true;
-                $valid['data'] = $transacFetchSingleSQLResultSet->fetch_assoc();
+                $valid['data'] = $data;
                 $valid['message'] = "Data found.";
-                $valid['cData'] = getCustomerDetails($db, $valid['data']['customer_id']);
+                $valid['cData'] = getCustomerDetails($db, $valid['data'][0]['customer_id']);
             } else {
                 $valid['success'] = false;
                 $valid['message'] = "Default";

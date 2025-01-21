@@ -227,6 +227,7 @@ function editCustomer(params = null) {
                     errorMessage = "Failed to create customer. Please contact system admin!"
                     break;
                 }
+                alert(errorMessage);
               }
             },
             error: function () {

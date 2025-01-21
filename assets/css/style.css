@@ -30458,10 +30458,17 @@ dl li {
 .fs-12 {
   font-size: 12px;
 }
-.view-form-group label {
+.view-form-group > label {
   margin-bottom: 0rem;
   font-weight: 600;
 }
 select.form-control {
   color: #000 !important
+}
+.view-form-group input[type=checkbox] + .input-helper:before {
+  display: none;
+}
+.list-wrapper ul li:last-child {
+  padding: 0.4rem 0 !important;
+  border-bottom: none;
 }

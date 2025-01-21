@@ -14,6 +14,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         session_start();
     }
 
+    // print_r($_POST);
+
+    // mandatory fields
+    $customerId = isset($_POST['customerId']) ? htmlspecialchars($_POST['customerId']) : 0;
+    $problemStmt = isset($_POST['problemStmt']) ? htmlspecialchars($_POST['problemStmt']) : '';
+    $serviceType = isset($_POST['serviceType']) ? htmlspecialchars($_POST['serviceType']) : '';
+    $serviceThru = isset($_POST['serviceThrough']) ? htmlspecialchars($_POST['serviceThrough']) : '';
+    $comments = isset($_POST['comments']) ? htmlspecialchars($_POST['comments']) : '';
+    $status = "New";    // Default status is 'New' as it is a new transaction
+
+    // nullable fields
+    $problemDesc = isset($_POST['problemDesc']) ? htmlspecialchars($_POST['problemDesc']) : '';
+    $notes = isset($_POST['notes']) ? htmlspecialchars($_POST['notes']) : '';
+
+
     function generateSecureNumericUniqueId()
     {
         $uniqueId = substr(abs(crc32(uniqid())), 0, 5); // Generate unique hash and take the first 5 digits
@@ -24,26 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $uniqId = generateSecureNumericUniqueId();
     $createdBy = $_SESSION['user']['id'];
     $assignedAgentId = $createdBy;
-    $customerId = isset($_POST['customerId']) ? $_POST['customerId'] : 0;
-    $comments = isset($_POST['comments']) ? htmlspecialchars($_POST['comments']) : '';
-    $problemDesc = isset($_POST['problemDesc']) ? htmlspecialchars($_POST['problemDesc']) : '';
     
-    // $newRequirement = isset($_POST['newRequirement']) ? htmlspecialchars($_POST['newRequirement']) : '';
-    
-    $status = "New";    // Default status as it is a new transaction
-    $problemStmt = isset($_POST['problemStmt']) ? htmlspecialchars($_POST['problemStmt']) : '';
-    $serviceType = isset($_POST['serviceType']) ? htmlspecialchars($_POST['serviceType']) : '';
-    $serviceThru = isset($_POST['serviceThrough']) ? htmlspecialchars($_POST['serviceThrough']) : '';
-    $isUnderAMC = isset($_POST['isUnderAMC']) ? (int)$_POST['isUnderAMC'] : 0;
-    $notes = isset($_POST['notes']) ? htmlspecialchars($_POST['notes']) : '';
-
     $commentsArr = array(
-        "timestamp" => date("Y-m-d H:i:s"),
+        "date" => date("Y-m-d H:i:s"),
         "message" => $comments,
+        "status" => $status,
+        "commentBy" => $_SESSION['user']["nm"]
     );
     $notesArr = array(
-        "timestamp" => date("Y-m-d H:i:s"),
+        "date" => date("Y-m-d H:i:s"),
         "message" => $notes,
+        "noteBy" => $_SESSION['user']["nm"]
     );
 
     // Make sure all the required fields are filled
@@ -60,12 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 uniq_id, assignd_agent_id, created_by, customer_id, 
                 comments, problem_desc, status, problem_stmt, 
                 service_typ, notes, is_active, is_deleted, 
-                service_thru
+                service_thru, updated_by
             ) VALUES (
                 ?, ?, ?, ?, 
                 ?, ?, ?, ?, 
                 ?, ?, 1, 0, 
-                ?
+                ?, ?
             )";
 
         try {
@@ -77,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $uniqId, $assignedAgentId, $createdBy, $customerId,
                 json_encode($commentsArr), $problemDesc, $status, $problemStmt,
                 $serviceType, json_encode($notesArr),
-                $serviceThru
+                $serviceThru, $createdBy
             ];
 
             $types = 'sisisssssss'; 
@@ -88,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if($resp['success']){ 
                 
                 $valid['success'] = true;
-                $valid["message"] = 'Creation Successfully';
+                $valid["message"] = 'Transaction created Successfully';
             } else {
 
                 $valid['success'] = false;
@@ -108,4 +114,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Return the response as JSON
-echo json_encode($response);
+echo json_encode($valid);

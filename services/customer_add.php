@@ -16,32 +16,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // print_r($_POST);
 
     // mandatory fields
-    $customerUniqCode = $_POST['customerUniqCode'];
-    $customerCompanyName = $_POST['companyName'];
-    $customerPhone = $_POST['contact'];
-    $customerEmail = $_POST['email'];
-    $customerPincode = $_POST['pincode'];
-    $customerCity = $_POST['city'];
-    $customerServiceType = implode(',', $_POST['serviceType']);
+    $customerUniqCode = isset($_POST['customerUniqCode'])? htmlspecialchars($_POST['customerUniqCode']) : "";
+    $customerCompanyName = isset($_POST['companyName'])? htmlspecialchars($_POST['']) : "";
+    $customerPhone = isset($_POST['contact'])? htmlspecialchars($_POST['']) : "";
+    $customerEmail = isset($_POST['email'])? htmlspecialchars($_POST['']) : "";
+    $customerPincode = isset($_POST['pincode'])? htmlspecialchars($_POST['']) : "";
+    $customerCity = isset($_POST['city'])? htmlspecialchars($_POST['']) : "";
+    $customerServiceType = (isset($_POST['serviceType']))? htmlspecialchars(implode(',', $_POST['serviceType'])) : "";
     
     // service-type-option-based fields
-    $customerAMCStartDate = $_POST['amcStartDate'];
-    $customerAMCEndDate = $_POST['amcEndDate'];
-    $customerTallySubStartDate = $_POST['tallyStartDate'];
-    $customerTallySubEndDate = $_POST['tallyEndDate'];
-    $customerCloudStartDate = $_POST['cloudStartDate'];
-    $customerCloudEndDate = $_POST['cloudEndDate'];
-    $customerTallyEmail = $_POST['tallyEmail'];
-    $customerLicenseType = $_POST['licenseType'];
+    $customerAMCStartDate = isset($_POST['amcStartDate'])? htmlspecialchars($_POST['amcStartDate']) : "";
+    $customerAMCEndDate = isset($_POST['amcEndDate'])? htmlspecialchars($_POST['amcEndDate']) : "";
+    $customerTallySubStartDate = isset($_POST['tallyStartDate'])? htmlspecialchars($_POST['tallyStartDate']) : "";
+    $customerTallySubEndDate = isset($_POST['tallyEndDate'])? htmlspecialchars($_POST['tallyEndDate']) : "";
+    $customerCloudStartDate = isset($_POST['cloudStartDate'])? htmlspecialchars($_POST['cloudStartDate']) : "";
+    $customerCloudEndDate = isset($_POST['cloudEndDate'])? htmlspecialchars($_POST['cloudEndDate']) : "";
+    $customerTallyEmail = isset($_POST['tallyEmail'])? htmlspecialchars($_POST['tallyEmail']) : "";
+    $customerLicenseType = isset($_POST['licenseType'])? htmlspecialchars($_POST['licenseType']) : "";
     
     // nullable fields
-    $customerName = $_POST['customerName'];
-    $customerTelephone = $_POST['telephone'];
-    $customerAddress = $_POST['address'];
-    $customerArea = $_POST['area'];
-    $customerSpecialNote = $_POST['specialNote'];
-    $customerReferredBy = $_POST['referredBy'];
-    $customersAuditor = $_POST['auditor'];
+    $customerName = isset($_POST['customerName'])? htmlspecialchars($_POST['customerName']) : "";
+    $customerTelephone = isset($_POST['telephone'])? htmlspecialchars($_POST['telephone']) : "";
+    $customerAddress = isset($_POST['address'])? htmlspecialchars($_POST['address']) : "";
+    $customerArea = isset($_POST['area'])? htmlspecialchars($_POST['area']) : "";
+    $customerSpecialNote = isset($_POST['specialNote'])? htmlspecialchars($_POST['specialNote']) : "";
+    $customerReferredBy = isset($_POST['referredBy'])? htmlspecialchars($_POST['referredBy']) : "";
+    $customersAuditor = isset($_POST['auditor'])? htmlspecialchars($_POST['auditor']) : "";
 
     // auto generating fields
     $createdBy = $_SESSION['user']['id'];

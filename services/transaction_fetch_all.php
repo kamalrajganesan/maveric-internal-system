@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ticket.uniq_id,
         ticket.problem_stmt,
         ticket.created_on,
+        ticket.updated_on,
         ticket.status,
         CONCAT(cust_mstr.company_nm) AS company_nm,
         ticket.service_typ,
@@ -78,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } 
 
-    $FetchAllSQL .= " ORDER BY ticket.created_on DESC";
+    // $FetchAllSQL .= " ORDER BY ticket.created_on DESC";
 
     $db->prepareStatement($FetchAllSQL);
     $resp = $db->execPreparedStatement();
@@ -105,16 +106,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 ';
 
+                $created_date = new DateTime($row['created_on']);
+
                 // Adjust the data array to reflect the columns in the ticket table
                 $data[] = array(
-                    $row['created_on'],  
+                    $row['updated_on'],  
                     $row['uniq_id'], 
                     $row['problem_stmt'],  
                     $row['company_nm'],  
-                    $row['service_typ'],  
-                    $row['created_by_name'], 
-                    $row['updated_by_name'], 
-                    $row['status'],  
+                    $row['status'],
+                    $created_date->format('Y-m-d'),
                     $btn  
                 );
             }

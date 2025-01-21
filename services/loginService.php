@@ -12,9 +12,11 @@ if (!empty($u) && !empty($p)) {
     
     $db = new sqlHelper();
     $query = "SELECT * FROM agent WHERE email = ? AND pass_code = ?";
+    
     $db->prepareStatement($query);
     $db->setParameters([$u, $p], 'ss');
     $db->execPreparedStatement();
+    
     $resultSet = $db->getResultSet();
 
     if ($resultSet->num_rows > 0) {
