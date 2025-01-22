@@ -37,6 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "message" => $newNotes,
         "noteBy" => $_SESSION['user']['nm']
     );
+    $updatedBy = $_SESSION['user']['id'];
+
 
     $validationFlag = true;
 
@@ -57,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 comments = CONCAT(comments, ?), 
                 service_thru = ?,
                 notes = CONCAT(notes, ?),
-                ticket.status = ?";
+                ticket.status = ?,
+                updated_by = ?";
                 
             if($newStatus == "Closed") {
                 $newClosedDt = date("Y-m-d H:i:s");
@@ -78,9 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $newStatus, 
                         $newClosedDt, 
                         $solvedBy, 
+                        $updatedBy,
                         $tId
                     ], 
-                    "sssssss");
+                    "ssssssss");
             } else {
                 $db->setParameters(
                     [
@@ -88,9 +92,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $serviceThru, 
                         ','.json_encode($newNotesArr),
                         $newStatus, 
+                        $updatedBy,
                         $tId
                     ], 
-                    "sssss");
+                    "ssssss");
             }
             
             $resp = $db->execPreparedStatement();

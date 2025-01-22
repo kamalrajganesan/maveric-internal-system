@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $serviceThru, $createdBy
             ];
 
-            $types = 'sisisssssss'; 
+            $types = 'sisisssssssi'; 
             $db->setParameters($params, $types);
 
             // Execute the statement

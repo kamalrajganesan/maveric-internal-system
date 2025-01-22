@@ -106,7 +106,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 ';
 
-                $created_date = new DateTime($row['created_on']);
+                switch ($row['status']) {
+                    case "New":
+                      $statusUI = '<div class="d-flex mt-2"><div class="badge badge-opacity-info me-3"> '.$row["status"].' </div>';
+                      break;
+                    case "Contacted/Pending":
+                      $statusUI = '<div class="d-flex mt-2"><div class="badge badge-opacity-warning me-3"> '.$row["status"].' </div>';
+                      break;
+                    case "Following Up":
+                      $statusUI = '<div class="d-flex mt-2"><div class="badge badge-opacity-purple me-3"> '.$row["status"].' </div>';
+                      break;
+                    case "Closed":
+                      $statusUI = '<div class="d-flex mt-2"><div class="badge badge-opacity-success me-3"> '.$row["status"].' </div>';
+                      break;                  
+                    default:
+                      $statusUI = '<div class="d-flex mt-2"><div class="badge badge-opacity-light me-3"> '.$row["status"].' </div>';
+                      break;
+                  }
+
+                $cDate = new DateTime($row['created_on']);
+                $created_date = '
+                    <div style="text-align: right">
+                        <span>' . $cDate->format('Y-m-d') . '</span>
+                        <br>
+                        <small>' . $cDate->diff(new DateTime())->days . ' days ago</small>
+                    </div>
+                '; 
+
 
                 // Adjust the data array to reflect the columns in the ticket table
                 $data[] = array(
@@ -114,8 +140,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $row['uniq_id'], 
                     $row['problem_stmt'],  
                     $row['company_nm'],  
-                    $row['status'],
-                    $created_date->format('Y-m-d'),
+                    $statusUI,
+                    $created_date,
                     $btn  
                 );
             }

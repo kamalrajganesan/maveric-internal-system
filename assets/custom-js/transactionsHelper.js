@@ -87,8 +87,6 @@ function setCustomersDropdown(param) {
     url: "./services/customer_fetch_few_details.php",
     dataType: "json",
     success: function (response) {
-      console.log("setCustomersDropdown: ", response);
-      console.log("setCustomersDropdown: ", currentTransaction);
       if (response.success == true) {
         var customerDropdown;
         if(param == 'add') {
@@ -168,6 +166,57 @@ function onClickAddTransaction() {
   setCustomersDropdown('add');
 }
 
+function setCustomerDetails(customer, paramType) {
+  var customerDetailsHTML = `
+    <div class="row justify-content-center">
+    <div class="col-md-5"> <p> <strong>Customer Name</strong>: ${customer.customer_nm} </p> </div>
+      <div class="col-md-5"> <p> <strong>Customer Company</strong>: ${customer.company_nm} </p> </div>
+    </div>
+    <div class="row justify-content-center">
+    <div class="col-md-5"> <p> <strong>Contact</strong>: ${customer.contact} </p> </div>
+    <div class="col-md-5"> <p> <strong>Service Type</strong>: ${customer.service_type} </p> </div>
+    </div>
+    <div class="row justify-content-center">
+    <div class="col-md-5"> <p> <strong>Telephone</strong>: ${customer.telephone} </p> </div>
+    <div class="col-md-5"> <p> <strong>AMC Start Date</strong>: ${customer.amc_st_date} </p> </div>
+    </div>
+    <div class="row justify-content-center">
+    <div class="col-md-5"> <p> <strong>Communication Email</strong>: ${customer.email} </p> </div>
+    <div class="col-md-5"> <p> <strong>AMC End Date</strong>: ${customer.amc_end_date} </p> </div>
+    </div>
+    <div class="row justify-content-center">
+    <div class="col-md-5"> <p> <strong>Address</strong>: ${customer.address_ln} </p> </div>
+    <div class="col-md-5"> <p> <strong>Tally Subscription Start Date</strong>: ${customer.tally_st_date} </p> </div>
+    </div>
+    <div class="row justify-content-center">
+    <div class="col-md-5"> <p> <strong>Area</strong>: ${customer.area} </p> </div>
+    <div class="col-md-5"> <p> <strong>Tally Subscription End Date</strong>: ${customer.tally_end_date} </p> </div>
+    </div>
+    <div class="row justify-content-center">
+    <div class="col-md-5"> <p> <strong>City</strong>: ${customer.city} </p> </div>
+    <div class="col-md-5"> <p> <strong>Tally Email</strong>: ${customer.sys_email} </p> </div>
+    </div>
+    <div class="row justify-content-center">
+    <div class="col-md-5"> <p> <strong>Pincode</strong>: ${customer.pincode} </p> </div>
+    <div class="col-md-5"> <p> <strong>Cloud Start Date</strong>: ${customer.cloud_st_date} </p> </div>
+    </div>
+    <div class="row justify-content-center">
+    <div class="col-md-5"> <p> <strong>License Type</strong>: ${customer.license_typ} </p> </div>
+      <div class="col-md-5"> <p> <strong>Cloud End Date</strong>: ${customer.cloud_end_date} </p> </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-5"> <p> <strong>Customer Uniq Code</strong>: ${customer.customer_uniq_code} </p> </div>
+      <div class="col-md-5"> </div>
+    </div>
+  `;
+
+  if(paramType == "view")
+    $("#viewTransactionModal #customerDetails").html(customerDetailsHTML);
+  else 
+    $("#editTransactionModal #customerDetails").html(customerDetailsHTML);
+
+}
+
 function editTicket(params = null) {
 
   if (params) {
@@ -182,6 +231,7 @@ function editTicket(params = null) {
           currentTransaction = response.data[0];
 
           setCustomersDropdown('edit');
+          setCustomerDetails(response.cData.data[0], "edit");
 
           $("#currentEditTransactionCode").text(response.data[0].uniq_id);
           $("#editTransactionForm #problemStmt").val(response.data[0].problem_stmt);
@@ -194,7 +244,24 @@ function editTicket(params = null) {
             commentsHtml += '<div class="form-check w-100">'
             commentsHtml += '<label class="form-check-label m-0">'
             commentsHtml += comment.message +' <i class="input-helper rounded"></i></label>'
-            commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-warning me-3"> '+ comment.status +' </div>'
+            switch (comment.status) {
+              case "New":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-info me-3"> '+ comment.status +' </div>'
+                break;
+              case "Contacted/Pending":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-warning me-3"> '+ comment.status +' </div>'
+                break;
+              case "Following Up":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-purple me-3"> '+ comment.status +' </div>'
+                break;
+              case "Closed":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-success me-3"> '+ comment.status +' </div>'
+                break;
+            
+              default:
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-light me-3"> '+ comment.status +' </div>'
+                break;
+            }
             commentsHtml += '<div class="text-small me-3"> On <strong>'+ comment.date +'</strong></div>'
             commentsHtml += '<div class="text-small me-3"> By <strong>'+ comment.commentBy +'</strong></div></div></div></li>'
           });
@@ -297,6 +364,8 @@ function viewTicket(params = null) {
           setCustomersDropdown('view');
           setAgentsDropdowns('view');
           currentTransaction = response.data[0];
+          
+          setCustomerDetails(response.cData.data[0], "view");
 
           $("#currentViewTransactionCode").text(response.data[0].uniq_id);
           $("#viewTransactionForm #problemStmt").val(response.data[0].problem_stmt);
@@ -309,7 +378,23 @@ function viewTicket(params = null) {
             commentsHtml += '<div class="form-check w-100">'
             commentsHtml += '<label class="form-check-label m-0">'
             commentsHtml += comment.message +' <i class="input-helper rounded"></i></label>'
-            commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-warning me-3"> '+ comment.status +' </div>'
+            switch (comment.status) {
+              case "New":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-info me-3"> '+ comment.status +' </div>'
+                break;
+              case "Contacted/Pending":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-warning me-3"> '+ comment.status +' </div>'
+                break;
+              case "Following Up":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-purple me-3"> '+ comment.status +' </div>'
+                break;
+              case "Closed":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-success me-3"> '+ comment.status +' </div>'
+                break;
+              default:
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-light me-3"> '+ comment.status +' </div>'
+                break;
+            }
             commentsHtml += '<div class="text-small me-3"> On <strong>'+ comment.date +'</strong></div>'
             commentsHtml += '<div class="text-small me-3"> By <strong>'+ comment.commentBy +'</strong></div></div></div></li>'
           });

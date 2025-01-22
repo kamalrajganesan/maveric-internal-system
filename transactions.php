@@ -174,7 +174,13 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
 
                 <div class="modal-body">
                     <form id="viewTransactionForm" class="form-sample">
+
                         <div class="row justify-content-center">
+                        
+                            <div class="col-9">    
+                                <div id="customerDetails" class="customerDetailsPanel"></div>
+                            </div>
+
                             <div class="col-sm-5">
                                 
                                 <div class="form-group view-form-group">
@@ -298,6 +304,11 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                 <div class="modal-body">
                     <form id="editTransactionForm" class="form-sample">
                         <div class="row justify-content-center">
+
+                            <div class="col-9">    
+                                <div id="customerDetails" class="customerDetailsPanel"></div>
+                            </div>
+
                             <div class="col-sm-5">
                                 
                                 <div class="form-group view-form-group">

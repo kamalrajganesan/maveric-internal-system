@@ -30472,3 +30472,13 @@ select.form-control {
   padding: 0.4rem 0 !important;
   border-bottom: none;
 }
+.customerDetailsPanel {
+  background-color: #ceefff;
+  border: 1px solid #ceefff;
+  border-radius: 12px;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
