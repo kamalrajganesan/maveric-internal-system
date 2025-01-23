@@ -17,11 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // mandatory fields
     $customerUniqCode = isset($_POST['customerUniqCode'])? htmlspecialchars($_POST['customerUniqCode']) : "";
-    $customerCompanyName = isset($_POST['companyName'])? htmlspecialchars($_POST['']) : "";
-    $customerPhone = isset($_POST['contact'])? htmlspecialchars($_POST['']) : "";
-    $customerEmail = isset($_POST['email'])? htmlspecialchars($_POST['']) : "";
-    $customerPincode = isset($_POST['pincode'])? htmlspecialchars($_POST['']) : "";
-    $customerCity = isset($_POST['city'])? htmlspecialchars($_POST['']) : "";
+    $customerCompanyName = isset($_POST['companyName'])? htmlspecialchars($_POST['companyName']) : "";
+    $customerPhone = isset($_POST['contact'])? htmlspecialchars($_POST['contact']) : "";
+    $customerEmail = isset($_POST['email'])? htmlspecialchars($_POST['email']) : "";
+    $customerPincode = isset($_POST['pincode'])? htmlspecialchars($_POST['pincode']) : "";
+    $customerCity = isset($_POST['city'])? htmlspecialchars($_POST['city']) : "";
     $customerServiceType = (isset($_POST['serviceType']))? htmlspecialchars(implode(',', $_POST['serviceType'])) : "";
     
     // service-type-option-based fields
@@ -58,6 +58,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $validationFlag = false;
         $valid["message"] = "Mandatory";
+        
+        echo empty($customerUniqCode).$customerUniqCode;
+        echo empty($customerCompanyName).$customerCompanyName;
+        echo empty($customerPhone).$customerPhone;
+        echo empty($customerEmail).$customerEmail;
+        
+        echo empty($customerPincode).$customerPincode;
+        echo empty($customerCity).$customerCity;
+        echo empty($customerServiceType).$customerServiceType;
     } 
     
     if($validationFlag) {
