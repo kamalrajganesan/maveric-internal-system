@@ -182,6 +182,23 @@
                 </ul>
               </div>
             </li>
+            <!-- requirement list -->
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#requirement-menus" aria-expanded="false" aria-controls="requirement-menus">
+                <i class="menu-icon mdi mdi-chart-line">  </i>
+                <span class="menu-title">Requirement</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="requirement-menus">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=New"> Newly Added </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=requirement"> My Requirement </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=FollowUp"> On Follow Ups </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=Lost"> Lost </a></li>
+                </ul>
+              </div>
+            </li>
+            <!-- requirement list -->
             <li class="nav-item">
               <a class="nav-link" href="#">
                 <i class="menu-icon mdi mdi-file-document"></i>
