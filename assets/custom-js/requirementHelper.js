@@ -75,9 +75,9 @@ function viewRequirement(params = null) {
           currentRequirement = response.data[0];
 
           $("#viewRequirementModal").modal("show");
-          $("#currentRequirementCode").text(response.data[0].nm);
+          $("#currentRequirementCode").text(response.data[0].requirement_name);
 
-          $("#viewRequirementForm #nm").val(response.data[0].nm).attr("readonly", true);
+          $("#viewRequirementForm #nm").val(response.data[0].requirement_name).attr("readonly", true);
           $("#viewRequirementForm #brief").val(response.data[0].brief).attr("readonly", true);
           $("#viewRequirementForm #detailed").val(response.data[0].detailed).attr("readonly", true);
           $("#viewRequirementForm #cust_id").val(response.data[0].cust_id).attr("readonly", true);
@@ -110,11 +110,11 @@ function editRequirement(requirementId = null) {
           
           const requirement = response.data[0];
           currentRequirement = requirement;
-          $("#currentRequirementCode").text(response.data[0].nm);
+          $("#currentRequirementCode").text(response.data[0].requirement_name);
 
           // Populate modal fields
-          $("#currentEditRequirementCode").text(requirement.nm);
-          $("#editRequirementForm #nm").val(requirement.nm);
+          $("#currentEditRequirementCode").text(requirement.requirement_name);
+          $("#editRequirementForm #nm").val(requirement.requirement_name);
           $("#editRequirementForm #brief").val(requirement.brief);
           $("#editRequirementForm #detailed").val(requirement.detailed);
           $("#editRequirementForm #cust_id").val(requirement.cust_id);

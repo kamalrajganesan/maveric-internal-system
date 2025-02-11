@@ -13,6 +13,7 @@ if (isset($_POST['requirementId'])) {
             r.detailed, 
             r.cust_id, 
             r.phone, 
+            r.requirement_status,
             r.updated_on, 
             r.updated_by, 
             r.created_on, 
