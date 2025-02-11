@@ -55,6 +55,45 @@ $(document).ready(function () {
       },
     });
   });
+
+  // Handle Create Transaction form submission
+  $("#addTransactionDataBtn").on("click", function (e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    // Serialize the form data using the form's ID or class
+    var data = $("#addTransactionForm").serialize(); // Serialize the form data
+
+    // Send AJAX request
+    $.ajax({
+      type: "POST",
+      url: "./services/transaction_add.php",
+      data: data, // Send the form data
+      dataType: "json", // Expect JSON response
+      success: function (response) {
+        if (response["success"] == true) {
+          $("#addTransactionForm")[0].reset();
+          $('#addTransactionModal').modal('hide');
+        } else {
+          let errorMessage = "";
+          switch (response.message) {            
+            case "Mandatory":
+              errorMessage = "Please make sure you filled all the mandatory fields...!"
+              break;
+            case "Exception":
+              errorMessage = "An error occured while creating a new transaction. Please contact system admin...!"
+              break;
+            case "Invalid Request":
+              errorMessage = "Invalid request...!"
+              break;
+            default:
+              errorMessage = "Failed to create Transaction. Please contact system admin!"
+              break;
+          }
+          alert(errorMessage);
+        }
+      },
+    });
+  });
 });
 
 function removeCustomer(params = null) {
@@ -238,6 +277,105 @@ function editCustomer(params = null) {
       },
       error: function () {
         alert("Failed to Fetch Customer");
+      },
+    });
+  }
+}
+
+function setCustomerDetails(customer) {
+  var customerDetailsHTML = `
+    <div class="row justify-content-center">
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-12">
+            <p><strong>Customer Name</strong>: ${customer.customer_nm}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Contact</strong>: ${customer.contact}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Telephone</strong>: ${customer.telephone}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Communication Email</strong>: ${customer.email}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Address</strong>: ${customer.address_ln}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Area</strong>: ${customer.area}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>City</strong>: ${customer.city}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Pincode</strong>: ${customer.pincode}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>License Type</strong>: ${customer.license_typ}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Customer Uniq Code</strong>: ${customer.customer_uniq_code}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-12">
+            <p><strong>Customer Company</strong>: ${customer.company_nm}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Service Type</strong>: ${customer.service_type}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Tally Email</strong>: ${customer.sys_email}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong style="font-size: 1.5em;">AMC End Date</strong>: <span style="font-size: 1.5em;"> ${customer.amc_end_date} </span></p>
+          </div>
+          <div class="col-md-12">
+            <p><strong style="font-size: 1.5em;">Tally Subscription End Date</strong>: <span style="font-size: 1.5em;">${customer.tally_end_date}</span></p>
+          </div>
+          <div class="col-md-12">
+            <p><strong style="font-size: 1.5em;">Cloud End Date</strong>: <span style="font-size: 1.5em;">${customer.cloud_end_date}</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  $("#addTransactionModal #customerDetails").html(customerDetailsHTML);
+
+}
+
+function addTransactionOfACustomer(params) {
+
+  if (params) {
+    $.ajax({
+      type: "POST",
+      url: "./services/customer_fetch_single.php",
+      data: { customerId: params },
+      dataType: "json",
+      success: function (response) {
+        
+        if (response.success == true) {
+
+          setCustomerDetails(response.data[0], "edit");
+          
+          // console.log("response: ", response);
+          $("#addTransactionModal").modal("show");
+
+          $("#addTransactionModal #companyName").val(response.data[0].company_nm).attr("readonly", true);
+          $("#addTransactionModal #serviceType").val(response.data[0].service_type).attr("disabled", true);
+          
+          $("#addTransactionModal").append('<input type="hidden" name="customerId" id="customerId" value="'+ response.data[0].uniq_id +'" />');
+        } else {
+          alert("Failed to fetch selected customer...!");
+        }
+      },
+      error: function () {
+          alert("Failed to fetch selected customer...!");
       },
     });
   }

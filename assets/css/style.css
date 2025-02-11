@@ -30479,3 +30479,16 @@ select.form-control {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
+.select2-container .select2-selection--single{
+  height: 2.75rem !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: inherit !important;
+}
+.toggleFilterForm {
+  overflow: visible;
+  transition: height 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.toggleFilterForm.collapsed {
+  height: auto;
+}

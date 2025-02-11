@@ -1,7 +1,15 @@
-
 var manageTicketDataTbl, currentTransaction;
 
 $(document).ready(function () {
+
+  flatpickr("#transac_single_date", {
+    dateFormat: "Y-m-d"
+  });
+  flatpickr("#transac_range", {
+    mode: "range",
+    dateFormat: "Y-m-d",
+  });
+
   manageTicketDataTbl = $("#transactionMasterTbl").DataTable({
     method: "POST",
     scrollX: true,
@@ -9,11 +17,29 @@ $(document).ready(function () {
     ajax: {
       url: "./services/transaction_fetch_all.php",
       type: "POST",
-      data: {
-        type: transaction_type,
-        value: transaction_value
+      data: function(d) {
+        d.type = transaction_type;
+        d.value = transaction_value;
+        d.transac_range = $("#transac_range").val();
+        d.transac_single_date = $("#transac_single_date").val();
       },
-      dataType: "json"
+      dataType: "json",
+      dataSrc: function (json) {
+        // console.log("Json", json)
+        if(json.success === false) {
+          let errorMessage = "";
+          switch (json.message) {            
+            case "Two Date Filters":
+              errorMessage = "Please select either a date range or a single date."
+              break;
+            default:
+              errorMessage = "Failed to fetch data. Please contact system admin!"
+              break;
+          }
+          alert(errorMessage);
+        }
+        return json.data;  // Return the data to populate the table
+      }
     },
   });
 
@@ -58,6 +84,10 @@ $(document).ready(function () {
   });
 
 });
+
+function toggleFilterForm() {
+  $('.toggleFilterForm').toggle('collapsed');
+}
 
 function removeTicket(params = null) {
   if (params) {
@@ -109,8 +139,31 @@ function setCustomersDropdown(param) {
               .text(customer.name)
           );
         });
+        switch (param) {
+          case "add":
+            customerDropdown.select2({
+              width: "100%",
+              minimumResultsForSearch: 3,
+              dropdownParent: $('#addTransactionModal')
+            });
+            break;
+          case "view":
+            customerDropdown.select2({
+              width: "100%",
+              minimumResultsForSearch: 3,
+              dropdownParent: $('#viewTransactionModal')
+            });
+            break; 
+          case "edit":
+            customerDropdown.select2({
+              width: "100%",
+              minimumResultsForSearch: 3,
+              dropdownParent: $('#editTransactionModal')
+            });
+          break;
+        }
         if(param != 'add') {
-          customerDropdown.val(currentTransaction.customer_id).attr('disabled', true);
+          customerDropdown.val(currentTransaction.customer_id).trigger('change').attr('disabled', true);
         }
       } else {
         alert("Failed to fetch customer details");
@@ -169,44 +222,63 @@ function onClickAddTransaction() {
 function setCustomerDetails(customer, paramType) {
   var customerDetailsHTML = `
     <div class="row justify-content-center">
-    <div class="col-md-5"> <p> <strong>Customer Name</strong>: ${customer.customer_nm} </p> </div>
-      <div class="col-md-5"> <p> <strong>Customer Company</strong>: ${customer.company_nm} </p> </div>
-    </div>
-    <div class="row justify-content-center">
-    <div class="col-md-5"> <p> <strong>Contact</strong>: ${customer.contact} </p> </div>
-    <div class="col-md-5"> <p> <strong>Service Type</strong>: ${customer.service_type} </p> </div>
-    </div>
-    <div class="row justify-content-center">
-    <div class="col-md-5"> <p> <strong>Telephone</strong>: ${customer.telephone} </p> </div>
-    <div class="col-md-5"> <p> <strong>AMC Start Date</strong>: ${customer.amc_st_date} </p> </div>
-    </div>
-    <div class="row justify-content-center">
-    <div class="col-md-5"> <p> <strong>Communication Email</strong>: ${customer.email} </p> </div>
-    <div class="col-md-5"> <p> <strong>AMC End Date</strong>: ${customer.amc_end_date} </p> </div>
-    </div>
-    <div class="row justify-content-center">
-    <div class="col-md-5"> <p> <strong>Address</strong>: ${customer.address_ln} </p> </div>
-    <div class="col-md-5"> <p> <strong>Tally Subscription Start Date</strong>: ${customer.tally_st_date} </p> </div>
-    </div>
-    <div class="row justify-content-center">
-    <div class="col-md-5"> <p> <strong>Area</strong>: ${customer.area} </p> </div>
-    <div class="col-md-5"> <p> <strong>Tally Subscription End Date</strong>: ${customer.tally_end_date} </p> </div>
-    </div>
-    <div class="row justify-content-center">
-    <div class="col-md-5"> <p> <strong>City</strong>: ${customer.city} </p> </div>
-    <div class="col-md-5"> <p> <strong>Tally Email</strong>: ${customer.sys_email} </p> </div>
-    </div>
-    <div class="row justify-content-center">
-    <div class="col-md-5"> <p> <strong>Pincode</strong>: ${customer.pincode} </p> </div>
-    <div class="col-md-5"> <p> <strong>Cloud Start Date</strong>: ${customer.cloud_st_date} </p> </div>
-    </div>
-    <div class="row justify-content-center">
-    <div class="col-md-5"> <p> <strong>License Type</strong>: ${customer.license_typ} </p> </div>
-      <div class="col-md-5"> <p> <strong>Cloud End Date</strong>: ${customer.cloud_end_date} </p> </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-md-5"> <p> <strong>Customer Uniq Code</strong>: ${customer.customer_uniq_code} </p> </div>
-      <div class="col-md-5"> </div>
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-12">
+            <p><strong>Customer Name</strong>: ${customer.customer_nm}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Contact</strong>: ${customer.contact}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Telephone</strong>: ${customer.telephone}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Communication Email</strong>: ${customer.email}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Address</strong>: ${customer.address_ln}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Area</strong>: ${customer.area}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>City</strong>: ${customer.city}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Pincode</strong>: ${customer.pincode}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>License Type</strong>: ${customer.license_typ}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Customer Uniq Code</strong>: ${customer.customer_uniq_code}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-12">
+            <p><strong>Customer Company</strong>: ${customer.company_nm}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Service Type</strong>: ${customer.service_type}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong>Tally Email</strong>: ${customer.sys_email}</p>
+          </div>
+          <div class="col-md-12">
+            <p><strong style="font-size: 1.5em;">AMC End Date</strong>: <span style="font-size: 1.5em;"> ${customer.amc_end_date} </span></p>
+          </div>
+          <div class="col-md-12">
+            <p><strong style="font-size: 1.5em;">Tally Subscription End Date</strong>: <span style="font-size: 1.5em;">${customer.tally_end_date}</span></p>
+          </div>
+          <div class="col-md-12">
+            <p><strong style="font-size: 1.5em;">Cloud End Date</strong>: <span style="font-size: 1.5em;">${customer.cloud_end_date}</span></p>
+          </div>
+        </div>
+      </div>
     </div>
   `;
 
@@ -433,4 +505,14 @@ function viewTicket(params = null) {
       }
     });
   }
+}
+
+function restTransactionFilter() {
+  $("#transac_single_date").val(''); 
+  $("#transac_from_date").val(''); 
+  $("#transac_to_date").val(''); 
+}
+
+function onClickTransactionFilter() {
+  manageTicketDataTbl.ajax.reload(null, false);
 }

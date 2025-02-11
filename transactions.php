@@ -11,11 +11,16 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
 } else {
     echo "No data received.";
 }
+
+
 ?>
 
 <title> My Transactions - Tejas </title>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<link rel="stylesheet" href="./assets/vendors/select2/select2.min.css">
+<link rel="stylesheet" href="./assets/css/flatpickr.min.css">
+<link rel="stylesheet" href="./assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
 
 <?php require_once("./shared/components/post-header.php");  ?>
 
@@ -27,6 +32,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                 <div class="d-sm-flex align-items-center justify-content-end border-bottom">
                     <div>
                         <div class="btn-wrapper">
+                            <button class="btn btn-light" onclick="toggleFilterForm()"> <i class="fa fa-filter"></i> </button>
                             <button class="btn btn-otline-dark align-items-center" onclick="onClickAddTransaction()">
                                 <i class="fa fa-plus"></i> Add New Transaction
                             </button>
@@ -41,12 +47,36 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                 <div class="card card-rounded">
                     <div class="card-body fs-14">
                         <div class="row">
+                            <div class="col-sm-10 toggleFilterForm my-2">
+                                <form id="transactionFilterForm">
+                                    <div class="row">   
+                                        <div class="col-md-8 col-sm-12">
+                                            <div class="container-fluid row">
+                                                <div class="col-md-7 col-sm-12">
+                                                    <div class="form-group view-form-group">
+                                                        <label for=""> Transaction Date Range</label>
+                                                        <input type="text" class="form-control datepicker" id="transac_range" name="transac_range" placeholder="DD/MM/YYYY">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7 col-sm-12">
+                                                    <div class="form-group view-form-group">
+                                                        <label for="single_date">Transaction Date</label>
+                                                        <input type="text" class="form-control datepicker" id="transac_single_date" name="transac_single_date" placeholder="DD/MM/YYYY">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-primary me-2" onclick="onClickTransactionFilter()"> Filter </button>
+                                            <button type="button" class="btn btn-light" onclick="restTransactionFilter()"> Reset </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                             <div class="col-sm-12">
                                 <table id="transactionMasterTbl" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Last Updated Date</th>
-                                            <th>Transaction ID</th>
+                                            <th>Date</th>
+                                            <th>TID</th>
                                             <th>Issue</th>
                                             <th>Company</th>
                                             <th>Status</th>
@@ -54,7 +84,6 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
-
                                 </table>
                             </div>
                         </div>
@@ -85,7 +114,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
 
                                 <div class="form-group view-form-group">
                                     <label for="customerId">Customer <strong><code>*</code></strong></label>
-                                    <select class="form-control required" id="customerId" name="customerId" required>
+                                    <select class="w-100" id="customerId" name="customerId" required>
                                         <option value="" selected hidden>Select Customer</option>
                                     </select>
                                 </div>
@@ -102,7 +131,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
 
                                 <div class="form-group view-form-group">
                                     <label for="status">Transaction Status <strong><code>*</code></strong></label>
-                                    <select class="form-control" id="status" name="status" disabled>
+                                    <select class="form-control" id="status" name="status" required>
                                         <option value="">Select Status</option>
                                         <option value="New" selected>New</option>
                                         <option value="Contacted/Pending">Contacted/ Pending</option>
@@ -185,7 +214,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 
                                 <div class="form-group view-form-group">
                                     <label for="customerId">Customer <strong><code>*</code></strong></label>
-                                    <select class="form-control" id="customerId" name="customerId">
+                                    <select class="w-100" id="customerId" name="customerId">
                                         <option value="" hidden selected>Select Customer</option>
                                         <!-- Add all customers options here -->
                                     </select>
@@ -416,11 +445,12 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
 
 
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-
-    <script src="assets/custom-js/transactionsHelper.js"></script>
+    
     <script src="assets/default-js/jquery.cookie.js" type="text/javascript"></script>
-
-    <script src="assets/vendors/chart.js/chart.umd.js"></script>
-    <script src="assets/vendors/progressbar.js/progressbar.min.js"></script>
+    
+    <script src="assets/vendors/select2/select2.min.js"></script>
+    <script src="assets/default-js/flatpickr.js"></script>
+    <script src="assets/custom-js/transactionsHelper.js"></script>
+    
 
     <?php require_once("./shared/components/post-footer.php");  ?>

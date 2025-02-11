@@ -5,7 +5,7 @@ require_once("../shared/actions/db/dao.php");
 $db = new sqlHelper();
 
 // Fetch customer details sql
-$sql = "SELECT id, customer_nm, company_nm FROM cust_mstr WHERE is_deleted = 0";
+$sql = "SELECT id, company_nm FROM cust_mstr WHERE is_deleted = 0";
 $db->prepareStatement($sql);
 $db->execPreparedStatement();
 $result = $db->getResultSet();

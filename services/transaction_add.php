@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $serviceType = isset($_POST['serviceType']) ? htmlspecialchars($_POST['serviceType']) : '';
     $serviceThru = isset($_POST['serviceThrough']) ? htmlspecialchars($_POST['serviceThrough']) : '';
     $comments = isset($_POST['comments']) ? htmlspecialchars($_POST['comments']) : '';
-    $status = "New";    // Default status is 'New' as it is a new transaction
+    $status = isset($_POST['status']) ? htmlspecialchars($_POST['status']) : '';;
 
     // nullable fields
     $problemDesc = isset($_POST['problemDesc']) ? htmlspecialchars($_POST['problemDesc']) : '';

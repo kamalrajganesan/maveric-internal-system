@@ -56,22 +56,22 @@ if ($custFetchAllSQLResultSet->num_rows > 0) {
         $btn = '
         <div class="btn-group">
             <button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#viewCustomerModal" id="viewCustomerModalBtn" onclick="viewCustomer(\'' . $row['customer_uniq_code'] . '\')">
-                <i class="fa fa-2x fa-ellipsis-v"></i>
+                <i class="fa fa-ellipsis-v"></i>
+            </button>
+            <button type="button" class="btn btn-inverse-secondary btn-fw" data-toggle="modal" data-target="#addTransactionModal" id="addTransactionModalBtn" onclick="addTransactionOfACustomer(\'' . $row['customer_uniq_code'] . '\')">
+                <i class="fa fa-th-list"></i>
             </button>
             <button type="button" class="btn btn-inverse-secondary btn-fw" data-toggle="modal" data-target="#editCustomerModal" id="editCustomerModalBtn" onclick="editCustomer(\'' . $row['customer_uniq_code'] . '\')">
-                <i class="fa fa-2x fa-pencil-square-o"></i>
+                <i class="fa fa-pencil-square-o"></i>
             </button>
             <button type="button" class="btn btn-inverse-dark btn-fw" data-toggle="modal" data-target="#removeCustomerModal" id="removeCustomerModalBtn" onclick="removeCustomer(\'' . $row['customer_uniq_code'] . '\')">
-                <i class="fa fa-2x fa-trash-o"></i>
+                <i class="fa fa-trash-o"></i>
             </button>
         </div>
         ';
-
-        $link = '<a href="single-customer.php?customer_uniq_code=' . $row['customer_uniq_code'] . '">' . $row['customer_uniq_code'] . '</a>';
-
         $data[] = array(
             $siVar,
-            $link,
+            $row['customer_uniq_code'],
             $row['company_nm'],
             $row['service_type'],
             $row['contact'],

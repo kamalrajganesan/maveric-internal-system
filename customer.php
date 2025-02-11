@@ -229,6 +229,97 @@ if (isset($_GET['page'])) {
     </div>
     <!-- end add customer modal -->
 
+    <!-- add transaction modal -->
+    <div class="modal fade" id="addTransactionModal" tabindex="-1" role="dialog" aria-labelledby="addTransactionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="addTransactionModalLabel">Add New Transaction</h4>
+                    <button type="button" class="btn btn-inverse-light btn-fw" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="addTransactionForm" class="form-sample">
+                        <div class="row justify-content-center">
+
+                            <div class="col-9">    
+                                <div id="customerDetails" class="customerDetailsPanel"></div>
+                            </div>
+
+                            <div class="col-sm-5">
+
+                                <div class="form-group view-form-group">
+                                    <label for="companyName">Customer <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="companyName" name="companyName">
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="problemStmt">Issue(in brief) <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="problemStmt" name="problemStmt" placeholder="Problem Statement" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="problemDesc">Issue Description</label>
+                                    <textarea class="form-control" id="problemDesc" name="problemDesc" placeholder="Problem Description"></textarea>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="status">Transaction Status <strong><code>*</code></strong></label>
+                                    <select class="form-control" id="status" name="status" >
+                                        <option value="">Select Status</option>
+                                        <option value="New" selected>New</option>
+                                        <option value="Contacted/Pending">Contacted/ Pending</option>
+                                        <option value="Following Up">Following Up</option>
+                                        <option value="Closed">Closed</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-5">
+
+                                <div class="form-group view-form-group">
+                                    <label for="serviceType">Service Type <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="serviceType" name="serviceType" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="serviceThrough">Service Offered Through <strong><code>*</code></strong></label>
+                                    <select class="form-control required" id="serviceThrough" name="serviceThrough" aria-readonly="true">
+                                        <option value="" hidden selected>Service Offered Through</option>
+                                        <option value="Phone Call">Phone Call</option>
+                                        <option value="Remote">Remote</option>
+                                        <option value="Physical Visit">Physical Visit</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="comments">Comments <strong><code>*</code></strong></label>
+                                    <textarea class="form-control" id="comments" name="comments" placeholder="Comments" required></textarea>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="notes">Notes</label>
+                                    <textarea class="form-control" id="notes" name="notes" placeholder="Notes"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"> Close</button>
+                    <button type="submit" class="btn btn-primary" id="addTransactionDataBtn" data-loading-text="Loading..." autocomplete="off"> Create Transaction</button>
+                </div> <!-- /modal-footer -->
+            </div>
+        </div>
+    </div>
+    <!-- end add transaction modal -->
+
     <!-- view customer modal -->
     <div class="modal fade" id="viewCustomerModal" tabindex="-1" role="dialog" aria-labelledby="viewCustomerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">

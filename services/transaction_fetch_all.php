@@ -8,16 +8,29 @@ $valid = array('success' => false, 'message' => "", 'detail' => "");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $page = "";
-    if (isset($_POST['type']) && isset($_POST['value'])) {
-        $type = htmlspecialchars($_POST['type']);
-        $value = htmlspecialchars($_POST['value']);
-    } else {
-        $valid["message"] = "Invalid Request";
+
+    $type = isset($_POST['type']) ? htmlspecialchars($_POST['type']) : "";
+    $value = isset($_POST['value']) ? htmlspecialchars($_POST['value']) : "";
+    $transac_range = isset($_POST['transac_range']) ? htmlspecialchars($_POST['transac_range']) : "";
+    $transac_date = isset($_POST['transac_single_date']) ? htmlspecialchars($_POST['transac_single_date']) : "";
+    
+    if( $transac_range != "" && $transac_date != "") {
+        $valid["success"] = false;
+        $valid["message"] = "Two Date Filters";
+        $valid["data"] = [];
         echo json_encode($valid);
         exit();
     }
-
+    
+    
+    if($transac_range != "") {
+        $from = explode(" to ", $transac_range)[0];
+        $to = explode(" to ", $transac_range)[1];
+    }
+    
+    
     $db = new sqlHelper();
+
 
     $FetchAllSQL = 
     "SELECT
@@ -44,10 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if($type == "serviceType") {
         switch ($value) {
             case 'AMC':
-                $FetchAllSQL .= " and service_typ = 'AMC'";
+                $FetchAllSQL .= " and ticket.service_typ = 'AMC'";
                 break;
             case 'Cloud':
-                $FetchAllSQL .= " and service_typ = 'Cloud'";
+                $FetchAllSQL .= " and ticket.service_typ = 'Cloud'";
                 break;
             case 'Tally':
                 $FetchAllSQL .= " and ticket.service_typ = 'Tally'";
@@ -56,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $FetchAllSQL .= " and ticket.service_typ = 'Cloud'";
                 break;
             case 'OneTime':
-                $FetchAllSQL .= " and service_typ = 'One Time'";
+                $FetchAllSQL .= " and ticket.service_typ = 'One Time'";
                 break;
             default:
                 $FetchAllSQL .= ";";
@@ -79,9 +92,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } 
 
+    if($transac_range != "") {
+        $FetchAllSQL .= " and DATE(ticket.created_on) BETWEEN ? AND ?";
+    } else if($transac_date != "") {
+        $FetchAllSQL .= " and DATE(ticket.created_on) = ?";
+    }
+
     // $FetchAllSQL .= " ORDER BY ticket.created_on DESC";
 
     $db->prepareStatement($FetchAllSQL);
+
+    if($transac_range != "") {
+        $db->setParameters([$from, $to], "ss");
+    } else if($transac_date != "") {
+        $db->setParameters([$transac_date], "s");
+    }
+
     $resp = $db->execPreparedStatement();
 
     if($resp["success"] === TRUE) {
