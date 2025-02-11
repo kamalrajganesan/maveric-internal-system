@@ -6,11 +6,11 @@ $connect = createConn();
 
 $valid = array('success' => false, 'message' => "");
 
-$lId = $_POST['leadId'];
+$lId = $_POST['requirementId'];
 
 if($lId) {
 
-    $sql = "UPDATE lead_tracker set is_deleted = 1 WHERE id = '".$lId."'";
+    $sql = "UPDATE req_tracker set is_deleted = 1 WHERE id = '".$lId."'";
 
     if( $connect-> query($sql) === TRUE) {
  	    $valid['success'] = true;

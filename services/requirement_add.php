@@ -5,6 +5,7 @@ require_once("../shared/actions/db/dao.php");
 // Initialize response variable
 $response = '';
 $db = new sqlHelper();
+$currentDateTime = date('Y-m-d H:i:s');
 
 // Check if the form data is posted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -57,15 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $requirementStatus,
                 $updated_on,
                 $updated_by,
-                $created_on,
+                $currentDateTime,
                 $createdBy
             ];
 
-            // Bind the parameters (types: 's' for string, 'i' for integer)
-            $types = 'ssissssssi'; // Adjust types if necessary
+            $types = 'ssissssssi'; 
             $db->setParameters($params, $types);
 
-            // Execute the statement
             $db->execPreparedStatement();
             $response = array("success" => true, "message" => 'Requirement added successfully!');
         } catch (Exception $e) {

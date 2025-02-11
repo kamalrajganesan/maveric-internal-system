@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $detailed = $_POST['detailed'];
     $custId = $_POST['cust_id'];
     $phone = $_POST['phone'];
+    $requirementStatus = $_POST['requirementStatus'];
 
     // Create the update query
     $sql = "UPDATE req_tracker SET 
@@ -22,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         detailed = '". $detailed ."',
         cust_id = '". $custId ."',
         phone = '". $phone ."',
+        requirement_status = '". $requirementStatus ."',
         updated_on = NOW()
         WHERE id = ". $requirementId;
 

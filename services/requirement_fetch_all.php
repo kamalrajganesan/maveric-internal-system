@@ -17,11 +17,14 @@ switch ($page) {
     case 'New':
         $FetchAllSQL .= " and requirement_status = 'New';";
         break;
-    case 'requirement':
-        $FetchAllSQL .= " and requirement_status = 'Pending';";
+    case 'Contacted':
+        $FetchAllSQL .= " and requirement_status = 'Contacted';";
         break;
-    case 'Closed':
-        $FetchAllSQL .= " and requirement_status = 'Closed';";
+    case 'Converted':
+        $FetchAllSQL .= " and requirement_status = 'Converted';";
+        break;
+    case 'Following';
+        $FetchAllSQL .= " and requirement_status = 'Following';";
         break;
     case 'Lost':
         $FetchAllSQL .= " and requirement_status = 'Lost';";
@@ -60,7 +63,7 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
             $row['detailed'],
             $row['cust_id'],
             $row['phone'],
-            $row['updated_on'],
+            $row['created_on'],
             $row['requirement_status'],
             $btn
         );
