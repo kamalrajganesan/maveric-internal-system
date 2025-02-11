@@ -44,13 +44,13 @@ if (isset($_GET['page'])) {
                                     <thead>
                                         <tr>
                                             <th>S. No.</th>
-                                            <th>Requirement Name</th>
+                                            <th>Requirement</th>
                                             <th>Brief</th>
-                                            <th>Detailed</th>
-                                            <th>Customer ID</th>
+                                            <th>Detail</th>
+                                            <th>Customer</th>
                                             <th>Phone</th>
+                                            <th>Date</th>
                                             <th>Status</th>
-                                            <th>Updated On</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -110,9 +110,10 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group">
                                     <label for="requirementStatus">Requirement Status <strong><code>*</code></strong></label>
                                     <select class="form-control required" id="requirementStatus" name="requirementStatus" aria-readonly="true" required>
-                                        <option value="New">New</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Completed">Closed</option>
+                                        <option value="New">Newly Added</option>
+                                        <option value="Contacted">Contacted</option>
+                                        <option value="Converted">Converted</option>
+                                        <option value="Following">following up</option>
                                         <option value="Lost">Lost</option>
                                     </select>
                                 </div>
@@ -174,9 +175,10 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group">
                                     <label for="requirementStatus">Lead Status <strong><code>*</code></strong></label>
                                     <select class="form-control" id="requirementStatus" name="requirementStatus" required aria-readonly="true">
-                                        <option value="New">New</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Completed">Closed</option>
+                                    <option value="New">Newly Added</option>
+                                        <option value="Contacted">Contacted</option>
+                                        <option value="Converted">Converted</option>
+                                        <option value="Following">following up</option>
                                         <option value="Lost">Lost</option>
 
                                     </select>
@@ -237,9 +239,10 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group">
                                     <label for="requirementStatus">Lead Status <strong><code>*</code></strong></label>
                                     <select class="form-control required" id="requirementStatus" name="requirementStatus" required aria-readonly="true">
-                                        <option value="New">New</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Completed">Closed</option>
+                                        <option value="New">Newly Added</option>
+                                        <option value="Contacted">Contacted</option>
+                                        <option value="Converted">Converted</option>
+                                        <option value="Following">following up</option>
                                         <option value="Lost">Lost</option>
 
                                     </select>

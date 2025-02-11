@@ -17,11 +17,14 @@ switch ($page) {
     case 'New':
         $FetchAllSQL .= " and requirement_status = 'New';";
         break;
-    case 'Requirement':
-        $FetchAllSQL .= " and requirement_status = 'Pending';";
+    case 'Contacted':
+        $FetchAllSQL .= " and requirement_status = 'Contacted';";
         break;
-    case 'FollowUp':
-        $FetchAllSQL .= " and requirement_status = 'Completed';";
+    case 'Converted':
+        $FetchAllSQL .= " and requirement_status = 'Converted';";
+        break;
+    case 'Following';
+        $FetchAllSQL .= " and requirement_status = 'Following';";
         break;
     case 'Lost':
         $FetchAllSQL .= " and requirement_status = 'Lost';";

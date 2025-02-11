@@ -176,8 +176,9 @@
               <div class="collapse" id="lead-menus">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <a class="nav-link" href="./leads.php?page=New"> Newly Added </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Leads"> My Leads </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=FollowUp"> On Follow Ups </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Contacted"> Contacted </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Converted"> Converted </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Following"> Follow Ups </a></li>
                   <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Lost"> Lost </a></li>
                 </ul>
               </div>
@@ -192,8 +193,9 @@
               <div class="collapse" id="requirement-menus">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=New"> Newly Added </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=Requirement"> Contacted </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=FollowUp"> On Follow Ups </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=Contacted"> Contacted </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=Converted"> Converted </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=Following"> Follow Ups </a></li>
                   <li class="nav-item"> <a class="nav-link" href="./requirement.php?page=Lost"> Lost </a></li>
                 </ul>
               </div>

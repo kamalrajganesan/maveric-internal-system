@@ -149,9 +149,10 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group">
                                     <label for="leadStatus">Lead Status <strong><code>*</code></strong></label>
                                     <select class="form-control required" id="leadStatus" name="leadStatus" aria-readonly="true" required>
-                                        <option value="New">New</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Completed">Closed</option>
+                                        <option value="New">Newly Added</option>
+                                        <option value="Contacted">Contacted</option>
+                                        <option value="Converted">Converted</option>
+                                        <option value="Following">following up</option>
                                         <option value="Lost">Lost</option>
                                     </select>
                                 </div>
@@ -251,11 +252,11 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group">
                                     <label for="leadStatus">Lead Status <strong><code>*</code></strong></label>
                                     <select class="form-control" id="leadStatus" name="leadStatus" required aria-readonly="true">
-                                        <option value="New">New</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Completed">Closed</option>
+                                        <option value="New">Newly Added</option>
+                                        <option value="Contacted">Contacted</option>
+                                        <option value="Converted">Converted</option>
+                                        <option value="Following">following up</option>
                                         <option value="Lost">Lost</option>
-
                                     </select>
                                 </div>
 
@@ -358,11 +359,11 @@ if (isset($_GET['page'])) {
                                 <div class="form-group view-form-group">
                                     <label for="leadStatus">Lead Status <strong><code>*</code></strong></label>
                                     <select class="form-control required" id="leadStatus" name="leadStatus" required aria-readonly="true">
-                                        <option value="New">New</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Completed">Closed</option>
+                                        <option value="New">Newly Added</option>
+                                        <option value="Contacted">Contacted</option>
+                                        <option value="Converted">Converted</option>
+                                        <option value="Following">following up</option>
                                         <option value="Lost">Lost</option>
-
                                     </select>
                                 </div>
 
