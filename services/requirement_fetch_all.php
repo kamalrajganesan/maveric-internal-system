@@ -63,7 +63,7 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
             $row['detailed'],
             $row['cust_id'],
             $row['phone'],
-            $row['updated_on'],
+            $row['created_on'],
             $row['requirement_status'],
             $btn
         );
