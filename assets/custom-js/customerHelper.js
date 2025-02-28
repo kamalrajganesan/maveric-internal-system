@@ -363,13 +363,13 @@ function addTransactionOfACustomer(params) {
 
           setCustomerDetails(response.data[0], "edit");
           
-          // console.log("response: ", response);
+          console.log("response: ", response);
           $("#addTransactionModal").modal("show");
 
-          $("#addTransactionModal #companyName").val(response.data[0].company_nm).attr("readonly", true);
-          $("#addTransactionModal #serviceType").val(response.data[0].service_type).attr("disabled", true);
+          $("#addTransactionForm #companyName").val(response.data[0].company_nm).attr("readonly", true);
+          $("#addTransactionForm #serviceType").val(response.data[0].service_type).attr("readonly", true);
           
-          $("#addTransactionModal").append('<input type="hidden" name="customerId" id="customerId" value="'+ response.data[0].uniq_id +'" />');
+          $("#addTransactionForm").append('<input type="hidden" name="customerId" id="customerId" value="'+ response.data[0].id +'" />');
         } else {
           alert("Failed to fetch selected customer...!");
         }

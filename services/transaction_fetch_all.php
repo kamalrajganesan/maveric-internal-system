@@ -159,10 +159,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 '; 
 
-
+                $formattedDate = new DateTime($row['updated_on']);
+                
                 // Adjust the data array to reflect the columns in the ticket table
                 $data[] = array(
-                    $row['updated_on'],  
+                    $formattedDate->format('d-m-Y h:i:s A'),
                     $row['uniq_id'], 
                     $row['problem_stmt'],  
                     $row['company_nm'],  
@@ -175,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $valid["message"] = "Data found.";
             $valid["data"] = $data;
         } else {
-            $valid["success"] = false;
+            $valid["success"] = true;
             $valid["message"] = "No Data found.";
             $valid["data"] = [];
         }

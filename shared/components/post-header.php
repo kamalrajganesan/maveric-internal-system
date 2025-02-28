@@ -114,7 +114,7 @@
             <li class="nav-item nav-category"> Menus </li>
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#customer-submenus" aria-expanded="false" aria-controls="customer-submenus">
-                <i class="menu-icon mdi mdi-floor-plan"></i>
+                <i class="menu-icon mdi mdi-account-group"></i>
                 <span class="menu-title">Customers</span>
                 <i class="menu-arrow"></i>
               </a>
@@ -133,7 +133,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#transac-submeuns" aria-expanded="false" aria-controls="transac-submeuns">
-                <i class="menu-icon mdi mdi-card-text-outline"></i>
+                <i class="menu-icon mdi mdi-book-minus-multiple-outline"></i>
                 <span class="menu-title">Transactions</span>
                 <i class="menu-arrow"></i>
               </a>
@@ -169,7 +169,7 @@
             </li> -->
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#lead-menus" aria-expanded="false" aria-controls="lead-menus">
-                <i class="menu-icon mdi mdi-chart-line">  </i>
+                <i class="menu-icon mdi mdi-account-badge">  </i>
                 <span class="menu-title">Leads</span>
                 <i class="menu-arrow"></i>
               </a>
@@ -186,7 +186,7 @@
             <!-- requirement list -->
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#requirement-menus" aria-expanded="false" aria-controls="requirement-menus">
-                <i class="menu-icon mdi mdi-chart-timeline-variant">  </i>
+                <i class="menu-icon mdi mdi-badge-account-alert-outline">  </i>
                 <span class="menu-title">Requirement</span>
                 <i class="menu-arrow"></i>
               </a>
@@ -200,11 +200,28 @@
                 </ul>
               </div>
             </li>
-            <!-- requirement list -->
+            <!--end requirement list -->
+            <!--reports list -->
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" data-bs-toggle="collapse" href="#report-menus" aria-expanded="false" aria-controls="report-menus">
+                <i class="menu-icon mdi mdi-google-analytics">  </i>
+                <span class="menu-title">Reports</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="report-menus">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="./reports.php?page=agent"> Agents </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./reports.php?page=serviceThru"> Service Through </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./reports.php?page=last3"> Less Service Provided </a></li>
+                  
+                </ul>
+              </div>
+            </li>
+            <!--end reports list -->
+            <li class="nav-item">
+              <a class="nav-link" href="./logout.php">
                 <i class="menu-icon mdi mdi-file-document"></i>
-                <span class="menu-title">Reference Docs</span>
+                <span class="menu-title">Logout</span>
               </a>
             </li>
           </ul>

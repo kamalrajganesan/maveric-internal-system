@@ -1,4 +1,6 @@
-<?php require_once("./shared/components/pre-header.php");
+<?php 
+
+require_once("./shared/components/pre-header.php");
 
 if (isset($_GET['type']) && isset($_GET['value'])) {
     $type = htmlspecialchars($_GET['type']);    // serviceType (or) serviceThrough
@@ -252,13 +254,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
 
                                 <div class="form-group view-form-group">
                                     <label for="serviceType">Service Type</label>
-                                    <select class="form-control" id="serviceType" name="serviceType" aria-readonly="true" disabled>
-                                        <option value="" hidden selected>Select Service</option>
-                                        <option value="AMC">AMC</option>
-                                        <option value="Tally">Tally</option>
-                                        <option value="Cloud">Cloud</option>
-                                        <option value="One Time">One Time</option>
-                                    </select>
+                                    <input type="text" class="form-control" id="serviceType" name="serviceType" readonly>
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -305,7 +301,6 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                         <option value="" hidden> Select Agent</option>
                                     </select>
                                 </div>
-
                             </div>
                         </div>
                     </form>
@@ -380,13 +375,7 @@ if (isset($_GET['type']) && isset($_GET['value'])) {
                                 
                                 <div class="form-group view-form-group">
                                     <label for="serviceType">Service Type <strong><code>*</code></strong></label>
-                                    <select class="form-control" id="serviceType" name="serviceType" aria-readonly="true" disabled>
-                                        <option value="" hidden selected>Select Service</option>
-                                        <option value="AMC">AMC</option>
-                                        <option value="Tally">Tally</option>
-                                        <option value="Cloud">Cloud</option>
-                                        <option value="One Time">One Time</option>
-                                    </select>
+                                    <input type="text" class="form-control" id="serviceType" name="serviceType" readonly>
                                 </div>
 
                                 <div class="form-group view-form-group">

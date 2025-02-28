@@ -334,7 +334,7 @@ function editTicket(params = null) {
                 commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-light me-3"> '+ comment.status +' </div>'
                 break;
             }
-            commentsHtml += '<div class="text-small me-3"> On <strong>'+ comment.date +'</strong></div>'
+            commentsHtml += '<div class="text-small me-3"> On <strong>'+ formatDate(comment.date) +'</strong></div>'
             commentsHtml += '<div class="text-small me-3"> By <strong>'+ comment.commentBy +'</strong></div></div></div></li>'
           });
           $("#editTransactionForm #pastCommentsOfThisTransaction").html(commentsHtml);
@@ -349,7 +349,7 @@ function editTicket(params = null) {
             notesHtml += '<div class="form-check w-100">'
             notesHtml += '<label class="form-check-label m-0">'
             notesHtml += notes.message +' <i class="input-helper rounded"></i></label>'
-            notesHtml += '<div class="text-small me-3"> On <strong>'+ notes.date +'</strong></div>'
+            notesHtml += '<div class="text-small me-3"> On <strong>'+ formatDate(notes.date) +'</strong></div>'
             notesHtml += '<div class="text-small me-3"> By <strong>'+ notes.noteBy +'</strong></div></div></div></li>'
           });
           $("#editTransactionForm #pastNotesOfThisTransaction").html(notesHtml);
@@ -359,7 +359,7 @@ function editTicket(params = null) {
           $("#editTransactionForm #serviceType").val(response.data[0].service_typ);
           $("#editTransactionForm #serviceThrough").val(response.data[0].service_thru);
           // if (response.data[0].is_under_amc == 1) {
-          //   $("#editTransactionForm #isUnderAMCYES").prop("checked", true);
+          //   $("#editTransactionForm #pttYES").prop("checked", true);
           // } else {
           //   $("#editTransactionForm #isUnderAMCNO").prop("checked", true);
           // }
@@ -467,7 +467,7 @@ function viewTicket(params = null) {
                 commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-light me-3"> '+ comment.status +' </div>'
                 break;
             }
-            commentsHtml += '<div class="text-small me-3"> On <strong>'+ comment.date +'</strong></div>'
+            commentsHtml += '<div class="text-small me-3"> On <strong>'+ formatDate(comment.date) +'</strong></div>'
             commentsHtml += '<div class="text-small me-3"> By <strong>'+ comment.commentBy +'</strong></div></div></div></li>'
           });
           $("#viewTransactionForm #pastCommentsOfThisTransaction").html(commentsHtml);
@@ -482,7 +482,7 @@ function viewTicket(params = null) {
             notesHtml += '<div class="form-check w-100">'
             notesHtml += '<label class="form-check-label m-0">'
             notesHtml += notes.message +' <i class="input-helper rounded"></i></label>'
-            notesHtml += '<div class="text-small me-3"> On <strong>'+ notes.date +'</strong></div>'
+            notesHtml += '<div class="text-small me-3"> On <strong>'+ formatDate(notes.date) +'</strong></div>'
             notesHtml += '<div class="text-small me-3"> By <strong>'+ notes.noteBy +'</strong></div></div></div></li>'
           });
           $("#viewTransactionForm #pastNotesOfThisTransaction").html(notesHtml);
