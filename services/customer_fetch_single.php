@@ -21,10 +21,15 @@ if(isset($_POST['customerId'])) {
     $custFetchSingleSQLResultSet = $db->getResultSet();
 
     if ($custFetchSingleSQLResultSet->num_rows > 0) {
+        
         $data = array();
         while ($row = $custFetchSingleSQLResultSet->fetch_assoc()) {
             $data[] = $row;
         }
+
+        $data[0]["created_on"] = date('d-m-Y h:i:s A', strtotime($data[0]["created_on"]));
+
+
         echo json_encode(array("success" => true, "data" => $data, "message" => "Data found."));
     } else {
         echo json_encode(array("success" => false, "data" => [], "message" => "No data found."));

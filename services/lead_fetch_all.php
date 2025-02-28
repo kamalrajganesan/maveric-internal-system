@@ -34,8 +34,6 @@ switch ($page) {
         break;
 }
 
-
-
 $db->prepareStatement($FetchAllSQL);
 $db->execPreparedStatement();
 $FetchAllSQLResultSet = $db->getResultSet();
@@ -67,7 +65,7 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
             $row['description'],
             $row['city'] . " / " . $row['pincode'],
             $row['lead_status'],
-            $row['follow_up_dt'],
+            date('d-m-Y h:i:s A', strtotime($row['follow_up_dt'])),
             $btn
         );
         $siVar++;

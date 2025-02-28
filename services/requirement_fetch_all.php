@@ -63,7 +63,7 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
             $row['detailed'],
             $row['cust_id'],
             $row['phone'],
-            $row['created_on'],
+            date('d-m-Y h:i:s A', strtotime($row['created_on'])),
             $row['requirement_status'],
             $btn
         );

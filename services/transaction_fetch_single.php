@@ -23,17 +23,13 @@ function getCustomerDetails($dbConn, $param) {
                 $cData[] = $cRow;
             }
 
-            $formatted_updated_on = new DateTime($cData[0]["updated_on"]);
-            $cData[0]["updated_on"] = $formatted_updated_on->format('d-m-Y h:i:s A');
-
-            $formatted_created_on = new DateTime($cData[0]["created_on"]);
-            $cData[0]["created_on"] = $formatted_created_on->format('d-m-Y h:i:s A');
+            $cData[0]["created_on"] = date('d-m-Y h:i:s A', strtotime($cData[0]["created_on"]));
+            $cData[0]["updated_on"] = date('d-m-Y h:i:s A', strtotime($cData[0]["updated_on"]));
 
             $fieldsToFormat = ['amc_st_date', 'amc_end_date', 'tally_st_date', 'tally_end_date', 'cloud_st_date', 'cloud_end_date'];
             foreach ($fieldsToFormat as $field) {
                 if (!empty($cData[0][$field])) {
-                    $formattedDate = new DateTime($cData[0][$field]);
-                    $cData[0][$field] = $formattedDate->format('d-m-Y');
+                    $cData[0][$field] = date('d-m-Y h:i:s A', strtotime($cData[0][$field]));
                 }
             }
             
@@ -72,11 +68,8 @@ if(isset($_POST['tId'])) {
                 }
                 $valid['success'] = true;
 
-                $formatted_updated_on = new DateTime($data[0]["updated_on"]);
-                $data[0]["updated_on"] = $formatted_updated_on->format('d-m-Y h:i:s A');
-
-                $formatted_updated_on = new DateTime($data[0]["created_on"]);
-                $data[0]["created_on"] = $formatted_updated_on->format('d-m-Y h:i:s A');
+                $data[0]["created_on"] = date('d-m-Y h:i:s A', strtotime($data[0]["created_on"]));
+                $data[0]["updated_on"] = date('d-m-Y h:i:s A', strtotime($data[0]["updated_on"]));
 
                 $valid['data'] = $data;
                 $valid['message'] = "Data found.";
