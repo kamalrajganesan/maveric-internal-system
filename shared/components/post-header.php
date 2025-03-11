@@ -210,10 +210,9 @@
               </a>
               <div class="collapse" id="report-menus">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="./reports.php?page=agent"> Agents </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./reports.php?page=serviceThru"> Service Through </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./reports.php?page=last3"> Less Service Provided </a></li>
-                  
+                  <li class="nav-item"> <a class="nav-link" href="./agent-report.php"> Agents </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./customer-report.php"> Customers </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./inactive-customer-report.php"> Less Service Provided </a></li>
                 </ul>
               </div>
             </li>

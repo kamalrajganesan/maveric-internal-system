@@ -6,13 +6,13 @@ if(isset($_POST['customerId'])) {
     
     $db = new sqlHelper();
     $customerFetchSingleSQL = 
-    "SELECT c.*, 
-        (SELECT agent_nm FROM agent a WHERE a.id = c.updated_by) AS updated_by, 
-        (SELECT agent_nm FROM agent a WHERE a.id = c.created_by) AS created_by 
-    FROM cust_mstr c 
-    WHERE 
-        is_deleted = 0 and 
-        customer_uniq_code = ?
+        "SELECT c.*, 
+            (SELECT agent_nm FROM agent a WHERE a.id = c.updated_by) AS updated_by, 
+            (SELECT agent_nm FROM agent a WHERE a.id = c.created_by) AS created_by 
+        FROM cust_mstr c 
+        WHERE 
+            is_deleted = 0 and 
+            customer_uniq_code = ?
     ";
 
     $db->prepareStatement($customerFetchSingleSQL);

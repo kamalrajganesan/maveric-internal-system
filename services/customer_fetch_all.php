@@ -50,36 +50,38 @@ $db->execPreparedStatement();
 $custFetchAllSQLResultSet = $db->getResultSet();
 
 if ($custFetchAllSQLResultSet->num_rows > 0) {
+    
     $data = array();
     $siVar = 1;
     while ($row = $custFetchAllSQLResultSet->fetch_assoc()) {
+        
         $btn = '
-        <div class="btn-group">
-            <button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#viewCustomerModal" id="viewCustomerModalBtn" onclick="viewCustomer(\'' . $row['customer_uniq_code'] . '\')">
-                <i class="fa fa-ellipsis-v"></i>
-            </button>
-            <button type="button" class="btn btn-inverse-secondary btn-fw" data-toggle="modal" data-target="#addTransactionModal" id="addTransactionModalBtn" onclick="addTransactionOfACustomer(\'' . $row['customer_uniq_code'] . '\')">
-                <i class="fa fa-th-list"></i>
-            </button>
-            <button type="button" class="btn btn-inverse-secondary btn-fw" data-toggle="modal" data-target="#editCustomerModal" id="editCustomerModalBtn" onclick="editCustomer(\'' . $row['customer_uniq_code'] . '\')">
-                <i class="fa fa-pencil-square-o"></i>
-            </button>
-            <button type="button" class="btn btn-inverse-dark btn-fw" data-toggle="modal" data-target="#removeCustomerModal" id="removeCustomerModalBtn" onclick="removeCustomer(\'' . $row['customer_uniq_code'] . '\')">
-                <i class="fa fa-trash-o"></i>
-            </button>
-        </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#viewCustomerModal" id="viewCustomerModalBtn" onclick="viewCustomer(\'' . $row['customer_uniq_code'] . '\')">
+                    <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <button type="button" class="btn btn-inverse-secondary btn-fw" data-toggle="modal" data-target="#addTransactionModal" id="addTransactionModalBtn" onclick="addTransactionOfACustomer(\'' . $row['customer_uniq_code'] . '\')">
+                    <i class="fa fa-th-list"></i>
+                </button>
+                <button type="button" class="btn btn-inverse-secondary btn-fw" data-toggle="modal" data-target="#editCustomerModal" id="editCustomerModalBtn" onclick="editCustomer(\'' . $row['customer_uniq_code'] . '\')">
+                    <i class="fa fa-pencil-square-o"></i>
+                </button>
+                <button type="button" class="btn btn-inverse-dark btn-fw" data-toggle="modal" data-target="#removeCustomerModal" id="removeCustomerModalBtn" onclick="removeCustomer(\'' . $row['customer_uniq_code'] . '\')">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+            </div>
         ';
-        $data[] = array(
-            $siVar,
-            $row['customer_uniq_code'],
-            $row['company_nm'],
-            $row['service_type'],
-            $row['contact'],
-            $row['city'] . " / " . $row['pincode'],
-            $row['email'],
-            $btn
-        );
-        $siVar++;
+            $data[] = array(
+                $siVar,
+                $row['customer_uniq_code'],
+                $row['company_nm'],
+                $row['service_type'],
+                $row['contact'],
+                $row['city'] . " / " . $row['pincode'],
+                $row['email'],
+                $btn
+            );
+            $siVar++;
         // $data[] = $row;
     }
     echo json_encode(array("success" => true, "data" => $data, "message" => "Data found."));

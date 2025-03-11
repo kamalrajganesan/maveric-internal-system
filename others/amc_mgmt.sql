@@ -1,21 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Jan 02, 2025 at 04:45 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `amc_mgmt`
@@ -45,6 +28,7 @@ CREATE TABLE `agent` (
   `is_deleted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
 -- --------------------------------------------------------
 
 --
@@ -53,28 +37,36 @@ CREATE TABLE `agent` (
 
 CREATE TABLE `cust_mstr` (
   `id` int(11) NOT NULL,
-  `customer_nm` varchar(255) NOT NULL,
+  `customer_nm` varchar(255) DEFAULT NULL,
   `company_nm` varchar(255) NOT NULL,
-  `address_ln` varchar(400) NOT NULL,
+  `address_ln` varchar(400) DEFAULT NULL,
   `contact` varchar(24) NOT NULL,
+  `telephone` varchar(12) DEFAULT NULL,
   `updated_by` varchar(255) NOT NULL,
   `created_by` varchar(255) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `service_st_date` date NOT NULL,
-  `service_end_date` date DEFAULT NULL,
-  `spl_cust_note` text NOT NULL,
-  `license_typ` varchar(24) NOT NULL,
+  `amc_st_date` date DEFAULT NULL,
+  `amc_end_date` date DEFAULT NULL,
+  `tally_st_date` date DEFAULT NULL,
+  `tally_end_date` date DEFAULT NULL,
+  `cloud_st_date` date DEFAULT NULL,
+  `cloud_end_date` date DEFAULT NULL,
+  `spl_cust_note` text DEFAULT NULL,
+  `license_typ` varchar(24) DEFAULT NULL,
+  `auditor` varchar(300) DEFAULT NULL,
+  `referredBy` varchar(300) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
-  `sys_email` varchar(255) NOT NULL,
+  `sys_email` varchar(255) DEFAULT NULL,
   `pincode` int(11) NOT NULL,
   `city` varchar(255) NOT NULL,
-  `area` varchar(255) NOT NULL,
+  `area` varchar(255) DEFAULT NULL,
   `service_type` varchar(100) NOT NULL,
-  `is_active` tinyint(1) NOT NULL,
-  `customer_uniq_code` varchar(18) NOT NULL,
+  `is_active` tinyint(1) DEFAULT NULL,
+  `customer_uniq_code` varchar(56) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- --------------------------------------------------------
 
@@ -104,24 +96,6 @@ CREATE TABLE `lead_tracker` (
   `email` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `req_tracker`
---
-
-CREATE TABLE `req_tracker` (
-  `id` int(11) NOT NULL,
-  `brief` varchar(300) NOT NULL,
-  `detailed` text DEFAULT NULL,
-  `cust_id` int(12) DEFAULT NULL,
-  `phone` varchar(24) NOT NULL,
-  `nm` varchar(128) NOT NULL,
-  `updated_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` int(24) NOT NULL,
-  `created_on` timestamp NOT NULL DEFAULT current_timestamp(),
-  `created_by` int(24) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -136,11 +110,15 @@ CREATE TABLE `req_tracker` (
   `cust_id` int(12) DEFAULT NULL,
   `phone` varchar(24) NOT NULL,
   `nm` varchar(128) NOT NULL,
+  `requirement_status` varchar(128) NOT NULL,
   `updated_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_by` int(24) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT current_timestamp(),
-  `created_by` int(24) NOT NULL
+  `created_by` int(24) NOT NULL,
+  `is_active` int(11) NOT NULL,
+  `is_deleted` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- --------------------------------------------------------
 
@@ -172,6 +150,7 @@ CREATE TABLE `ticket` (
   `uniq_id` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
 -- --------------------------------------------------------
 
 --
@@ -190,9 +169,6 @@ CREATE TABLE `usr` (
   `salt` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Indexes for dumped tables
---
 
 --
 -- Indexes for table `agent`
@@ -244,25 +220,25 @@ ALTER TABLE `agent`
 -- AUTO_INCREMENT for table `cust_mstr`
 --
 ALTER TABLE `cust_mstr`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `lead_tracker`
 --
 ALTER TABLE `lead_tracker`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `req_tracker`
 --
 ALTER TABLE `req_tracker`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `usr`
