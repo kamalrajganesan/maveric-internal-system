@@ -175,11 +175,8 @@
               </a>
               <div class="collapse" id="lead-menus">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=New"> Newly Added </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Contacted"> Contacted </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Converted"> Converted </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Following"> Follow Ups </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./leads.php?page=Lost"> Lost </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./call-leads.php"> Call Leads </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./email-leads.php"> Email Leads </a></li>
                 </ul>
               </div>
             </li>

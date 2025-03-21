@@ -1,15 +1,47 @@
 var manageLeadDatatable, currentLead;
+var selectedLeads = [];
+
 $(document).ready(function () {
   manageLeadDatatable = $("#leadMasterTbl").DataTable({
     method: "POST",
+    scrollX: true,
     ajax: {
-      url: "./services/lead_fetch_all.php",
-      type: "POST",
-      data: {
-        param: lead_page,
-      },
+      url: "./services/lead_email_fetch_all.php",
       dataType: "json",
     },
+    layout: {
+      top1Start: {
+        buttons: [
+          {
+            text: 'Act on selected data',
+            action: function () {
+              
+              selectedLeads = [];
+              manageLeadDatatable.rows({ selected: true }).data().toArray().forEach(element => {
+                selectedLeads.push(Number(element[8].match(/viewLead\((\d+)\)/)[1]));
+              });;
+
+              console.log(selectedLeads);
+              openMultiActionModal();
+            }
+          }
+        ]
+      }
+    },
+    dom: null,
+    columns: [
+      { data: null, orderable: false, searchable: false, render: DataTable.render.select() },
+      { data: 0 },
+      { data: 1 },
+      { data: 2 },
+      { data: 3 },
+      { data: 4 },
+      { data: 5 },
+      { data: 6 },
+      { data: 7 },
+      { data: 8 }
+    ],
+    select: true
   });
 
   // Handle form submission
@@ -22,7 +54,7 @@ $(document).ready(function () {
     // Send AJAX request
     $.ajax({
       type: "POST",
-      url: "./services/lead_add.php",
+      url: "./services/lead_email_add.php",
       data: data, // Send the form data
       dataType: "json", // Expect JSON response
       success: function (response) {
@@ -39,12 +71,20 @@ $(document).ready(function () {
   });
 });
 
+function message(message) {
+  let el = document.querySelector('#events');
+  let div = document.createElement('div');
+
+  div.textContent = message;
+  el.prepend(div);
+}
+
 function removeLead(params = null) {
   // console.log("params: ", params);
   if (params) {
     $.ajax({
       type: "POST",
-      url: "./services/lead_remove.php",
+      url: "./services/lead_email_remove.php",
       data: { leadId: params },
       dataType: "json",
       success: function (response) {
@@ -62,10 +102,11 @@ function removeLead(params = null) {
 }
 
 function viewLead(params = null) {
+
   if (params) {
     $.ajax({
       type: "POST",
-      url: "./services/lead_fetch_single.php",
+      url: "./services/lead_email_fetch_single.php",
       data: { leadId: params },
       dataType: "json",
       success: function (response) {
@@ -107,7 +148,7 @@ function editLead(leadId = null) {
   if (leadId) {
     $.ajax({
       type: "POST",
-      url: "./services/lead_fetch_single.php",
+      url: "./services/lead_email_fetch_single.php",
       data: { leadId: leadId },
       dataType: "json",
       success: function (response) {
@@ -151,7 +192,7 @@ function editLead(leadId = null) {
 
               $.ajax({
                 type: "POST",
-                url: "./services/lead_edit.php",
+                url: "./services/lead_email_edit.php",
                 data: formData,
                 dataType: "json",
                 success: function (response) {
@@ -178,4 +219,50 @@ function editLead(leadId = null) {
       },
     });
   }
+}
+
+function openMultiActionModal() {
+  
+  // reset defaults or preloaded content
+  $(".selectedLeadCount").empty();
+  $("#multiActionLeadForm")[0].reset();
+
+  // adding the selected no. of leads into the modal
+  $(".selectedLeadCount").append("Totally, " + selectedLeads.length + " lead(s) will be affected...!");
+  
+  // Show the modal
+  $("#multiActionLeadModal").modal("show");
+  
+  // Handle lead's multi-action form submission
+  $("#multiActionDataBtn").on("click", function (e) {
+
+    e.preventDefault();
+
+    // Send AJAX request
+    $.ajax({
+      type: "POST",
+      url: "./services/lead_email_multi_action.php",
+      data: {
+        followUpDt: $("#multiActionLeadForm #followUpDt").val(),
+        leadStatus: $("#multiActionLeadForm #leadStatus").val(),
+        leads: selectedLeads
+      }, // Send the form data
+      dataType: "json",
+      success: function (response) {
+        
+        if (response.success == true) {
+          manageLeadDatatable.ajax.reload(null, true); // Reload lead data table
+        } else {
+          alert("Failed to update lead details.");
+        }
+        
+        $("#multiActionLeadModal").modal("hide");
+      },
+      error: function () {
+        
+        alert("Error updating lead details.");
+        $("#multiActionLeadModal").modal("hide");
+      },
+    });
+  });
 }

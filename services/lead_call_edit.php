@@ -22,9 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pincode = $_POST['pincode'];
     $followUpDate = $_POST['followUpDt'];
     $leadStatus = $_POST['leadStatus'];
+    $updatedBy = $_SESSION['user']['id'];
 
     // Create the update query
-    $sql = "UPDATE lead_tracker SET 
+    $sql = "UPDATE lead_call_tracker SET 
         lead_nm = '". $leadName ."', 
         email = '". $email ."',
         company_nm = '". $companyName ."',
@@ -38,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         pincode = '". $pincode ."',
         follow_up_dt = '". $followUpDate ."',
         lead_status = '". $leadStatus ."',
+        updated_by = '". $updatedBy ."',
         updated_on = NOW()
         WHERE id = ". $leadId;
 

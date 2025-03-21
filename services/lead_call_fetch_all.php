@@ -6,11 +6,11 @@ $page = "";
 if (isset($_POST['param'])) {
     $page = htmlspecialchars($_POST['param']);
 } else {
-    echo "param not found";
+    // echo "param not found";
 }
 
 $db = new sqlHelper();
-$FetchAllSQL = "SELECT * FROM lead_tracker WHERE is_deleted = 0";
+$FetchAllSQL = "SELECT * FROM lead_call_tracker WHERE is_deleted = 0";
 
 switch ($page) {
 
@@ -30,9 +30,9 @@ switch ($page) {
         $FetchAllSQL .= " and lead_status = 'Lost';";
         break;
     default:
-        echo "Invalid Parm...";
+        // echo "Invalid Parm...";  
         break;
-}
+}   
 
 $db->prepareStatement($FetchAllSQL);
 $db->execPreparedStatement();

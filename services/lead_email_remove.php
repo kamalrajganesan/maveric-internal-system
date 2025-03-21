@@ -10,7 +10,7 @@ $lId = $_POST['leadId'];
 
 if($lId) {
 
-    $sql = "UPDATE lead_tracker set is_deleted = 1 WHERE id = '".$lId."'";
+    $sql = "UPDATE lead_email_tracker set is_deleted = 1 WHERE id = '".$lId."'";
 
     if( $connect-> query($sql) === TRUE) {
  	    $valid['success'] = true;

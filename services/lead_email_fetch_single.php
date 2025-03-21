@@ -25,7 +25,7 @@ if (isset($_POST['leadId'])) {
             l.is_active, 
             (SELECT agent_nm FROM agent a WHERE a.id = l.created_by) AS created_by
         FROM 
-            lead_tracker l
+            lead_email_tracker l
         WHERE 
             l.is_deleted = 0 
             AND l.id = ?

@@ -38,13 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $createdBy =  1; // Use session or other method to get user ID
 
         // Prepare the SQL insert query
-        $query = "INSERT INTO lead_tracker (
+        $query = "INSERT INTO lead_call_tracker (
                 lead_nm, contact, company_nm, requirement, notes, description, 
                 address_ln, pincode, city, area, email, follow_up_dt, lead_status, 
-                created_by, is_active, is_deleted
+                created_by, updated_by, is_active, is_deleted
             ) VALUES (
+                ?, ?, ?, ?, ?, ?,
                 ?, ?, ?, ?, ?, ?, ?, 
-                ?, ?, ?, ?, ?, ?, ?, 1, 0
+                ?, ?, 1, 0
             )";
 
         try {
@@ -66,11 +67,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $email,
                 $followUpDt,
                 $leadStatus,
+                $createdBy,
                 $createdBy
             ];
 
             // Bind the parameters (types: 's' for string, 'i' for integer)
-            $types = 'sssssssssssssi'; // Adjust types if necessary
+            $types = 'sssssssssssssii'; // Adjust types if necessary
             $db->setParameters($params, $types);
 
             // Execute the statement
