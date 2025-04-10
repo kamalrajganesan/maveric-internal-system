@@ -1,0 +1,147 @@
+
+Error --------------------
+Duplicate entry '8072780536\98412' for key 'contact'
+Cause ====================
+Array
+(
+    [exception] => mysqli_sql_exception Object
+        (
+            [message:protected] => Duplicate entry '8072780536\98412' for key 'contact'
+            [string:Exception:private] => 
+            [code:protected] => 1062
+            [file:protected] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+            [line:protected] => 38
+            [trace:Exception:private] => Array
+                (
+                    [0] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+                            [line] => 38
+                            [function] => execute
+                            [class] => mysqli_stmt
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                    [1] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\services\lead_call_add.php
+                            [line] => 84
+                            [function] => execPreparedStatement
+                            [class] => sqlHelper
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [previous:Exception:private] => 
+            [sqlstate:protected] => 23000
+        )
+
+)
+
+
+Error --------------------
+Duplicate entry '8072780536\98412' for key 'contact'
+Cause ====================
+Array
+(
+    [exception] => mysqli_sql_exception Object
+        (
+            [message:protected] => Duplicate entry '8072780536\98412' for key 'contact'
+            [string:Exception:private] => 
+            [code:protected] => 1062
+            [file:protected] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+            [line:protected] => 38
+            [trace:Exception:private] => Array
+                (
+                    [0] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+                            [line] => 38
+                            [function] => execute
+                            [class] => mysqli_stmt
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                    [1] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\services\lead_call_add.php
+                            [line] => 84
+                            [function] => execPreparedStatement
+                            [class] => sqlHelper
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [previous:Exception:private] => 
+            [sqlstate:protected] => 23000
+        )
+
+)
+
+
+Error --------------------
+Duplicate entry '8072780536\98412' for key 'contact'
+Cause ====================
+Array
+(
+    [exception] => mysqli_sql_exception Object
+        (
+            [message:protected] => Duplicate entry '8072780536\98412' for key 'contact'
+            [string:Exception:private] => 
+            [code:protected] => 1062
+            [file:protected] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+            [line:protected] => 38
+            [trace:Exception:private] => Array
+                (
+                    [0] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\shared\actions\db\dao.php
+                            [line] => 38
+                            [function] => execute
+                            [class] => mysqli_stmt
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                    [1] => Array
+                        (
+                            [file] => C:\xampp\htdocs\bits\maveric-internal-system\services\lead_call_add.php
+                            [line] => 84
+                            [function] => execPreparedStatement
+                            [class] => sqlHelper
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [previous:Exception:private] => 
+            [sqlstate:protected] => 23000
+        )
+
+)
+

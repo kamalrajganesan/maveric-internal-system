@@ -13,7 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!session_id()) {
         session_start();
     }
+    
+    $valid['success'] = false;
+    $valid['message'] = "";
 
+    // print_r($_POST);
 
     // Capture form data
     $leadNm = isset($_POST['leadNm']) ? htmlspecialchars($_POST['leadNm']) : '';
@@ -31,8 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $leadStatus = isset($_POST['leadStatus']) ? htmlspecialchars($_POST['leadStatus']) : '';
 
     // Make sure all the required fields are filled
-    if (empty($leadNm) || empty($contact) || empty($requirement) || empty($followUpDt) || empty($leadStatus)) {
-        $response = 'All fields are required.';
+    if (empty($contact) || empty($leadStatus)) {
+        
+        $valid["message"] = "Mandatory";
     } else {
         // Get the current user ID dynamically (Example, replace with actual user session handling)
         $createdBy =  1; // Use session or other method to get user ID
@@ -76,15 +81,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $db->setParameters($params, $types);
 
             // Execute the statement
-            $db->execPreparedStatement();
-            $response = array("success" => true, "message" => 'Lead added successfully!');
+            $resp = $db->execPreparedStatement();
+
+            if($resp['success']){ 
+                
+                $valid['success'] = true;
+                $valid["message"] = 'Lead created successfully!';
+            } else {
+
+                $valid['success'] = false;
+                if(str_contains($resp["message"], 'Duplicate entry') && str_contains($resp["message"], 'contact')) {
+                    $valid["message"] = 'Duplicate';
+                    $valid["detailed"] = 'Duplicate entry - Lead contact number';
+                } else {
+                    $valid["message"] = 'Default';
+                }
+            }
+
         } catch (Exception $e) {
-            $response = 'Error: ' . $e->getMessage();
+            
+            $valid['success'] = false;
+            $valid["message"] = 'Exception';
+            $valid["detailed"] = $e->getMessage();
         }
     }
-} else {
-    $response = 'Invalid request method';
+
+    // Return the response as JSON
+    echo json_encode($valid);
+    
 }
 
-// Return the response as JSON
-echo json_encode($response);
+?>

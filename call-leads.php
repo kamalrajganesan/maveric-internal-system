@@ -74,7 +74,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
-                                    <label for="leadNm">Lead Name <strong><code>*</code></strong></label>
+                                    <label for="leadNm">Lead Name</label>
                                     <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
                                 </div>
 
@@ -94,7 +94,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="requirement">Requirement <strong><code>*</code></strong></label>
+                                    <label for="requirement">Requirement</label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
                                 </div>
 
@@ -132,7 +132,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date <strong><code>*</code></strong></label>
+                                    <label for="followUpDt">Follow-up Date</label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
@@ -177,7 +177,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
-                                    <label for="leadNm">Lead Name <strong><code>*</code></strong></label>
+                                    <label for="leadNm">Lead Name</label>
                                     <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
                                 </div>
 
@@ -197,7 +197,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="requirement">Requirement <strong><code>*</code></strong></label>
+                                    <label for="requirement">Requirement</label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
                                 </div>
 
@@ -235,7 +235,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date <strong><code>*</code></strong></label>
+                                    <label for="followUpDt">Follow-up Date</label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 

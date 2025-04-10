@@ -74,8 +74,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $db->setParameters($params, $types);
 
             // Execute the statement
-            $db->execPreparedStatement();
-            $response = array("success" => true, "message" => 'Lead added successfully!');
+            $resp = $db->execPreparedStatement();
+
+            if($resp['success']){ 
+                
+                $valid['success'] = true;
+                $valid["message"] = 'Lead created successfully!';
+            } else {
+
+                $valid['success'] = false;
+                if(str_contains($resp["message"], 'Duplicate entry') && str_contains($resp["message"], 'email')) {
+                    $valid["message"] = 'Duplicate';
+                    $valid["detailed"] = 'Duplicate entry - Lead Email Id';
+                } else {
+                    $valid["message"] = 'Default';
+                }
+            }
         } catch (Exception $e) {
             $response = 'Error: ' . $e->getMessage();
         }

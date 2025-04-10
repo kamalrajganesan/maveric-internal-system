@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // mandatory fields
     $followUpDate = isset($_POST['followUpDt']) ? htmlspecialchars($_POST['followUpDt']) : "";
     $leadStatus = isset($_POST['leadStatus']) ? htmlspecialchars($_POST['leadStatus']) : "";
-    $leadIds = (isset($_POST['leads']))? $_POST['leads'] : [];
+    $leads = isset($_POST['leads'])? $_POST['leads'] : [];
 
     // auto generating fields
     $updatedBy = $_SESSION['user']['id'];
@@ -25,13 +25,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     // Make sure all the mandatory fields are filled
-    if (empty($followUpDate) || empty($leadStatus) || empty($leadIds)) {
+    if (empty($followUpDate) || empty($leadStatus) || empty($leads)) {
 
         $validationFlag = false;
         $valid["message"] = "Mandatory";
     } 
 
     if($validationFlag) {
+
+        $leadIds = [];
+        foreach ($leads as $key => $value) {
+            // print_r($value);
+            array_push($leadIds, $value[0]);
+        }
         
         $db = new sqlHelper();
 

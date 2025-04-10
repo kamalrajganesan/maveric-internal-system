@@ -23,13 +23,31 @@ $(document).ready(function () {
       data: data, // Send the form data
       dataType: "json", // Expect JSON response
       success: function (response) {
-        console.log(response);
+        // console.log(response);
         if (response["success"] == true) {
-          $("#addLeadForm")[0].reset();
-          $("#addLeadModal").modal("hide");
           manageLeadDatatable.ajax.reload(null, true);
+          $("#addLeadModal").modal("hide");
+          $("#addLeadForm")[0].reset();
         } else {
-          alert("Failed to Add lead");
+          let errorMessage = "";
+          switch (response.message) {            
+            case "Mandatory":
+              errorMessage = "Please make sure you filled all the mandatory fields...!"
+              break;
+            case "Duplicate":
+              errorMessage = "This Call Lead Entry is repeated... Please check the details once again"
+              break;
+            case "Exception":
+              errorMessage = "An error occured while creating a new Call Lead. Please contact system admin...!"
+              break;
+            case "Invalid Request":
+              errorMessage = "Invalid request...!"
+              break;
+            default:
+              errorMessage = "Failed to create Call Lead. Please contact system admin!"
+              break;
+          }
+          alert(errorMessage);
         }
       },
     });
@@ -119,7 +137,7 @@ function editLead(leadId = null) {
           $("#editLeadForm #leadNm").val(lead.lead_name);
           $("#editLeadForm #email").val(lead.email);
           $("#editLeadForm #companyNm").val(lead.company_name);
-          $("#editLeadForm #contact").val(lead.contact);
+          $("#editLeadForm #contact").val(lead.contact).attr("readonly", true);;
           $("#editLeadForm #requirement").val(lead.requirement);
           $("#editLeadForm #description").val(lead.description);
           $("#editLeadForm #notes").val(lead.notes);

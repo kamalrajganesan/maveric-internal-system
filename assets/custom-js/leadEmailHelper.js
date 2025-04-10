@@ -17,18 +17,20 @@ $(document).ready(function () {
             action: function () {
               
               selectedLeads = [];
-              manageLeadDatatable.rows({ selected: true }).data().toArray().forEach(element => {
-                selectedLeads.push(Number(element[8].match(/viewLead\((\d+)\)/)[1]));
-              });;
-
-              console.log(selectedLeads);
+              manageLeadDatatable.rows({ selected: true, page: 'current' }).data().toArray().forEach(element => {
+                console.log(element)
+                let temp = [];
+                temp.push(Number(element[8].match(/viewLead\((\d+)\)/)[1]));
+                temp.push(element[0]);
+                selectedLeads.push(temp);
+              });
               openMultiActionModal();
             }
           }
         ]
       }
     },
-    dom: null,
+    dom: null,    
     columns: [
       { data: null, orderable: false, searchable: false, render: DataTable.render.select() },
       { data: 0 },
@@ -44,8 +46,12 @@ $(document).ready(function () {
     select: true
   });
 
+
   // Handle form submission
   $("#addLeadDataBtn").on("click", function (e) {
+
+    console.log("selectedLeads: ", selectedLeads);
+
     e.preventDefault(); // Prevent the default form submission
 
     // Serialize the form data using the form's ID or class
@@ -64,7 +70,25 @@ $(document).ready(function () {
           $("#addLeadModal").modal("hide");
           manageLeadDatatable.ajax.reload(null, true);
         } else {
-          alert("Failed to Add lead");
+          let errorMessage = "";
+          switch (response.message) {            
+            case "Mandatory":
+              errorMessage = "Please make sure you filled all the mandatory fields...!"
+              break;
+            case "Duplicate":
+              errorMessage = "This Email Lead Entry is repeated... Please check the details once again"
+              break;
+            case "Exception":
+              errorMessage = "An error occured while creating a new Email lead. Please contact system admin...!"
+              break;
+            case "Invalid Request":
+              errorMessage = "Invalid request...!"
+              break;
+            default:
+              errorMessage = "Failed to create Email Lead. Please contact system admin!"
+              break;
+          }
+          alert(errorMessage);
         }
       },
     });
@@ -161,7 +185,7 @@ function editLead(leadId = null) {
           // Populate modal fields
           $("#currentEditLeadCode").text(lead.lead_name);
           $("#editLeadForm #leadNm").val(lead.lead_name);
-          $("#editLeadForm #email").val(lead.email);
+          $("#editLeadForm #email").val(lead.email).attr("readonly", true);
           $("#editLeadForm #companyNm").val(lead.company_name);
           $("#editLeadForm #contact").val(lead.contact);
           $("#editLeadForm #requirement").val(lead.requirement);
@@ -222,19 +246,29 @@ function editLead(leadId = null) {
 }
 
 function openMultiActionModal() {
+
+  console.log("Called openMultiActionModal");
   
   // reset defaults or preloaded content
   $(".selectedLeadCount").empty();
   $("#multiActionLeadForm")[0].reset();
 
   // adding the selected no. of leads into the modal
-  $(".selectedLeadCount").append("Totally, " + selectedLeads.length + " lead(s) will be affected...!");
+  var selectedEmails = selectedLeads.map(function(innerArray) {
+    return innerArray[1]; // Get the element at index 1 of each nested array
+  });
+  
+  let dispHtml = "You have selected " + selectedLeads.length + ", they are: <br>";
+  for (let i = 0; i < selectedLeads.length; i++) {
+    dispHtml += "<strong>" + selectedEmails[i] + " </strong><br> ";
+  }
+  $(".selectedLeadCount").append(dispHtml);
   
   // Show the modal
   $("#multiActionLeadModal").modal("show");
   
   // Handle lead's multi-action form submission
-  $("#multiActionDataBtn").on("click", function (e) {
+  $("#multiActionDataBtn").off("click").on("click", function (e) {
 
     e.preventDefault();
 
@@ -255,7 +289,6 @@ function openMultiActionModal() {
         } else {
           alert("Failed to update lead details.");
         }
-        
         $("#multiActionLeadModal").modal("hide");
       },
       error: function () {
