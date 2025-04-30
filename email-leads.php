@@ -20,12 +20,6 @@ require_once("./shared/components/pre-header.php");
 
         <div class="row">
 
-            <div class="col-sm-12">
-                <div id="events" class="box">
-                    Row selected count - new information added at the top
-                </div>
-            </div>
-
             <div class="col-sm-12 short-l">
                 <div class="d-sm-flex align-items-center justify-content-end border-bottom">
                     <div>
@@ -49,12 +43,9 @@ require_once("./shared/components/pre-header.php");
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th>Lead Name</th>
+                                            <th>Email</th>
                                             <th>Contact</th>
                                             <th>Company Name</th>
-                                            <th>Requirement</th>
-                                            <th>Description</th>
-                                            <th>City</th>
                                             <th>Status</th>
                                             <th>Follow up</th>
                                             <th>Actions</th>
@@ -89,12 +80,12 @@ require_once("./shared/components/pre-header.php");
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
-                                    <label for="leadNm">Lead Name <strong><code>*</code></strong></label>
+                                    <label for="leadNm">Lead Name </label>
                                     <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="email">Email</label>
+                                    <label for="email">Email <strong><code>*</code></strong></label>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                                 </div>
 
@@ -104,12 +95,12 @@ require_once("./shared/components/pre-header.php");
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="contact">Contact <strong><code>*</code></strong></label>
+                                    <label for="contact">Contact </label>
                                     <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="requirement">Requirement <strong><code>*</code></strong></label>
+                                    <label for="requirement">Requirement </label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
                                 </div>
 
@@ -192,12 +183,12 @@ require_once("./shared/components/pre-header.php");
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
-                                    <label for="leadNm">Lead Name <strong><code>*</code></strong></label>
+                                    <label for="leadNm">Lead Name </label>
                                     <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="email">Email</label>
+                                    <label for="email">Email <strong><code>*</code></strong></label>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                                 </div>
 
@@ -207,12 +198,12 @@ require_once("./shared/components/pre-header.php");
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="contact">Contact <strong><code>*</code></strong></label>
+                                    <label for="contact">Contact </label>
                                     <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="requirement">Requirement <strong><code>*</code></strong></label>
+                                    <label for="requirement">Requirement </label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
                                 </div>
 
@@ -224,7 +215,11 @@ require_once("./shared/components/pre-header.php");
                                 <div class="form-group view-form-group">
                                     <label for="notes">Notes</label>
                                     <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
+                                </div>
 
+                                <div class="form-group view-form-group">
+                                    <label for="assignee">Assignee</label>
+                                    <input type="text" class="form-control" id="assignee" name="assignee" required>
                                 </div>
                             </div>
                             <div class="col-sm-5">
@@ -250,7 +245,7 @@ require_once("./shared/components/pre-header.php");
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date <strong><code>*</code></strong></label>
+                                    <label for="followUpDt">Follow-up Date </label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
@@ -270,6 +265,10 @@ require_once("./shared/components/pre-header.php");
                                     <input type="text" class="form-control" id="createdBy" name="createdBy" required>
                                 </div>
 
+                                <div class="form-group view-form-group">
+                                    <label for="updatedBy">Last Updated By</label>
+                                    <input type="text" class="form-control" id="updatedBy" name="updatedBy" required>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -299,12 +298,12 @@ require_once("./shared/components/pre-header.php");
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
-                                    <label for="leadNm">Lead Name <strong><code>*</code></strong></label>
+                                    <label for="leadNm">Lead Name </label>
                                     <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="email">Email</label>
+                                    <label for="email">Email <strong><code>*</code></strong></label>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                                 </div>
 
@@ -314,12 +313,12 @@ require_once("./shared/components/pre-header.php");
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="contact">Contact <strong><code>*</code></strong></label>
+                                    <label for="contact">Contact </label>
                                     <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="requirement">Requirement <strong><code>*</code></strong></label>
+                                    <label for="requirement">Requirement </label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
                                 </div>
 
@@ -331,7 +330,11 @@ require_once("./shared/components/pre-header.php");
                                 <div class="form-group view-form-group">
                                     <label for="notes">Notes</label>
                                     <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
-
+                                </div>
+                                
+                                <div class="form-group view-form-group">
+                                    <label for="assignee">Assignee</label>
+                                    <input type="text" class="form-control" id="assignee" name="assignee" required>
                                 </div>
                             </div>
                             <div class="col-sm-5">
@@ -388,7 +391,7 @@ require_once("./shared/components/pre-header.php");
     </div>
     <!-- end edit lead modal -->
 
-    <!-- edit lead modal -->
+    <!-- multiple action modal -->
     <div class="modal fade" id="multiActionLeadModal" tabindex="-1" role="dialog" aria-labelledby="multiActionLeadModal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -407,7 +410,7 @@ require_once("./shared/components/pre-header.php");
                                 <div class="form-group view-form-group selectedLeadCount"> </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date <strong><code>*</code></strong></label>
+                                    <label for="followUpDt">Follow-up Date </label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
@@ -433,7 +436,7 @@ require_once("./shared/components/pre-header.php");
             </div>
         </div>
     </div>
-    <!-- end edit lead modal -->
+    <!-- end multiple action modal -->
 
 
 

@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     // Make sure all the mandatory fields are filled
-    if (empty($followUpDate) || empty($leadStatus) || empty($leads)) {
+    if (empty($leadStatus) || empty($leads)) {
 
         $validationFlag = false;
         $valid["message"] = "Mandatory";

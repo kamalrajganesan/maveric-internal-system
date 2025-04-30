@@ -1,4 +1,19 @@
 $(document).ready(function() {
+
+    $(".make-text-visible").hide();
+    $(".make-text-visible, .make-text-invisible").on('click', function() {
+        var password = $(this).parents('div').find('input');
+        if ($(this).hasClass('make-text-visible')) {
+            $(password).attr("type", "text");
+            $(this).parent().find(".make-text-visible").hide();
+            $(this).parent().find(".make-text-invisible").show();
+        } else {
+            $(password).attr("type", "password");
+            $(this).parent().find(".make-text-invisible").hide();
+            $(this).parent().find(".make-text-visible").show();
+        }
+    });
+
     $('#loginForm').on('submit', function(event) {
         
         event.preventDefault(); // Prevent the default form submission

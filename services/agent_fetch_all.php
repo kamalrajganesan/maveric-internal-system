@@ -6,7 +6,7 @@ $page = "";
 if (isset($_POST['param'])) {
     $page = htmlspecialchars($_POST['param']);
 } else {
-    echo "param not found";
+    // echo "";
 }
 
 $db = new sqlHelper();
@@ -34,17 +34,27 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
             </button>
         </div>
         ';
+
+        if($row['is_active'] == 1){
+            $active_status = '<button type="button" class="btn btn-inverse-success btn-fw" style="padding: 12px 18px;"> 
+                <span class="mdi mdi-check-all"></span> Active
+            </button>';
+        } else {
+            $active_status = '<button type="button" class="btn btn-inverse-danger btn-fw" style="padding: 12px 18px;"> 
+                <span class="mdi mdi-close-box-multiple"></span> Inactive
+            </button>';
+        }
+
         $data[] = array(
             $siVar,
-            $row['created_on'],
-            $row['nm'],
+            $row['agent_nm'],
             $row['email'],
-            $row['phone'],
-            $row['requirement'],
-            $row['is_active'],
+            $row['primary_contact'],
+            $active_status,
             $btn
         );
         $siVar++;
+        $active_status = "";
     }
     echo json_encode(array("success" => true, "data" => $data, "message" => "Data found."));
 } else {

@@ -34,6 +34,8 @@ switch ($page) {
         break;
 }
 
+$FetchAllSQL .= " and assignee in (". $_SESSION['user']['id'] .", 2)";
+
 $db->prepareStatement($FetchAllSQL);
 $db->execPreparedStatement();
 $FetchAllSQLResultSet = $db->getResultSet();
@@ -59,14 +61,9 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
         ';
 
         $data[] = array(
-            // $siVar,
-            // $checkBox,
-            $row['lead_nm'],
+            $row['email'],
             $row['contact'],
             $row['company_nm'],
-            $row['requirement'],
-            $row['description'],
-            $row['city'] . " / " . $row['pincode'],
             $row['lead_status'],
             date('d-m-Y h:i:s A', strtotime($row['follow_up_dt'])),
             $btn

@@ -41,9 +41,11 @@ if (isset($_GET['page'])) {
                                 <table id="manageAgentDataTbl" class="display" style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>SI. No.</th>
                                             <th>Name</th>
-                                            <th>Phone</th>
                                             <th>Email</th>
+                                            <th>Contact</th>
+                                            <th>Active Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -74,19 +76,10 @@ if (isset($_GET['page'])) {
                     <form id="addAgentForm" class="form-sample">
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
+                                
                                 <div class="form-group view-form-group">
                                     <label for="agentName">Agent Name <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="agentName" name="agentName" placeholder="Agent Name" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="companyName">Company Name <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="companyName" name="companyName" placeholder="Company Name" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="contact">Contact <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -95,34 +88,30 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="address">Address <strong><code>*</code></strong></label>
+                                    <label for="contact1">Primary Contact <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="contact1" name="contact1" placeholder="Primary contact" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="contact2">Secondary Contact </label>
+                                    <input type="text" class="form-control" id="contact2" name="contact2" placeholder="Primary contact" required>
+                                </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="address">Address </label>
                                     <input type="text" class="form-control" id="address" name="address" placeholder="Address">
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="area">Area</label>
-                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area">
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="pincode">Pincode <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
                                 </div>
                             </div>
                             <div class="col-sm-5">
+                            
                                 <div class="form-group view-form-group">
-                                    <label for="serviceType[]"> Service Type <strong><code>*</code></strong> </label>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" name="serviceType[]" value="AMC"> AMC </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="Tally Subscription"> Tally Subscription </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="One Time"> One Time </label>
+                                    <label for="password">Password <strong><code>*</code></strong></label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control password" placeholder="Password" id="password" name="password" aria-label="Agent pass phrase....">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text make-text-visible"> <i class="fa fa-eye"></i> </span>
+                                            <span class="input-group-text make-text-invisible"> <i class="fa fa-eye-slash"></i> </span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -132,41 +121,22 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="serviceStartDate">Service Start Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="serviceStartDate" name="serviceStartDate" required>
+                                    <label for="pincode">Pincode <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="serviceEndDate">Service End Date <strong><code>*</code></strong> </label>
-                                    <input type="date" class="form-control" id="serviceEndDate" name="serviceEndDate" required>
+                                    <label for="area">Area</label>
+                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area">
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="specialNote">Special Note</label>
-                                    <input type="text" class="form-control" id="specialNote" name="specialNote" placeholder="Special Note">
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
-                                    <select class="form-control required" id="licenseType" name="licenseType" required aria-readonly="true" required>
-                                        <option value="" selected hidden>Select the License Type</option>
-                                        <option value="Single User">Single User</option>
-                                        <option value="Multi-user">Multi-user</option>
-                                        <option value="Auditor Pack">Auditor Pack</option>
-                                        <option value="Rental">Rental</option>
+                                    <label for="activeStatus">Customer Status</label>
+                                    <select class="form-control" id="activeStatus" name="activeStatus" required aria-readonly="true">
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
                                     </select>
                                 </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="systemEmail">System Email <strong><code>*</code></strong></label>
-                                    <input type="email" class="form-control" id="systemEmail" name="systemEmail" placeholder="System Email" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="agentUniqCode">Agent Serial Number <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="agentUniqCode" name="agentUniqCode" placeholder="Agent Unique Code" required>
-                                </div>
-                                
                             </div>
                         </div>
                     </form>
@@ -195,19 +165,10 @@ if (isset($_GET['page'])) {
                     <form id="viewAgentForm" class="form-sample">
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
+                                
                                 <div class="form-group view-form-group">
-                                    <label for="agentName">Agent Name  <strong><code>*</code></strong></label>
+                                    <label for="agentName">Agent Name <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="agentName" name="agentName" placeholder="Agent Name" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="companyName">Company Name <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="companyName" name="companyName" placeholder="Company Name" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="contact">Contact <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -216,53 +177,30 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="address">Address <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                                    <label for="contact1">Primary Contact <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="contact1" name="contact1" placeholder="Primary contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="area">Area</label>
-                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area" required>
+                                    <label for="contact2">Secondary Contact </label>
+                                    <input type="text" class="form-control" id="contact2" name="contact2" placeholder="Primary contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="pincode">Pincode <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
+                                    <label for="address">Address </label>
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address">
                                 </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="Active Status">Agent Status</label>
-                                    <select class="form-control" id="agentStatus" name="agentStatus" required aria-readonly="true">
-                                        <option value="1">Active</option>
-                                        <option value="0">Inactive</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="createdBy">Agent Created By</label>
-                                    <input type="text" class="form-control" id="createdBy" name="createdBy" placeholder="Created By" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="createdOn">Agent Created On</label>
-                                    <input type="text" class="form-control" id="createdOn" name="createdOn" placeholder="Created On" required>
-                                </div>
-
                             </div>
                             <div class="col-sm-5">
+                            
                                 <div class="form-group view-form-group">
-                                    <label for="serviceType"> Service Type  <strong><code>*</code></strong></label>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType" value="AMC"> AMC </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType" value="Tally Subscription"> Tally Subscription </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType" value="One Time"> One Time </label>
+                                    <label for="password">Password <strong><code>*</code></strong></label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control password" placeholder="Password" id="password" name="password" aria-label="Agent pass phrase....">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text make-text-visible"> <i class="fa fa-eye"></i> </span>
+                                            <span class="input-group-text make-text-invisible"> <i class="fa fa-eye-slash"></i> </span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -272,46 +210,27 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="city">Service Start Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="serviceStartDate" name="serviceStartDate" required>
+                                    <label for="pincode">Pincode <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="serviceEndDate">Service End Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="serviceEndDate" name="serviceEndDate" required>
+                                    <label for="area">Area</label>
+                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area">
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="specialNote">Special Note</label>
-                                    <input type="text" class="form-control" id="specialNote" name="specialNote" placeholder="Special Note" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
-                                    <select class="form-control" id="licenseType" name="licenseType" disabled aria-readonly="true">
-                                        <option value="" selected hidden>Select the License Type</option>
-                                        <option value="Single User">Single User</option>
-                                        <option value="Multi-user">Multi-user</option>
-                                        <option value="Auditor Pack">Auditor Pack</option>
-                                        <option value="Rental">Rental</option>
+                                    <label for="activeStatus">Agent Activity Status</label>
+                                    <select class="form-control" id="activeStatus" name="activeStatus" required aria-readonly="true">
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="systemEmail">System Email <strong><code>*</code></strong></label>
-                                    <input type="email" class="form-control" id="systemEmail" name="systemEmail" placeholder="System Email" required>
+                                    <label for="createdOn">Agent Created On</label>
+                                    <input type="text" class="form-control" id="createdOn" name="createdOn" placeholder="Agent Created On">
                                 </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="agentUniqCode">Agent Serial Number <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="agentUniqCode" name="agentUniqCode" placeholder="Agent Unique Code" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="updatedBy">Agent Updated By</label>
-                                    <input type="text" class="form-control" id="updatedBy" name="updatedBy" placeholder="Updated By" required>
-                                </div>
-
                             </div>
                         </div>
                     </form>
@@ -339,19 +258,10 @@ if (isset($_GET['page'])) {
                     <form id="editAgentForm" class="form-sample">
                         <div class="row justify-content-center">
                             <div class="col-sm-5">
+                                
                                 <div class="form-group view-form-group">
                                     <label for="agentName">Agent Name <strong><code>*</code></strong></label>
                                     <input type="text" class="form-control" id="agentName" name="agentName" placeholder="Agent Name" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="companyName">Company Name <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="companyName" name="companyName" placeholder="Company Name" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="contact">Contact <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -360,53 +270,29 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="address">Address <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                                    <label for="contact1">Primary Contact <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="contact1" name="contact1" placeholder="Primary contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="area">Area</label>
-                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area" required>
+                                    <label for="contact2">Secondary Contact </label>
+                                    <input type="text" class="form-control" id="contact2" name="contact2" placeholder="Primary contact" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="pincode">Pincode <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
+                                    <label for="address">Address </label>
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address">
                                 </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="Active Status">Agent Status <strong><code>*</code></strong></label>
-                                    <select class="form-control" id="agentStatus" name="agentStatus" required aria-readonly="true">
-                                        <option value="1">Active</option>
-                                        <option value="0">Inactive</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="createdBy">Agent Created By</label>
-                                    <input type="text" class="form-control" id="createdBy" name="createdBy" placeholder="Created By" required readonly>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="createdOn">Agent Created On</label>
-                                    <input type="text" class="form-control" id="createdOn" name="createdOn" placeholder="Created On" required readonly>
-                                </div>
-
                             </div>
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
-                                    <label for="serviceType[]"> Service Type <strong><code>*</code></strong></label>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="AMC"> AMC </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="Tally Subscription"> Tally Subscription </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="serviceType[]" value="One Time"> One Time </label>
+                                    <label for="password">Password <strong><code>*</code></strong></label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control password" placeholder="Password" id="password" name="password" aria-label="Agent pass phrase....">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text make-text-visible"> <i class="fa fa-eye"></i> </span>
+                                            <span class="input-group-text make-text-invisible"> <i class="fa fa-eye-slash"></i> </span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -416,43 +302,25 @@ if (isset($_GET['page'])) {
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="city">Service Start Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="serviceStartDate" name="serviceStartDate" required>
+                                    <label for="pincode">Pincode <strong><code>*</code></strong></label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="serviceEndDate">Service End Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="serviceEndDate" name="serviceEndDate" required>
+                                    <label for="area">Area</label>
+                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area">
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="specialNote">Special Note</label>
-                                    <input type="text" class="form-control" id="specialNote" name="specialNote" placeholder="Special Note" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
-                                    <select class="form-control required" id="licenseType" name="licenseType" required aria-readonly="true">
-                                        <option value="0" selected hidden>Select the License Type</option>
-                                        <option value="Single User">Single User</option>
-                                        <option value="Multi-user">Multi-user</option>
-                                        <option value="Auditor Pack">Auditor Pack</option>
-                                        <option value="Rental">Rental</option>
+                                    <label for="activeStatus">Agent Activity Status</label>
+                                    <select class="form-control" id="activeStatus" name="activeStatus" required aria-readonly="true">
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
                                     </select>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="systemEmail">System Email <strong><code>*</code></strong></label>
-                                    <input type="email" class="form-control" id="systemEmail" name="systemEmail" placeholder="System Email" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="agentUniqCode">Agent Serial Number <strong><code>*</code></strong></label>
-                                    <input type="text" class="form-control" id="agentUniqCode" name="agentUniqCode" placeholder="Agent Unique Code" required readonly>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </form>                
                 </div>
                 <div class="modal-footer editAgentDataFooter">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal"> Close</button>

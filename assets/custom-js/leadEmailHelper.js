@@ -1,4 +1,5 @@
 var manageLeadDatatable, currentLead;
+var agents = [];
 var selectedLeads = [];
 
 $(document).ready(function () {
@@ -18,9 +19,8 @@ $(document).ready(function () {
               
               selectedLeads = [];
               manageLeadDatatable.rows({ selected: true, page: 'current' }).data().toArray().forEach(element => {
-                console.log(element)
                 let temp = [];
-                temp.push(Number(element[8].match(/viewLead\((\d+)\)/)[1]));
+                temp.push(Number(element[5].match(/viewLead\((\d+)\)/)[1]));
                 temp.push(element[0]);
                 selectedLeads.push(temp);
               });
@@ -38,14 +38,43 @@ $(document).ready(function () {
       { data: 2 },
       { data: 3 },
       { data: 4 },
-      { data: 5 },
-      { data: 6 },
-      { data: 7 },
-      { data: 8 }
+      { data: 5 }
     ],
     select: true
   });
 
+  // Send AJAX request to get all Agents
+  $.ajax({
+    type: "GET",
+    url: "./services/agent_fetch_few_details.php",
+    dataType: "json", // Expect JSON response
+    success: function (response) {
+      // console.log(response);
+      if (response["success"] == true) {
+        response["data"].forEach((agent) => {
+          agents[Number(agent.id)] = agent.name;
+        })
+      } else {
+        let errorMessage = "";
+        switch (response.message) {            
+          case "Exception":
+            errorMessage = "An error occured while fetching Agents. Please contact system admin...!"
+            break;
+          case "Invalid Request":
+            errorMessage = "Invalid request...!"
+            break;
+          default:
+            errorMessage = "Failed to get agents. Please contact system admin!"
+            break;
+        }
+        alert(errorMessage);
+      }
+    },
+    error: function (xhr, status, error) {
+      // Handle any errors that occurred during the request
+      console.log(error);
+    }
+  });
 
   // Handle form submission
   $("#addLeadDataBtn").on("click", function (e) {
@@ -155,6 +184,8 @@ function viewLead(params = null) {
           $("#viewLeadForm #pincode").val(response.data[0].pincode).attr("readonly", true);
           $("#viewLeadForm #followUpDt").val(response.data[0].follow_up_date).attr("readonly", true);
           $("#viewLeadForm #createdBy").val(response.data[0].created_by).attr("readonly", true);
+          $("#viewLeadForm #updatedBy").val(response.data[0].updated_by).attr("readonly", true);
+          $("#viewLeadForm #assignee").val(agents[response.data[0].assignee]).attr("readonly", true);
 
           $("#viewLeadForm #leadStatus").val(response.data[0].lead_status).attr("disabled", true);
         } else {
@@ -197,6 +228,10 @@ function editLead(leadId = null) {
           $("#editLeadForm #pincode").val(lead.pincode);
           $("#editLeadForm #followUpDt").val(lead.follow_up_date);
           $("#editLeadForm #leadStatus").val(lead.lead_status);
+
+          console.log("agents : ", agents)
+          console.log("agents[response.data[0].assignee] : ", agents[response.data[0].assignee])
+          $("#editLeadForm #assignee").val(agents[response.data[0].assignee]).attr("readonly", true);
           $("#editLeadForm").append('<input type="hidden" name="lId" id="lId" value="'+ lead.id +'" />');
 
 
@@ -247,8 +282,6 @@ function editLead(leadId = null) {
 
 function openMultiActionModal() {
 
-  console.log("Called openMultiActionModal");
-  
   // reset defaults or preloaded content
   $(".selectedLeadCount").empty();
   $("#multiActionLeadForm")[0].reset();
@@ -258,7 +291,7 @@ function openMultiActionModal() {
     return innerArray[1]; // Get the element at index 1 of each nested array
   });
   
-  let dispHtml = "You have selected " + selectedLeads.length + ", they are: <br>";
+  let dispHtml = "You have selected " + selectedLeads.length + " record, the emails are: <br>";
   for (let i = 0; i < selectedLeads.length; i++) {
     dispHtml += "<strong>" + selectedEmails[i] + " </strong><br> ";
   }

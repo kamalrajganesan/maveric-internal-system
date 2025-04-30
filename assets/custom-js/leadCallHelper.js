@@ -1,4 +1,6 @@
 var manageLeadDatatable, currentLead;
+var agents = [];
+
 $(document).ready(function () {
   manageLeadDatatable = $("#leadMasterTbl").DataTable({
     method: "POST",
@@ -7,6 +9,39 @@ $(document).ready(function () {
       url: "./services/lead_call_fetch_all.php",
       dataType: "json",
     },
+  });
+
+  // Send AJAX request to get all Agents
+  $.ajax({
+    type: "GET",
+    url: "./services/agent_fetch_few_details.php",
+    dataType: "json", // Expect JSON response
+    success: function (response) {
+      // console.log(response);
+      if (response["success"] == true) {
+        response["data"].forEach((agent) => {
+          agents[Number(agent.id)] = agent.name;
+        })
+      } else {
+        let errorMessage = "";
+        switch (response.message) {            
+          case "Exception":
+            errorMessage = "An error occured while fetching Agents. Please contact system admin...!"
+            break;
+          case "Invalid Request":
+            errorMessage = "Invalid request...!"
+            break;
+          default:
+            errorMessage = "Failed to get agents. Please contact system admin!"
+            break;
+        }
+        alert(errorMessage);
+      }
+    },
+    error: function (xhr, status, error) {
+      // Handle any errors that occurred during the request
+      console.log(error);
+    }
   });
 
   // Handle form submission
@@ -104,7 +139,43 @@ function viewLead(params = null) {
           $("#viewLeadForm #pincode").val(response.data[0].pincode).attr("readonly", true);
           $("#viewLeadForm #pincode").val(response.data[0].pincode).attr("readonly", true);
           $("#viewLeadForm #followUpDt").val(response.data[0].follow_up_date).attr("readonly", true);
+
+          let commentsHtml = '';
+          let comments = '['+response.data[0].log+']';
+          JSON.parse(comments).forEach(function(comment) {
+            commentsHtml += '<li class="d-block">'
+            commentsHtml += '<div class="form-check w-100">'
+            commentsHtml += '<label class="form-check-label m-0">'
+            commentsHtml += comment.message +' <i class="input-helper rounded"></i></label>'
+            switch (comment.status) {
+              case "Newly Added":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-info me-3"> '+ comment.status +' </div>'
+                break;
+              case "Contacted":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-purple me-3"> '+ comment.status +' </div>'
+                break;
+              case "Converted":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-success me-3"> '+ comment.status +' </div>'
+                break;
+              case "Following":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-warning me-3"> '+ comment.status +' </div>'
+                break;
+              case "Lost":
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-danger me-3"> '+ comment.status +' </div>'
+                break;
+              default:
+                commentsHtml += '<div class="d-flex mt-2"><div class="badge badge-opacity-light me-3"> '+ comment.status +' </div>'
+                break;
+            }
+            commentsHtml += '<div class="text-small me-3"> On <strong>'+ formatDate(comment.date) +'</strong></div>'
+            commentsHtml += '<div class="text-small me-3"> By <strong>'+ comment.commentBy +'</strong></div></div></div></li>'
+          });
+          $("#viewLeadForm #pastCommentsOfThisLead").html(commentsHtml);
+
+
           $("#viewLeadForm #createdBy").val(response.data[0].created_by).attr("readonly", true);
+          $("#viewLeadForm #updatedBy").val(response.data[0].updated_by).attr("readonly", true);
+          $("#viewLeadForm #assignee").val(agents[response.data[0].assignee]).attr("readonly", true);
 
           $("#viewLeadForm #leadStatus").val(response.data[0].lead_status).attr("disabled", true);
         } else {
@@ -147,6 +218,8 @@ function editLead(leadId = null) {
           $("#editLeadForm #pincode").val(lead.pincode);
           $("#editLeadForm #followUpDt").val(lead.follow_up_date);
           $("#editLeadForm #leadStatus").val(lead.lead_status);
+          $("#editLeadForm #assignee").val(agents[response.data[0].assignee]).attr("readonly", true);
+
           $("#editLeadForm").append('<input type="hidden" name="lId" id="lId" value="'+ lead.id +'" />');
 
 

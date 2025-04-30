@@ -2,6 +2,10 @@
 
 require_once("../shared/actions/db/dao.php");
 
+if (!session_id()) {
+    session_start();
+}
+
 $page = "";
 if (isset($_POST['param'])) {
     $page = htmlspecialchars($_POST['param']);
@@ -34,6 +38,8 @@ switch ($page) {
         break;
 }   
 
+$FetchAllSQL .= " and assignee in (". $_SESSION['user']['id'] .", 2)";
+
 $db->prepareStatement($FetchAllSQL);
 $db->execPreparedStatement();
 $FetchAllSQLResultSet = $db->getResultSet();
@@ -59,11 +65,9 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
         $data[] = array(
             $siVar,
             $row['lead_nm'],
-            $row['contact'],
             $row['company_nm'],
-            $row['requirement'],
-            $row['description'],
-            $row['city'] . " / " . $row['pincode'],
+            $row['contact'],
+            $row['email'],
             $row['lead_status'],
             date('d-m-Y h:i:s A', strtotime($row['follow_up_dt'])),
             $btn

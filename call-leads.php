@@ -35,11 +35,9 @@
                                         <tr>
                                             <th>S. No.</th>
                                             <th>Lead Name</th>
-                                            <th>Contact</th>
                                             <th>Company Name</th>
-                                            <th>Requirement</th>
-                                            <th>Description</th>
-                                            <th>City</th>
+                                            <th>Contact</th>
+                                            <th>Email</th>
                                             <th>Status</th>
                                             <th>Follow up</th>
                                             <th>Actions</th>
@@ -142,7 +140,7 @@
                                         <option value="New">Newly Added</option>
                                         <option value="Contacted">Contacted</option>
                                         <option value="Converted">Converted</option>
-                                        <option value="Following">following up</option>
+                                        <option value="Following">Following up</option>
                                         <option value="Lost">Lost</option>
                                     </select>
                                 </div>
@@ -209,12 +207,16 @@
                                 <div class="form-group view-form-group">
                                     <label for="notes">Notes</label>
                                     <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
+                                </div>
 
+                                <div class="form-group view-form-group">
+                                    <label for="assignee">Assignee</label>
+                                    <input type="text" class="form-control" id="assignee" name="assignee" required>
                                 </div>
                             </div>
+                            
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
-
                                     <label for="addressLn">Address Line</label>
                                     <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line" required>
                                 </div>
@@ -245,7 +247,7 @@
                                         <option value="New">Newly Added</option>
                                         <option value="Contacted">Contacted</option>
                                         <option value="Converted">Converted</option>
-                                        <option value="Following">following up</option>
+                                        <option value="Following">Following up</option>
                                         <option value="Lost">Lost</option>
                                     </select>
                                 </div>
@@ -255,6 +257,23 @@
                                     <input type="text" class="form-control" id="createdBy" name="createdBy" required>
                                 </div>
 
+                                <div class="form-group view-form-group">
+                                    <label for="updatedBy">Last Updated By</label>
+                                    <input type="text" class="form-control" id="updatedBy" name="updatedBy" required>
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row justify-content-center">
+                            <div class="col-sm-10">
+                                <div class="form-group view-form-group">
+                                    <label for="createdOn">History</label>
+                                    <div class="list-wrapper">
+                                        <ul class="todo-list todo-list-rounded" id="pastCommentsOfThisLead">
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -316,8 +335,13 @@
                                 <div class="form-group view-form-group">
                                     <label for="notes">Notes</label>
                                     <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
-
                                 </div>
+
+                                <div class="form-group view-form-group">
+                                    <label for="assignee">Assignee</label>
+                                    <input type="text" class="form-control" id="assignee" name="assignee" required>
+                                </div>
+
                             </div>
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
@@ -352,7 +376,7 @@
                                         <option value="New">Newly Added</option>
                                         <option value="Contacted">Contacted</option>
                                         <option value="Converted">Converted</option>
-                                        <option value="Following">following up</option>
+                                        <option value="Following">Following up</option>
                                         <option value="Lost">Lost</option>
                                     </select>
                                 </div>

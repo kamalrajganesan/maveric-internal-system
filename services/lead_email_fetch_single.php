@@ -23,7 +23,9 @@ if (isset($_POST['leadId'])) {
             l.follow_up_dt AS follow_up_date, 
             l.lead_status, 
             l.is_active, 
-            (SELECT agent_nm FROM agent a WHERE a.id = l.created_by) AS created_by
+            l.assignee,
+            (SELECT agent_nm FROM agent a WHERE a.id = l.created_by) AS created_by,
+            (SELECT agent_nm FROM agent a WHERE a.id = l.updated_by) AS updated_by
         FROM 
             lead_email_tracker l
         WHERE 
