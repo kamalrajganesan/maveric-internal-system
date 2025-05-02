@@ -445,6 +445,7 @@ function viewTicket(params = null) {
 
           let commentsHtml = '';
           let comments = '['+response.data[0].comments+']';
+          console.log(comments);
           JSON.parse(comments).forEach(function(comment) {
             commentsHtml += '<li class="d-block">'
             commentsHtml += '<div class="form-check w-100">'

@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Capture form data
     $leadId = isset($_POST['lId']) ? htmlspecialchars($_POST['lId']) : '';
     $leadNm = isset($_POST['leadNm']) ? htmlspecialchars($_POST['leadNm']) : '';
+    $leadStatus = isset($_POST['leadStatus']) ? htmlspecialchars($_POST['leadStatus']) : '';
     $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
     $companyNm = isset($_POST['companyNm']) ? htmlspecialchars($_POST['companyNm']) : '';
     $contact = isset($_POST['contact']) ? htmlspecialchars($_POST['contact']) : '';
@@ -33,11 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $city = isset($_POST['city']) ? htmlspecialchars($_POST['city']) : '';
     $pincode = isset($_POST['pincode']) ? htmlspecialchars($_POST['pincode']) : '';
     $followUpDt = isset($_POST['followUpDt']) ? htmlspecialchars($_POST['followUpDt']) : '';
-    $leadStatus = isset($_POST['leadStatus']) ? htmlspecialchars($_POST['leadStatus']) : '';
     
 
     // Make sure all the required fields are filled
-    if (empty($leadStatus)) {
+    if (empty($leadStatus) || empty($leadId) || empty($leadNm)) {
         
         $valid["message"] = "Mandatory";
         $valid['detail'] = 'Some mandatory fields are missing..!.';
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $query = "UPDATE lead_call_tracker SET
                      lead_nm = ?, contact = ?, company_nm = ?, requirement = ?, notes = ?, 
                      description = ?, address_ln = ?, pincode = ?, city = ?, area = ?, 
-                     email = ?, follow_up_dt = ?, lead_status = ?, log = CONCATE(log, ?), created_by = ?, 
+                     email = ?, follow_up_dt = ?, lead_status = ?, log = CONCAT(log, ?), created_by = ?, 
                      updated_by = ?
                 WHERE id = ?
                 ";

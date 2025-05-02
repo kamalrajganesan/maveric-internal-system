@@ -32,7 +32,7 @@
                 <div class="brand-logo">
                   <img src="./assets/images/logoipsum.svg" alt="logo">
                 </div>
-                <h4>Hello Agent! let's get started</h4>
+                <h4>Hello! <u><strong>Agent</strong></u></h4>
                 <h6 class="fw-light">Sign in to continue</h6>
                 <form class="pt-3" id="loginForm">
                   <div class="form-group">

@@ -142,6 +142,7 @@ function viewLead(params = null) {
 
           let commentsHtml = '';
           let comments = '['+response.data[0].log+']';
+          console.log(comments);
           JSON.parse(comments).forEach(function(comment) {
             commentsHtml += '<li class="d-block">'
             commentsHtml += '<div class="form-check w-100">'

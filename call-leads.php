@@ -100,16 +100,14 @@
                                     <label for="description">Description</label>
                                     <input type="text" class="form-control" id="description" name="description" placeholder="Description">
                                 </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="notes">Notes</label>
-                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes">
-
-                                </div>
                             </div>
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
+                                    <label for="notes">Comments</label>
+                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes">
+                                </div>
 
+                                <div class="form-group view-form-group">
                                     <label for="addressLn">Address Line</label>
                                     <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line">
                                 </div>
@@ -205,17 +203,22 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="notes">Notes</label>
-                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
                                     <label for="assignee">Assignee</label>
                                     <input type="text" class="form-control" id="assignee" name="assignee" required>
+                                </div>
+                                
+                                <div class="form-group view-form-group">
+                                    <label for="createdBy">Created By</label>
+                                    <input type="text" class="form-control" id="createdBy" name="createdBy" required>
                                 </div>
                             </div>
                             
                             <div class="col-sm-5">
+                                <div class="form-group view-form-group">
+                                    <label for="notes">Comments</label>
+                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
+                                </div>
+
                                 <div class="form-group view-form-group">
                                     <label for="addressLn">Address Line</label>
                                     <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line" required>
@@ -250,11 +253,6 @@
                                         <option value="Following">Following up</option>
                                         <option value="Lost">Lost</option>
                                     </select>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="createdBy">Created By</label>
-                                    <input type="text" class="form-control" id="createdBy" name="createdBy" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -323,18 +321,13 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="requirement">Requirement <strong><code>*</code></strong></label>
+                                    <label for="requirement">Requirement </label>
                                     <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
                                     <label for="description">Description</label>
                                     <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="notes">Notes</label>
-                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -345,7 +338,11 @@
                             </div>
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
+                                    <label for="notes">Comments</label>
+                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
+                                </div>
 
+                                <div class="form-group view-form-group">
                                     <label for="addressLn">Address Line</label>
                                     <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line" required>
                                 </div>
@@ -366,7 +363,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date <strong><code>*</code></strong></label>
+                                    <label for="followUpDt">Follow-up Date </label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
