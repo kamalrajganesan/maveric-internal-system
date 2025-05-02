@@ -166,6 +166,7 @@
               <div class="collapse" id="lead-menus">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <a class="nav-link" href="./call-leads.php"> Call Leads </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./my-call-leads.php"> Assigned Call Leads </a></li>
                   <li class="nav-item"> <a class="nav-link" href="./email-leads.php"> Email Leads </a></li>
                 </ul>
               </div>

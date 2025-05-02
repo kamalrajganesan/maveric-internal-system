@@ -38,7 +38,7 @@ switch ($page) {
         break;
 }   
 
-$FetchAllSQL .= " and assignee in (". $_SESSION['user']['id'] .", 2)";
+$FetchAllSQL .= " and assignee = ". $_SESSION['user']['id'] .";";
 
 $db->prepareStatement($FetchAllSQL);
 $db->execPreparedStatement();

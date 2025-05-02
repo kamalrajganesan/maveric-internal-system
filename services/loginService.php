@@ -11,7 +11,7 @@ $p = $_POST['password'];
 if (!empty($u) && !empty($p)) {
     
     $db = new sqlHelper();
-    $query = "SELECT * FROM agent WHERE email = ? AND pass_code = ?";
+    $query = "SELECT * FROM agent WHERE email = ? AND pass_code = ? AND is_active = 1 AND is_deleted = 0";
     
     $db->prepareStatement($query);
     $db->setParameters([$u, $p], 'ss');
@@ -24,7 +24,7 @@ if (!empty($u) && !empty($p)) {
         $sess->SetAgentSession($resultSet->fetch_assoc());
         echo json_encode(array("success" => true));
     } else {
-        echo json_encode(array("success" => false));
+        echo json_encode(array("success" => false, "message" => "Username and password are invalid."));
     }
 } else {
     echo json_encode(array("success" => false, "message" => "Username and password are required."));

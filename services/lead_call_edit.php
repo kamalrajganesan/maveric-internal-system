@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $valid['detail'] = 'Some mandatory fields are missing..!.';
     } else {
         
-        $createdBy =  $_SESSION['user']['id'];
+        $updatedBy =  $_SESSION['user']['id'];
         $commentsArr = array(
             "date" => date("Y-m-d H:i:s"),
             "message" => $notes,
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                      lead_nm = ?, contact = ?, company_nm = ?, requirement = ?, notes = ?, 
                      description = ?, address_ln = ?, pincode = ?, city = ?, area = ?, 
                      email = ?, follow_up_dt = ?, lead_status = ?, log = CONCAT(log, ?), created_by = ?, 
-                     updated_by = ?
+                     updated_by = ?, assignee = ? 
                 WHERE id = ?
                 ";
 
@@ -68,12 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $params = [
                 $leadNm, $contact, $companyNm, $requirement, $notes, 
                 $description, $addressLn, $pincode, $city, $area, 
-                $email, $followUpDt, $leadStatus, json_encode($commentsArr), $createdBy, 
-                $createdBy, $leadId
+                $email, $followUpDt, $leadStatus, json_encode($commentsArr), $updatedBy, 
+                $updatedBy, $leadId, $updatedBy
             ];
 
             // Bind the parameters (types: 's' for string, 'i' for integer)
-            $types = 'ssssssssssssssiii'; // Adjust types if necessary
+            $types = 'ssssssssssssssiiii'; // Adjust types if necessary
             $db->setParameters($params, $types);
 
             // Execute the statement
