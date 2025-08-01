@@ -30492,3 +30492,8 @@ select.form-control {
 .toggleFilterForm.collapsed {
   height: auto;
 }
+
+table.dataTable tbody td.select-checkbox:after,
+table.dataTable tbody th.select-checkbox:after {
+    content: "" !important;
+}

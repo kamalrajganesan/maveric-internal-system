@@ -1,88 +1,78 @@
 <?php
-
 require_once("../shared/actions/db/dao.php");
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    session_start();
+    $response = ['success' => false, 'message' => ''];
 
-    if(!session_id()) {
-        session_start();
+    // Get all input values
+    $leadStatus = $_POST['leadStatus'] ?? null;
+    $followUpDate = $_POST['followUpDt'] ?? null;
+    $leads = $_POST['leads'] ?? [];
+    $updatedBy = $_SESSION['user']['id'] ?? null;
+
+    // Validation
+    if (empty($leads) || !$updatedBy) {
+        $response['message'] = 'Missing required fields.';
+        echo json_encode($response);
+        exit;
     }
 
-    $valid['success'] = false;
-    $valid['message'] = "";
+    // Prepare lead IDs
+    $leadIds = array_map(fn($lead) => $lead[0], $leads);
+    $placeholders = implode(',', array_fill(0, count($leadIds), '?'));
 
-    // print_r($_POST);
-    
-    // mandatory fields
-    $followUpDate = isset($_POST['followUpDt']) ? htmlspecialchars($_POST['followUpDt']) : "";
-    $leadStatus = isset($_POST['leadStatus']) ? htmlspecialchars($_POST['leadStatus']) : "";
-    $leads = isset($_POST['leads'])? $_POST['leads'] : [];
+    // Build dynamic SET clauses
+    $setParts = [];
+    $params = [];
+    $types = '';
 
-    // auto generating fields
-    $updatedBy = $_SESSION['user']['id'];
+    // Only add status if explicitly provided (not empty)
+    if ($leadStatus !== null && $leadStatus !== '') {
+        $setParts[] = "lead_status = ?";
+        $params[] = $leadStatus;
+        $types .= 's';
+    }
 
-    $validationFlag = true;
+    // Only add follow-up date if explicitly provided (not empty)
+    if ($followUpDate !== null && $followUpDate !== '') {
+        $setParts[] = "follow_up_dt = ?";
+        $params[] = htmlspecialchars($followUpDate);
+        $types .= 's';
+    }
 
+    // If nothing to update (except metadata)
+    if (empty($setParts)) {
+        $response['message'] = 'Nothing to update.';
+        echo json_encode($response);
+        exit;
+    }
 
-    // Make sure all the mandatory fields are filled
-    if (empty($leadStatus) || empty($leads)) {
+    // Always update modified metadata
+    $setParts[] = "updated_on = NOW()";
+    $setParts[] = "updated_by = ?";
+    $params[] = $updatedBy;
+    $types .= 'i';
 
-        $validationFlag = false;
-        $valid["message"] = "Mandatory";
-    } 
+    // Build final query
+    $query = "UPDATE lead_email_tracker SET " . implode(', ', $setParts) . " WHERE id IN ($placeholders)";
+    $params = array_merge($params, $leadIds);
+    $types .= str_repeat('i', count($leadIds));
 
-    if($validationFlag) {
-
-        $leadIds = [];
-        foreach ($leads as $key => $value) {
-            // print_r($value);
-            array_push($leadIds, $value[0]);
-        }
-        
+    try {
         $db = new sqlHelper();
+        $stmt = $db->prepareStatement($query);
+        $db->setParameters($params, $types);
+        $db->execPreparedStatement();
 
-        $placeholders = implode(',', array_fill(0, count($leadIds), '?'));
-        $query = 
-            "UPDATE lead_email_tracker SET 
-                follow_up_dt = ?,
-                lead_status = ?,
-                updated_on = NOW(),
-                updated_by = ?
-            WHERE id IN ($placeholders)";
+        $response['success'] = true;
+        $response['message'] = 'Leads updated successfully.';
 
-        try {
+    } catch (Exception $e) {
+        $response['message'] = 'Update failed.';
+        $response['detailed'] = $e->getMessage();
+    }
 
-            // Prepare the statement
-            $stmt = $db->prepareStatement($query);
-
-            // Parameters for binding
-            $params = [
-                $followUpDate, 
-                $leadStatus,
-                $updatedBy
-            ];
-            $params = array_merge($params, $leadIds);
-
-            $types = 'sss';
-            $types .= str_repeat('i', count($leadIds));
-
-            $db->setParameters($params, $types);
-
-            // Execute the statement
-            $db->execPreparedStatement();
-            $valid['success'] = true;
-            $valid["message"] = 'Leads updated successfully!';
-            $valid["detailed"] = "";
-
-        } catch (Exception $e) {
-            $valid['success'] = false;
-            $valid["message"] = 'Error in updating Lead details';
-            $valid["detailed"] = $e->getMessage();
-        }
-
-    } 
-    
-    echo json_encode($valid);
+    echo json_encode($response);
 }
-
 ?>

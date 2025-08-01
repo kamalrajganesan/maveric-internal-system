@@ -10,29 +10,31 @@ $(document).ready(function () {
       url: "./services/lead_email_fetch_all.php",
       dataType: "json",
     },
-    layout: {
-      top1Start: {
-        buttons: [
-          {
-            text: 'Act on selected data',
-            action: function () {
-              
-              selectedLeads = [];
-              manageLeadDatatable.rows({ selected: true, page: 'current' }).data().toArray().forEach(element => {
-                let temp = [];
-                temp.push(Number(element[5].match(/viewLead\((\d+)\)/)[1]));
-                temp.push(element[0]);
-                selectedLeads.push(temp);
-              });
-              openMultiActionModal();
-            }
-          }
-        ]
+    dom: 'Bfrtip', // Keep this for button placement
+    buttons: [
+      {
+        text: 'Act on selected data',
+        action: function () {
+          selectedLeads = [];
+          manageLeadDatatable.rows({ selected: true }).every(function() {
+            let rowData = this.data();
+            let temp = [];
+            temp.push(Number(rowData[5].match(/viewLead\((\d+)\)/)[1]));
+            temp.push(rowData[0]);
+            selectedLeads.push(temp);
+          });
+          openMultiActionModal();
+        }
       }
-    },
-    dom: null,    
+    ],
     columns: [
-      { data: null, orderable: false, searchable: false, render: DataTable.render.select() },
+      { 
+        data: null,
+        orderable: false,
+        searchable: false,
+        className: 'select-checkbox',
+        defaultContent: ''
+      },
       { data: 0 },
       { data: 1 },
       { data: 2 },
@@ -40,9 +42,11 @@ $(document).ready(function () {
       { data: 4 },
       { data: 5 }
     ],
-    select: true
+    select: {
+      style: 'multi', // Allows multiple row selection
+      selector: 'td.select-checkbox' // Only selects when clicking the checkbox cell
+    }
   });
-
   // Send AJAX request to get all Agents
   $.ajax({
     type: "GET",
@@ -300,35 +304,38 @@ function openMultiActionModal() {
   // Show the modal
   $("#multiActionLeadModal").modal("show");
   
-  // Handle lead's multi-action form submission
-  $("#multiActionDataBtn").off("click").on("click", function (e) {
-
-    e.preventDefault();
-
-    // Send AJAX request
-    $.ajax({
-      type: "POST",
-      url: "./services/lead_email_multi_action.php",
-      data: {
-        followUpDt: $("#multiActionLeadForm #followUpDt").val(),
-        leadStatus: $("#multiActionLeadForm #leadStatus").val(),
-        leads: selectedLeads
-      }, // Send the form data
-      dataType: "json",
-      success: function (response) {
-        
-        if (response.success == true) {
-          manageLeadDatatable.ajax.reload(null, true); // Reload lead data table
-        } else {
-          alert("Failed to update lead details.");
-        }
-        $("#multiActionLeadModal").modal("hide");
-      },
-      error: function () {
-        
-        alert("Error updating lead details.");
-        $("#multiActionLeadModal").modal("hide");
-      },
-    });
+// In your form submission handler, ensure you only send changed fields
+$("#multiActionDataBtn").on("click", function(e) {
+  e.preventDefault();
+  
+  // Get form values
+  const formData = {
+    followUpDt: $("#multiActionLeadForm #followUpDt").val(),
+    leadStatus: $("#multiActionLeadForm #leadStatus").val(),
+    leads: selectedLeads
+  };
+  
+  // Remove empty/null values
+  const cleanData = {};
+  for (const key in formData) {
+    if (formData[key] !== null && formData[key] !== '' && formData[key] !== undefined) {
+      cleanData[key] = formData[key];
+    }
+  }
+  
+  $.ajax({
+    type: "POST",
+    url: "./services/lead_email_multi_action.php",
+    data: cleanData,
+    dataType: "json",
+    success: function(response) {
+      if (response.success) {
+        manageLeadDatatable.ajax.reload(null, true);
+      } else {
+        alert("Error: " + response.message);
+      }
+      $("#multiActionLeadModal").modal("hide");
+    }
   });
+});
 }
