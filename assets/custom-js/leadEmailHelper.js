@@ -47,6 +47,43 @@ $(document).ready(function () {
       selector: 'td.select-checkbox' // Only selects when clicking the checkbox cell
     }
   });
+
+  // Handle "Select All" checkbox functionality
+  $('#selectAllCheckbox').on('click', function() {
+    var isChecked = $(this).is(':checked');
+    
+    if (isChecked) {
+      // Select all rows
+      manageLeadDatatable.rows({ page: 'current' }).select();
+    } else {
+      // Deselect all rows
+      manageLeadDatatable.rows().deselect();
+    }
+  });
+
+  // Update "Select All" checkbox state when individual rows are selected/deselected
+  manageLeadDatatable.on('select deselect', function() {
+    var totalRows = manageLeadDatatable.rows({ page: 'current' }).count();
+    var selectedRows = manageLeadDatatable.rows({ selected: true, page: 'current' }).count();
+    
+    // Update the select all checkbox state
+    if (selectedRows === 0) {
+      $('#selectAllCheckbox').prop('indeterminate', false);
+      $('#selectAllCheckbox').prop('checked', false);
+    } else if (selectedRows === totalRows) {
+      $('#selectAllCheckbox').prop('indeterminate', false);
+      $('#selectAllCheckbox').prop('checked', true);
+    } else {
+      $('#selectAllCheckbox').prop('indeterminate', true);
+    }
+  });
+
+  // Reset select all checkbox when table is redrawn (pagination, search, etc.)
+  manageLeadDatatable.on('draw', function() {
+    $('#selectAllCheckbox').prop('checked', false);
+    $('#selectAllCheckbox').prop('indeterminate', false);
+  });
+
   // Send AJAX request to get all Agents
   $.ajax({
     type: "GET",
@@ -157,7 +194,6 @@ function removeLead(params = null) {
     });
   }
 }
-
 function viewLead(params = null) {
 
   if (params) {

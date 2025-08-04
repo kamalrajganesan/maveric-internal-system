@@ -42,7 +42,7 @@ require_once("./shared/components/pre-header.php");
                                 <table id="leadMasterTbl" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th></th>
+                                            <th><input type="checkbox" id="selectAllCheckbox" /></th>
                                             <th>Email</th>
                                             <th>Contact</th>
                                             <th>Company Name</th>
