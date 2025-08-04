@@ -17,7 +17,7 @@ class SessUsers {
         $agent['email'] = $usr["email"];
         $agent['phone'] = $usr["primary_contact"];
         $agent['id'] = $usr["id"];
-     
+     $agent['role'] = "agent";
         $_SESSION['user'] = $agent;
         $_SESSION['userType'] = "agent";
     }
@@ -31,7 +31,7 @@ class SessUsers {
         $agent['email'] = $usr["email"];
         $agent['phone'] = $usr["phone"];
         $agent['id'] = "0";
-     
+      $agent['role'] = "admin";
         $_SESSION['user'] = $agent;
         $_SESSION['userType'] = "admin";
     }

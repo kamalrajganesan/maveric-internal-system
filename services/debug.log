@@ -1,0 +1,30 @@
+Session: 
+Page param: 
+Role: agent, UserID: 0
+SQL Query: SELECT * FROM lead_email_tracker WHERE is_deleted = 0 AND (assignee IS NULL OR assignee = 0 OR assignee = '' OR assignee = ?)
+Lead ID: 36105, Assignee: 0
+Lead ID: 36106, Assignee: 0
+Lead ID: 36107, Assignee: 0
+Lead ID: 36108, Assignee: 0
+Lead ID: 36109, Assignee: 0
+Lead ID: 36110, Assignee: 0
+Lead ID: 36111, Assignee: 0
+Lead ID: 36113, Assignee: 0
+Lead ID: 36114, Assignee: 0
+Lead ID: 36118, Assignee: 0
+Request started: 2025-08-04 13:29:34
+Session: 
+Page param: 
+Role: agent, UserID: 0
+SQL Query: SELECT * FROM lead_email_tracker WHERE is_deleted = 0 AND (assignee IS NULL OR assignee = 0 OR assignee = '' OR assignee = ?)
+Lead ID: 36105, Assignee: 0
+Lead ID: 36106, Assignee: 0
+Lead ID: 36107, Assignee: 0
+Lead ID: 36108, Assignee: 0
+Lead ID: 36109, Assignee: 0
+Lead ID: 36110, Assignee: 0
+Lead ID: 36111, Assignee: 0
+Lead ID: 36113, Assignee: 0
+Lead ID: 36114, Assignee: 0
+Lead ID: 36118, Assignee: 0
+Response sent: {"recordsTotal":4165,"recordsFiltered":10,"data_count":10}
