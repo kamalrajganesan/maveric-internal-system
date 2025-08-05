@@ -332,10 +332,12 @@ require_once("./shared/components/pre-header.php");
                                     <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
                                 </div>
                                 
-                                <div class="form-group view-form-group">
-                                    <label for="assignee">Assignee</label>
-                                    <input type="text" class="form-control" id="assignee" name="assignee" required>
-                                </div>
+                               <div class="form-group view-form-group">
+    <label for="assignee">Assignee</label>
+    <select class="form-control" id="assignee" name="assignee">
+        <option value="">Unassigned</option>
+    </select>
+</div>
                             </div>
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">

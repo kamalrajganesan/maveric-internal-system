@@ -26,48 +26,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pincode = $_POST['pincode'];
     $followUpDate = $_POST['followUpDt'];
     $leadStatus = $_POST['leadStatus'];
+    $assignee = $_POST['assignee'] ?? ''; // Get assignee from form
     $currentUserId = $_SESSION['user']['id'];
     $currentUserRole = $_SESSION['user']['role']; // Get user role
     
-    // First, check if the lead is currently unassigned
+    // First, check if the lead exists
     $connect = createConn();
    
     // Get current assignment status
-    $checkSql = "SELECT assignee FROM lead_email_tracker WHERE id = " . $leadId;
+    $checkSql = "SELECT assignee FROM lead_email_tracker WHERE id = " . $connect->real_escape_string($leadId);
     $result = $connect->query($checkSql);
    
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $currentAssignee = $row['assignee'];
        
-        // FIXED: Only auto-assign if user is an agent AND lead is unassigned
-        $shouldAssign = (empty($currentAssignee) || $currentAssignee == 0 || $currentAssignee == '') 
-                       && $currentUserRole === 'agent'; // Only agents get auto-assigned
+        // Determine if we should update assignee
+        $shouldAssign = false;
+        if ($currentUserRole === 'agent' && (empty($currentAssignee) || $currentAssignee == 0 || $currentAssignee == '')) {
+            // Auto-assign to agent if lead is unassigned
+            $assignee = $currentUserId;
+            $shouldAssign = true;
+        } elseif ($currentUserRole === 'admin') {
+            // Admin can set any assignee (including unassigned)
+            $assignee = $assignee === '' ? 0 : $connect->real_escape_string($assignee);
+        } else {
+            // Non-admin, non-agent users can't change assignee
+            $assignee = $currentAssignee;
+        }
        
         // Create the update query
         $sql = "UPDATE lead_email_tracker SET
-            lead_nm = '". $connect->real_escape_string($leadName) ."',
-            email = '". $connect->real_escape_string($email) ."',
-            company_nm = '". $connect->real_escape_string($companyName) ."',
-            contact = '". $connect->real_escape_string($contact) ."',
-            requirement = '". $connect->real_escape_string($requirement) ."',
-            description = '". $connect->real_escape_string($description) ."',
-            notes = '". $connect->real_escape_string($notes) ."',
-            address_ln = '". $connect->real_escape_string($addressLine) ."',
-            area = '". $connect->real_escape_string($area) ."',
-            city = '". $connect->real_escape_string($city) ."',
-            pincode = '". $connect->real_escape_string($pincode) ."',
-            follow_up_dt = '". $connect->real_escape_string($followUpDate) ."',
-            lead_status = '". $connect->real_escape_string($leadStatus) ."',
+            lead_nm = '" . $connect->real_escape_string($leadName) . "',
+            email = '" . $connect->real_escape_string($email) . "',
+            company_nm = '" . $connect->real_escape_string($companyName) . "',
+            contact = '" . $connect->real_escape_string($contact) . "',
+            requirement = '" . $connect->real_escape_string($requirement) . "',
+            description = '" . $connect->real_escape_string($description) . "',
+            notes = '" . $connect->real_escape_string($notes) . "',
+            address_ln = '" . $connect->real_escape_string($addressLine) . "',
+            area = '" . $connect->real_escape_string($area) . "',
+            city = '" . $connect->real_escape_string($city) . "',
+            pincode = '" . $connect->real_escape_string($pincode) . "',
+            follow_up_dt = '" . $connect->real_escape_string($followUpDate) . "',
+            lead_status = '" . $connect->real_escape_string($leadStatus) . "',
             updated_on = NOW(),
-            updated_by = '". $currentUserId ."'";
-           
-        // Add assignment only for agents, not admin
-        if ($shouldAssign) {
-            $sql .= ", assignee = '". $currentUserId ."'";
-        }
-       
-        $sql .= " WHERE id = ". $leadId;
+            updated_by = '" . $connect->real_escape_string($currentUserId) . "',
+            assignee = '" . $assignee . "'
+            WHERE id = " . $connect->real_escape_string($leadId);
         
         if ($connect->query($sql) === TRUE) {
             $valid['success'] = true;

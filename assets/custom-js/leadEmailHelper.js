@@ -278,7 +278,7 @@ function editLead(leadId = null) {
           
           const lead = response.data[0];
           currentLead = lead;
-          $("#currentLeadCode").text(response.data[0].lead_name);
+          $("#currentEditLeadCode").text(lead.lead_name);
 
           // Populate modal fields
           $("#currentEditLeadCode").text(lead.lead_name);
@@ -296,9 +296,16 @@ function editLead(leadId = null) {
           $("#editLeadForm #followUpDt").val(lead.follow_up_date);
           $("#editLeadForm #leadStatus").val(lead.lead_status);
 
-          console.log("agents : ", agents)
-          console.log("agents[response.data[0].assignee] : ", agents[response.data[0].assignee])
-          $("#editLeadForm #assignee").val(agents[response.data[0].assignee]).attr("readonly", true);
+          // Populate assignee dropdown
+          $("#editLeadForm #assignee").empty();
+          $("#editLeadForm #assignee").append('<option value="">Unassigned</option>');
+          $.each(agents, function(id, name) {
+            if (id != 0) { // Skip admin (id=0)
+              const selected = (id == lead.assignee) ? 'selected' : '';
+              $("#editLeadForm #assignee").append(`<option value="${id}" ${selected}>${name}</option>`);
+            }
+          });
+
           $("#editLeadForm").append('<input type="hidden" name="lId" id="lId" value="'+ lead.id +'" />');
 
 
