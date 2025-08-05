@@ -305,7 +305,10 @@ function editLead(leadId = null) {
               $("#editLeadForm #assignee").append(`<option value="${id}" ${selected}>${name}</option>`);
             }
           });
-
+  // Make assignee field readonly for agents
+          if (userType === "agent") {
+            $("#editLeadForm #assignee").prop("disabled", true);
+          }
           $("#editLeadForm").append('<input type="hidden" name="lId" id="lId" value="'+ lead.id +'" />');
 
 

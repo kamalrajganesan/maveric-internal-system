@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once("./shared/components/pre-header.php");
 
@@ -295,91 +295,91 @@ require_once("./shared/components/pre-header.php");
                 <div class="modal-body">
                     <form id="editLeadForm" class="form-sample">
                         <div class="row justify-content-center">
-                        <div class="row justify-content-center">
-                            <div class="col-sm-5">
-                                <div class="form-group view-form-group">
-                                    <label for="leadNm">Lead Name </label>
-                                    <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
-                                </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-5">
+                                    <div class="form-group view-form-group">
+                                        <label for="leadNm">Lead Name </label>
+                                        <input type="text" class="form-control" id="leadNm" name="leadNm" placeholder="Lead Name" required>
+                                    </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="email">Email <strong><code>*</code></strong></label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
-                                </div>
+                                    <div class="form-group view-form-group">
+                                        <label for="email">Email <strong><code>*</code></strong></label>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                    </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="companyNm">Company Name</label>
-                                    <input type="text" class="form-control" id="companyNm" name="companyNm" placeholder="Company Name" required>
-                                </div>
+                                    <div class="form-group view-form-group">
+                                        <label for="companyNm">Company Name</label>
+                                        <input type="text" class="form-control" id="companyNm" name="companyNm" placeholder="Company Name" required>
+                                    </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="contact">Contact </label>
-                                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
-                                </div>
+                                    <div class="form-group view-form-group">
+                                        <label for="contact">Contact </label>
+                                        <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
+                                    </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="requirement">Requirement </label>
-                                    <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
-                                </div>
+                                    <div class="form-group view-form-group">
+                                        <label for="requirement">Requirement </label>
+                                        <input type="text" class="form-control" id="requirement" name="requirement" placeholder="Requirement" required>
+                                    </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="description">Description</label>
-                                    <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
-                                </div>
+                                    <div class="form-group view-form-group">
+                                        <label for="description">Description</label>
+                                        <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
+                                    </div>
 
-                                <div class="form-group view-form-group">
-                                    <label for="notes">Notes</label>
-                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
+                                    <div class="form-group view-form-group">
+                                        <label for="notes">Notes</label>
+                                        <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes" required>
+                                    </div>
+
+                                    <div class="form-group view-form-group">
+                                        <label for="assignee">Assignee</label>
+                                        <select class="form-control" id="assignee" name="assignee">
+                                            <option value="">Unassigned</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                
-                               <div class="form-group view-form-group">
-    <label for="assignee">Assignee</label>
-    <select class="form-control" id="assignee" name="assignee">
-        <option value="">Unassigned</option>
-    </select>
-</div>
+                                <div class="col-sm-5">
+                                    <div class="form-group view-form-group">
+
+                                        <label for="addressLn">Address Line</label>
+                                        <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line" required>
+                                    </div>
+
+                                    <div class="form-group view-form-group">
+                                        <label for="area">Area</label>
+                                        <input type="text" class="form-control" id="area" name="area" placeholder="Area" required>
+                                    </div>
+
+                                    <div class="form-group view-form-group">
+                                        <label for="city">City</label>
+                                        <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                                    </div>
+
+                                    <div class="form-group view-form-group">
+                                        <label for="pincode">Pincode</label>
+                                        <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
+                                    </div>
+
+                                    <div class="form-group view-form-group">
+                                        <label for="followUpDt">Follow-up Date <strong><code>*</code></strong></label>
+                                        <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
+                                    </div>
+
+                                    <div class="form-group view-form-group">
+                                        <label for="leadStatus">Lead Status <strong><code>*</code></strong></label>
+                                        <select class="form-control required" id="leadStatus" name="leadStatus" aria-readonly="true" required>
+                                            <option value="New">Newly Added</option>
+                                            <option value="Emailed and Waiting for reply">Emailed and Waiting for reply</option>
+                                            <option value="Following">Following up</option>
+                                            <option value="Converted"> Converted </option>
+                                            <option value="Lost">Lost</option>
+                                        </select>
+                                    </div>
+
+
+                                </div>
                             </div>
-                            <div class="col-sm-5">
-                                <div class="form-group view-form-group">
-
-                                    <label for="addressLn">Address Line</label>
-                                    <input type="text" class="form-control" id="addressLn" name="addressLn" placeholder="Address Line" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="area">Area</label>
-                                    <input type="text" class="form-control" id="area" name="area" placeholder="Area" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="city">City</label>
-                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="pincode">Pincode</label>
-                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
-                                </div>
-
-                                <div class="form-group view-form-group">
-                                    <label for="leadStatus">Lead Status <strong><code>*</code></strong></label>
-                                    <select class="form-control required" id="leadStatus" name="leadStatus" aria-readonly="true" required>
-                                        <option value="New">Newly Added</option>
-                                        <option value="Emailed and Waiting for reply">Emailed and Waiting for reply</option>
-                                        <option value="Following">Following up</option>
-                                        <option value="Converted"> Converted </option>
-                                        <option value="Lost">Lost</option>
-                                    </select>
-                                </div>
-
-                            
-                            </div>
-                        </div>
                         </div>
                     </form>
 
@@ -458,5 +458,8 @@ require_once("./shared/components/pre-header.php");
 
     <script src="assets/vendors/chart.js/chart.umd.js"></script>
     <script src="assets/vendors/progressbar.js/progressbar.min.js"></script>
+<script>
+  const userType = "<?php echo $_SESSION['userType']; ?>";
+</script>
 
     <?php require_once("./shared/components/post-footer.php");  ?>
