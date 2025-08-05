@@ -78,6 +78,28 @@ $(document).ready(function () {
     }
   });
 
+function getUserNameById(userId) {
+  if (userId == 0 || userId === "0") {
+    return "Admin";
+  }
+  if (userId && agents[Number(userId)]) {
+    return agents[Number(userId)];
+  }
+  return "Unknown User";
+}
+
+// Helper function specifically for assignee (shows empty if unassigned)
+function getAssigneeNameById(userId) {
+  if (!userId || userId == 0 || userId === "0" || userId === "") {
+    return "Unassigned";
+  }
+  if (agents[Number(userId)]) {
+    return agents[Number(userId)];
+  }
+  return "Unknown User";
+}
+
+
   // Reset select all checkbox when table is redrawn (pagination, search, etc.)
   manageLeadDatatable.on('draw', function() {
     $('#selectAllCheckbox').prop('checked', false);
@@ -226,7 +248,12 @@ function viewLead(params = null) {
           $("#viewLeadForm #createdBy").val(response.data[0].created_by).attr("readonly", true);
           $("#viewLeadForm #updatedBy").val(response.data[0].updated_by).attr("readonly", true);
           $("#viewLeadForm #assignee").val(agents[response.data[0].assignee]).attr("readonly", true);
+   // FIXED: Use appropriate helper functions
+          $("#viewLeadForm #createdBy").val(getUserNameById(response.data[0].created_by)).attr("readonly", true);
+          $("#viewLeadForm #updatedBy").val(getUserNameById(response.data[0].updated_by)).attr("readonly", true);
+          $("#viewLeadForm #assignee").val(getAssigneeNameById(response.data[0].assignee)).attr("readonly", true);
 
+          $("#viewLeadForm #leadStatus").val(response.data[0].lead_status).attr("disabled", true);
           $("#viewLeadForm #leadStatus").val(response.data[0].lead_status).attr("disabled", true);
         } else {
           alert("Failed to Fetch Lead...!");
