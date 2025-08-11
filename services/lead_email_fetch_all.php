@@ -34,12 +34,11 @@ switch ($page) {
         $FetchAllSQL .= " AND lead_status = 'Lost'";
         break;
     default:
-        // Show all assigned leads regardless of status
         break;
 }
 
 // Role-based filtering for assigned leads
-if (isset($_SESSION['user']['role'])) {
+if (isset($_SESSION['user']['role']) && isset($_SESSION['user']['id'])) {
     switch ($_SESSION['user']['role']) {
         case 'admin':
         case 'manager':
@@ -47,19 +46,19 @@ if (isset($_SESSION['user']['role'])) {
             break;
         case 'agent':
             // Agents can only see leads assigned to them
-            $currentUserId = $_SESSION['user']['id'];
-            $FetchAllSQL .= " AND assignee = " . intval($currentUserId); // Use intval for security
+            $currentUserId = intval($_SESSION['user']['id']);
+            $FetchAllSQL .= " AND assignee = " . $currentUserId;
             break;
         default:
-            // Default to most restrictive view if role isn't recognized
-            $currentUserId = isset($_SESSION['user']['id']) ? intval($_SESSION['user']['id']) : 0;
-            $FetchAllSQL .= " AND assignee = " . intval($currentUserId);
+            // Default to most restrictive view
+            $currentUserId = intval($_SESSION['user']['id']);
+            $FetchAllSQL .= " AND assignee = " . $currentUserId;
             break;
     }
 } else {
-    // If no role is set, assume most restrictive view
-    $currentUserId = isset($_SESSION['user']['id']) ? intval($_SESSION['user']['id']) : 0;
-    $FetchAllSQL .= " AND assignee = " . intval($currentUserId);
+    // If no role or user ID is set, return empty result to prevent unauthorized access
+    echo json_encode(["success" => false, "data" => [], "message" => "User not authenticated."]);
+    exit();
 }
 
 $db->prepareStatement($FetchAllSQL);

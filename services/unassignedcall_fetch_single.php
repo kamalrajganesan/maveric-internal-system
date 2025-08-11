@@ -17,45 +17,39 @@ $isAdmin = $_SESSION['userType'] === 'admin';
 if (isset($_POST['leadId'])) {
     $db = new sqlHelper();
     
-   // In lead_call_fetch_single.php, replace the current leadFetchSingleSQL condition with:
+    $leadFetchSingleSQL = "
+        SELECT 
+            l.id, 
+            l.lead_nm AS lead_name, 
+            l.email, 
+            l.company_nm AS company_name, 
+            l.contact, 
+            l.requirement, 
+            l.description, 
+            l.notes, 
+            l.address_ln AS address_line, 
+            l.pincode, 
+            l.city, 
+            l.area, 
+            l.follow_up_dt AS follow_up_date, 
+            l.lead_status, 
+            l.is_active, 
+            l.assignee,
+            l.log,
+            l.created_by,
+            l.updated_by,
+            l.created_at
+        FROM 
+            lead_call_tracker l
+        WHERE 
+            l.is_deleted = 0 
+            AND l.id = ?
+            AND (l.assignee IS NULL OR l.assignee = 0 OR l.assignee = '')
+    ";
 
-$leadFetchSingleSQL = "
-    SELECT 
-        l.id, 
-        l.lead_nm AS lead_name, 
-        l.email, 
-        l.company_nm AS company_name, 
-        l.contact, 
-        l.requirement, 
-        l.description, 
-        l.notes, 
-        l.address_ln AS address_line, 
-        l.pincode, 
-        l.city, 
-        l.area, 
-        l.follow_up_dt AS follow_up_date, 
-        l.lead_status, 
-        l.is_active, 
-        l.assignee,
-        l.log,
-        l.created_by,
-        l.updated_by
-    FROM 
-        lead_call_tracker l
-    WHERE 
-        l.is_deleted = 0 
-        AND l.id = ?
-";
-
-// For non-admin users, restrict to their own assigned leads OR unassigned leads
-if (!$isAdmin) {
-    $leadFetchSingleSQL .= " AND (l.assignee = ? OR l.assignee IS NULL OR l.assignee = 0)";
-    $db->prepareStatement($leadFetchSingleSQL);
-    $db->setParameters([$_POST['leadId'], $currentUserId], 'ii');
-} else {
+    // For agents, no additional restriction needed since we're fetching unassigned leads
     $db->prepareStatement($leadFetchSingleSQL);
     $db->setParameters([$_POST['leadId']], 'i');
-}
 
     $db->execPreparedStatement();
     $leadFetchSingleResultSet = $db->getResultSet();
@@ -87,18 +81,19 @@ if (!$isAdmin) {
                 'pincode' => $row['pincode'] ?: '',
                 'city' => $row['city'] ?: '',
                 'area' => $row['area'] ?: '',
-                'follow_up_date' => $row['follow_up_date'] ?: '',
+                'follow_up_date' => $row['follow_up_date'] ? date('Y-m-d\TH:i', strtotime($row['follow_up_date'])) : '',
                 'lead_status' => $row['lead_status'] ?: '',
                 'is_active' => (int)$row['is_active'],
                 'assignee' => $row['assignee'] !== null ? (int)$row['assignee'] : 0,
                 'log' => $log,
                 'created_by' => $row['created_by'] !== null ? (int)$row['created_by'] : 0,
-                'updated_by' => $row['updated_by'] !== null ? (int)$row['updated_by'] : 0
+                'updated_by' => $row['updated_by'] !== null ? (int)$row['updated_by'] : 0,
+                'created_at' => $row['created_at'] ? date('Y-m-d H:i:s', strtotime($row['created_at'])) : ''
             ];
         }
-        echo json_encode(["success" => true, "data" => $data, "message" => "Data found"]);
+        echo json_encode(["success" => true, "data" => $data, "message" => "Unassigned lead found"]);
     } else {
-        echo json_encode(["success" => false, "data" => [], "message" => "No assigned lead found"]);
+        echo json_encode(["success" => false, "data" => [], "message" => "No unassigned lead found"]);
     }
 } else {
     echo json_encode(["success" => false, "message" => "Invalid request"]);

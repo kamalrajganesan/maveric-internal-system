@@ -30,7 +30,7 @@
                     <div class="card-body fs-14">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="leadMasterTbl" class="display" style="width:100%">
+                                <table id="leadMasterTbl" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>S. No.</th>
@@ -332,7 +332,9 @@
 
                                 <div class="form-group view-form-group">
                                     <label for="assignee">Assignee</label>
-                                    <input type="text" class="form-control" id="assignee" name="assignee" required>
+                                    <select class="form-control" id="assignee" name="assignee">
+                                        <option value="">Unassigned</option>
+                                    </select>
                                 </div>
 
                             </div>

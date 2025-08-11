@@ -1,32 +1,22 @@
 <?php
-
 require_once("../shared/actions/db/dao.php");
 
 $db = new sqlHelper();
-
-// Fetch agents details sql
-$sql = "SELECT id as code, agent_nm as names FROM agent WHERE is_deleted = 0";
-
-$db->prepareStatement($sql);
+$agentFetchSQL = "SELECT id, agent_nm AS name FROM agent WHERE is_deleted = 0";
+$db->prepareStatement($agentFetchSQL);
 $db->execPreparedStatement();
-$result = $db->getResultSet();
+$agentFetchResultSet = $db->getResultSet();
 
-$agents = array();
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $agent['name'] = $row['names'];
-        $agent['id'] = $row['code'];
-        $agents[] = $agent;
+if ($agentFetchResultSet->num_rows > 0) {
+    $data = [];
+    while ($row = $agentFetchResultSet->fetch_assoc()) {
+        $data[] = [
+            'id' => (int)$row['id'],
+            'name' => $row['name'] ?: 'Unknown Agent'
+        ];
     }
+    echo json_encode(["success" => true, "data" => $data]);
 } else {
-    echo "no results";
+    echo json_encode(["success" => false, "data" => [], "message" => "No agents found"]);
 }
-
-$response = array(
-    'success' => true,
-    'data' => $agents,
-    'message' => 'Agent details fetched successfully'
-);
-
-echo json_encode($response);
 ?>
