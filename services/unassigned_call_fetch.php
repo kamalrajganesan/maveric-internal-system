@@ -54,7 +54,7 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
         $btn = '
         <div class="btn-group">
             <button type="button" class="btn btn-inverse-primary btn-fw" onclick="viewLead(' . $row['id'] . ')">
-                <i class="fa fa-eye"></i>
+                <i class="fa fa-2x fa-ellipsis-v"></i>
             </button>
             <button type="button" class="btn btn-inverse-secondary btn-fw" onclick="editLead(' . $row['id'] . ')">
                 <i class="fa fa-pencil-square-o"></i>

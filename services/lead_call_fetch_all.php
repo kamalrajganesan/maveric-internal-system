@@ -39,10 +39,11 @@ switch ($page) {
 
 // Filter by assignee based on user type
 if ($_SESSION['userType'] === 'agent') {
-    // For agents: show only their assigned leads and unassigned leads
-    $FetchAllSQL .= " AND (assignee = " . $_SESSION['user']['id'] . " OR assignee IS NULL OR assignee = 0)";
+    // For agents: show only their assigned leads (excluding NULL/0 assignments)
+    $FetchAllSQL .= " AND assignee = " . $_SESSION['user']['id'];
 } else {
-    // For admins: show all leads (no additional filter needed)
+    // For admins: show all assigned leads (excluding NULL/0 assignments)
+    $FetchAllSQL .= " AND assignee IS NOT NULL AND assignee != 0";
 }
 
 $db->prepareStatement($FetchAllSQL);
@@ -60,12 +61,12 @@ if ($FetchAllSQLResultSet->num_rows > 0) {
             </button>';
         
         // Only show edit button if admin or if agent is assigned to this lead
-       
+        if ($_SESSION['userType'] === 'admin' || $row['assignee'] == $_SESSION['user']['id']) {
             $btn .= '
             <button type="button" class="btn btn-inverse-secondary btn-fw" data-toggle="modal" data-target="#editLeadModal" id="editLeadModalBtn" onclick="editLead(' . $row['id'] . ')">
                 <i class="fa fa-2x fa-pencil-square-o"></i>
             </button>';
-        
+        }
         
         $btn .= '
             <button type="button" class="btn btn-inverse-dark btn-fw" data-toggle="modal" data-target="#removeLeadModal" id="removeLeadModalBtn" onclick="removeLead(' . $row['id'] . ')">
