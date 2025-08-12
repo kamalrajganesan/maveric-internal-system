@@ -488,3 +488,101 @@ Array
 
 )
 
+
+Error --------------------
+Column 'follow_up_dt' cannot be null
+Cause ====================
+Array
+(
+    [exception] => mysqli_sql_exception Object
+        (
+            [message:protected] => Column 'follow_up_dt' cannot be null
+            [string:Exception:private] => 
+            [code:protected] => 1048
+            [file:protected] => C:\xampp\htdocs\maveric-internal-system\shared\actions\db\dao.php
+            [line:protected] => 38
+            [trace:Exception:private] => Array
+                (
+                    [0] => Array
+                        (
+                            [file] => C:\xampp\htdocs\maveric-internal-system\shared\actions\db\dao.php
+                            [line] => 38
+                            [function] => execute
+                            [class] => mysqli_stmt
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                    [1] => Array
+                        (
+                            [file] => C:\xampp\htdocs\maveric-internal-system\services\lead_call_add.php
+                            [line] => 92
+                            [function] => execPreparedStatement
+                            [class] => sqlHelper
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [previous:Exception:private] => 
+            [sqlstate:protected] => 23000
+        )
+
+)
+
+
+Error --------------------
+Column 'follow_up_dt' cannot be null
+Cause ====================
+Array
+(
+    [exception] => mysqli_sql_exception Object
+        (
+            [message:protected] => Column 'follow_up_dt' cannot be null
+            [string:Exception:private] => 
+            [code:protected] => 1048
+            [file:protected] => C:\xampp\htdocs\maveric-internal-system\shared\actions\db\dao.php
+            [line:protected] => 38
+            [trace:Exception:private] => Array
+                (
+                    [0] => Array
+                        (
+                            [file] => C:\xampp\htdocs\maveric-internal-system\shared\actions\db\dao.php
+                            [line] => 38
+                            [function] => execute
+                            [class] => mysqli_stmt
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                    [1] => Array
+                        (
+                            [file] => C:\xampp\htdocs\maveric-internal-system\services\lead_call_add.php
+                            [line] => 92
+                            [function] => execPreparedStatement
+                            [class] => sqlHelper
+                            [type] => ->
+                            [args] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [previous:Exception:private] => 
+            [sqlstate:protected] => 23000
+        )
+
+)
+

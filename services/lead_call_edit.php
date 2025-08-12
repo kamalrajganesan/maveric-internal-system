@@ -70,19 +70,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $incomingFollowUpDt = $_POST['followUpDt'] ?? '';
     
     if (!empty($incomingFollowUpDt)) {
-        // Extract date portion for comparison (YYYY-MM-DD)
         $existingDate = $existingFollowUpDt ? date('Y-m-d', strtotime($existingFollowUpDt)) : '';
         $incomingDate = date('Y-m-d', strtotime($incomingFollowUpDt));
         
         if ($incomingDate !== $existingDate) {
-            // Date has changed, append current time
             $newData['follow_up_dt'] = date('Y-m-d H:i:s', strtotime($incomingFollowUpDt . ' ' . date('H:i:s')));
         } else {
-            // Date unchanged, keep existing follow_up_dt
             $newData['follow_up_dt'] = $existingFollowUpDt;
         }
     } else {
-        // If incoming followUpDt is empty, set to null
         $newData['follow_up_dt'] = null;
     }
     
@@ -128,30 +124,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     // Handle assignee logic
     $originalAssignee = $currentData['assignee'];
-    $requestedAssignee = $newData['assignee'];
-    
-    // For agents: Auto-assign if unassigned, but don't allow changing existing assignment
-    if (!$isAdmin) {
-        if (!$originalAssignee || $originalAssignee == 0) {
-            $newData['assignee'] = $currentUserId;
-            $changes[] = [
-                'field' => 'Assignee',
-                'old_value' => 'Unassigned',
-                'new_value' => $currentUserName
-            ];
-        } else {
-            $newData['assignee'] = $originalAssignee;
-        }
+$requestedAssignee = $newData['assignee'];
+
+if (!$isAdmin) {
+    // For agents: Assign to themselves if unassigned
+    if (!$originalAssignee || $originalAssignee == 0) {
+        $newData['assignee'] = $currentUserId;
+        $changes[] = [
+            'field' => 'Assignee',
+            'old_value' => 'Unassigned',
+            'new_value' => $currentUserName
+        ];
     } else {
-        if ($originalAssignee != $requestedAssignee) {
-            $oldAssigneeName = getUserNameForHistory($originalAssignee);
-            $newAssigneeName = getUserNameForHistory($requestedAssignee);
-            
-            $changes[] = [
-                'field' => 'Assignee',
-                'old_value' => $oldAssigneeName,
-                'new_value' => $newAssigneeName
-            ];
+        // Agents cannot change existing assignee
+        $newData['assignee'] = $originalAssignee;
+    }
+} else {
+    // For admins: Always keep assignee unchanged (either original assignee or unassigned)
+    // Admins cannot assign leads to themselves or change assignment
+    $newData['assignee'] = $originalAssignee;
+    
+    // Only track changes if the request tried to change assignment
+    if ($requestedAssignee != $originalAssignee) {
+        $changes[] = [
+            'field' => 'Assignee',
+            'old_value' => getUserNameForHistory($originalAssignee),
+            'new_value' => getUserNameForHistory($originalAssignee) . ' (Admin edit - assignment unchanged)'
+        ];
+    }
+ else {
+            // If admin tries to assign to themselves (ID 0), keep unassigned
+            $newData['assignee'] = $originalAssignee;
         }
     }
     

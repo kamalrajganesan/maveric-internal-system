@@ -128,7 +128,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date</label>
+                                    <label for="followUpDt">Follow-up Date<strong><code>*</code></strong></label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
@@ -240,7 +240,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date</label>
+                                    <label for="followUpDt">Follow-up Date<strong><code>*</code></strong></label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
@@ -365,7 +365,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date </label>
+                                    <label for="followUpDt">Follow-up Date<strong><code>*</code></strong></label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 

@@ -128,7 +128,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date</label>
+                                    <label for="followUpDt">Follow-up Date<strong><code>*</code></strong></label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
@@ -240,7 +240,7 @@
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date</label>
+                                    <label for="followUpDt">Follow-up Date<strong><code>*</code></strong></label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
 
@@ -323,12 +323,14 @@
                                     <label for="description">Description</label>
                                     <input type="text" class="form-control" id="description" name="description" placeholder="Description">
                                 </div>
-                                <div class="form-group view-form-group">
+                               <?php if ($_SESSION['userType'] === 'admin'): ?>
+                                <div class="form-group view-form-group assignee-field">
                                     <label for="assignee">Assignee</label>
                                     <select class="form-control" id="assignee" name="assignee">
-                                        <option value="">assigned</option>
+                                        <option value="">-- Select Assignee --</option>
                                     </select>
                                 </div>
+                                <?php endif; ?>
                             </div>
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">
@@ -352,7 +354,7 @@
                                     <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode">
                                 </div>
                                 <div class="form-group view-form-group">
-                                    <label for="followUpDt">Follow-up Date</label>
+                                    <label for="followUpDt">Follow-up Date<strong><code>*</code></strong></label>
                                     <input type="date" class="form-control" id="followUpDt" name="followUpDt" required>
                                 </div>
                                 <div class="form-group view-form-group">
