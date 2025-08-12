@@ -40,7 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $currentUserId = intval($_SESSION['user']['id']);
     $currentUserName = $_SESSION['user']['nm'] ?? 'Unknown User';
     $isAdmin = ($_SESSION['userType'] ?? '') === 'admin';
-    
+     date_default_timezone_set('Asia/Kolkata');
+   $followUpDt = $_POST['followUpDt'] ?? '';
+if (!empty($followUpDt)) {
+    $followUpDt = date('Y-m-d H:i:s', strtotime($followUpDt . ' ' . date('H:i:s')));
+} else {
+    $followUpDt = null; // Or set to NOW() if you prefer
+}
+$newData['follow_up_dt'] = $followUpDt;
+
     $db = new sqlHelper();
     
     // Get current lead data for comparison
