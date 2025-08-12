@@ -165,10 +165,10 @@
               </a>
               <div class="collapse" id="lead-menus">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="./call-leads.php">My Call Leads </a></li>
-                   <li class="nav-item"> <a class="nav-link" href="./unassigned-call-leads.php">Unassigned Call Leads </a></li>
-                   <li class="nav-item"> <a class="nav-link" href="./email-leads.php"> My Email Leads </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./Unassigned-email-leads.php">Unassigned Email Leads </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./call-leads.php"> Call Leads (Assigned)</a></li>
+                   <li class="nav-item"> <a class="nav-link" href="./unassigned-call-leads.php"> Call Leads (Unassigned)</a></li>
+                   <li class="nav-item"> <a class="nav-link" href="./email-leads.php"> Email Leads (Assigned)</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./Unassigned-email-leads.php"> Email Leads (Unassigned)</a></li>
                 </ul>
               </div>
             </li>
