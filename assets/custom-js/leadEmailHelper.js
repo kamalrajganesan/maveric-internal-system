@@ -245,87 +245,98 @@ function viewLead(leadId) {
 }
 
 function editLead(leadId = null) {
-    if (leadId) {
-        $.ajax({
-            type: "POST",
-            url: "./services/lead_email_fetch_single.php",
-            data: { leadId: leadId },
-            dataType: "json",
-            success: function (response) {
-                if (response.success && response.data) {
-                    const lead = response.data[0];
-                    currentLead = lead;
-                    $("#currentEditLeadCode").text(lead.lead_name || "N/A");
+    if (!leadId) return;
 
-                    // Populate fields
-                    $("#editLeadForm #leadNm").val(lead.lead_name || "");
-                    $("#editLeadForm #email").val(lead.email || "").attr("readonly", true);
-                    $("#editLeadForm #companyNm").val(lead.company_name || "");
-                    $("#editLeadForm #contact").val(lead.contact || "");
-                    $("#editLeadForm #requirement").val(lead.requirement || "");
-                    $("#editLeadForm #description").val(lead.description || "");
-                    $("#editLeadForm #notes").val(lead.notes || "");
-                    $("#editLeadForm #addressLn").val(lead.address_line || "");
-                    $("#editLeadForm #area").val(lead.area || "");
-                    $("#editLeadForm #city").val(lead.city || "");
-                    $("#editLeadForm #pincode").val(lead.pincode || "");
-                    $("#editLeadForm #followUpDt").val(lead.follow_up_date || "");
-                    $("#editLeadForm #leadStatus").val(lead.lead_status || "");
+    $.ajax({
+        type: "POST",
+        url: "./services/lead_email_fetch_single.php",
+        data: { leadId: leadId },
+        dataType: "json",
+        success: function (response) {
+            if (response.success && response.data) {
+                const lead = response.data[0];
+                currentLead = lead;
+                $("#currentEditLeadCode").text(lead.lead_name || "N/A");
 
-                    // Replace your current assignee dropdown code with this:
+                // Populate fields
+                $("#editLeadForm #leadNm").val(lead.lead_name || "");
+                $("#editLeadForm #email").val(lead.email || "").attr("readonly", true);
+                $("#editLeadForm #companyNm").val(lead.company_name || "");
+                $("#editLeadForm #contact").val(lead.contact || "");
+                $("#editLeadForm #requirement").val(lead.requirement || "");
+                $("#editLeadForm #description").val(lead.description || "");
+                $("#editLeadForm #notes").val(lead.notes || "");
+                $("#editLeadForm #addressLn").val(lead.address_line || "");
+                $("#editLeadForm #area").val(lead.area || "");
+                $("#editLeadForm #city").val(lead.city || "");
+                $("#editLeadForm #pincode").val(lead.pincode || "");
+                $("#editLeadForm #followUpDt").val(lead.follow_up_date || "");
+                $("#editLeadForm #leadStatus").val(lead.lead_status || "");
 
-// Check if lead is assigned
-if (lead.assignee_id && lead.assignee_id != 0) {
-    // For assigned leads - show static name
-    const assigneeName = agents[lead.assignee_id] || 'Assigned';
-    $("#editLeadForm #assignee").replaceWith(`
-        <input type="text" class="form-control" value="${assigneeName}" readonly>
-        <input type="hidden" name="assignee" value="${lead.assignee_id}">
-    `);
-}
-
-// Still disable for agents if needed
-if (userType === "agent") {
-    $("#editLeadForm #assignee").prop("disabled", true);
-}
-
-                    $("#editLeadForm").append('<input type="hidden" name="lId" id="lId" value="' + lead.id + '" />');
-                    $("#editLeadModal").modal("show");
-
-                    // Handle edit form submission
-                    $("#editLeadDataBtn").off("click").on("click", function (e) {
-                        e.preventDefault();
-                        const formData = $("#editLeadForm").serialize();
-
-                        $.ajax({
-                            type: "POST",
-                            url: "./services/lead_email_edit.php",
-                            data: formData,
-                            dataType: "json",
-                            success: function (response) {
-                                if (response.success) {
-                                    $("#editLeadForm")[0].reset();
-                                    $("#editLeadModal").modal("hide");
-                                    manageLeadDatatable.ajax.reload(null, true);
-                                } else {
-                                    alert("Error: " + response.message);
-                                }
-                            },
-                            error: function () {
-                                alert("Error updating lead details.");
-                            }
-                        });
-                    });
-                } else {
-                    alert("Failed to fetch lead details.");
+                // Handle assignee display
+                if (lead.assignee_id && lead.assignee_id != 0) {
+                    const assigneeName = agents[lead.assignee_id] || 'Assigned';
+                    $("#editLeadForm #assignee").replaceWith(`
+                        <input type="text" class="form-control" value="${assigneeName}" readonly>
+                        <input type="hidden" name="assignee" value="${lead.assignee_id}">
+                    `);
                 }
-            },
-            error: function () {
-                alert("Error fetching lead details.");
+
+                // Disable for agents
+                if (userType === "agent") {
+                    $("#editLeadForm #assignee").prop("disabled", true);
+                }
+
+                // Hidden ID field
+                $("#editLeadForm #lId").remove(); // avoid duplicates
+                $("#editLeadForm").append(`<input type="hidden" name="lId" id="lId" value="${lead.id}" />`);
+
+                // Show modal
+                $("#editLeadModal").modal("show");
+
+                // Handle edit form submission
+                $("#editLeadDataBtn").off("click").on("click", function (e) {
+                    e.preventDefault();
+
+                    // Client-side follow-up date validation
+                    const followUpDate = $("#followUpDt").val();
+                    if (followUpDate && !/^\d{4}-\d{2}-\d{2}$/.test(followUpDate)) {
+                        alert("Please enter date in YYYY-MM-DD format");
+                        return false;
+                    }
+
+                    const formData = $("#editLeadForm").serialize();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "./services/lead_email_edit.php",
+                        data: formData,
+                        dataType: "json",
+                        success: function (resp) {
+                            if (resp.success) {
+                                $("#editLeadForm")[0].reset();
+                                $("#editLeadModal").modal("hide");
+                                manageLeadDatatable.ajax.reload(null, true);
+                            } else {
+                                alert("Error: " + resp.message);
+                            }
+                        },
+                        error: function () {
+                            alert("Error updating lead details.");
+                        }
+                    });
+                });
+
+            } else {
+                alert("Failed to fetch lead details.");
             }
-        });
-    }
+        },
+        error: function () {
+            alert("Error fetching lead details.");
+        }
+    });
 }
+
 
 function openMultiActionModal() {
     $(".selectedLeadCount").empty();
