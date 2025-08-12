@@ -229,7 +229,13 @@ function viewLead(leadId) {
                 $("#viewLeadForm #area").val(lead.area || "").prop("readonly", true);
                 $("#viewLeadForm #city").val(lead.city || "").prop("readonly", true);
                 $("#viewLeadForm #pincode").val(lead.pincode || "").prop("readonly", true);
-                $("#viewLeadForm #followUpDt").val(lead.follow_up_date || "").prop("readonly", true);
+              if (lead.follow_up_date) {
+    const dateOnly = lead.follow_up_date.split(" ")[0]; // "2025-08-12"
+    $("#viewLeadForm #followUpDt").val(dateOnly).prop("readonly", true);
+} else {
+    $("#viewLeadForm #followUpDt").val("").prop("readonly", true);
+}
+
                 $("#viewLeadForm #leadStatus").val(lead.lead_status || "").prop("readonly", true);
                 $("#viewLeadForm #createdBy").val(lead.created_by || "Admin").prop("readonly", true);
                 $("#viewLeadForm #updatedBy").val(lead.updated_by || "Admin").prop("readonly", true);
