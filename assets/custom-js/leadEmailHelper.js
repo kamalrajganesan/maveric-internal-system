@@ -258,6 +258,9 @@ function editLead(leadId = null) {
                 currentLead = lead;
                 $("#currentEditLeadCode").text(lead.lead_name || "N/A");
 
+                // Store original follow-up datetime in a data attribute
+                $("#editLeadForm").data('original-followup', lead.follow_up_date || "");
+
                 // Populate fields
                 $("#editLeadForm #leadNm").val(lead.lead_name || "");
                 $("#editLeadForm #email").val(lead.email || "").attr("readonly", true);
@@ -271,15 +274,13 @@ function editLead(leadId = null) {
                 $("#editLeadForm #city").val(lead.city || "");
                 $("#editLeadForm #pincode").val(lead.pincode || "");
                 
-                // Fix follow-up date formatting - extract only date part if datetime exists
+                // Format follow-up date for display (date only)
                 let followUpDateValue = "";
-                if (lead.follow_up_date && lead.follow_up_date !== null && lead.follow_up_date !== "") {
-                    // Extract date part from datetime (YYYY-MM-DD HH:MM:SS -> YYYY-MM-DD)
-                    followUpDateValue = lead.follow_up_date.split(' ')[0];
+                if (lead.follow_up_date) {
+                    followUpDateValue = lead.follow_up_date.split(' ')[0]; // Get just the date part
                 }
                 $("#editLeadForm #followUpDt").val(followUpDateValue);
                 
-                // Fix lead status - ensure proper selection
                 $("#editLeadForm #leadStatus").val(lead.lead_status || "");
 
                 // Handle assignee display
@@ -314,9 +315,12 @@ function editLead(leadId = null) {
                         return false;
                     }
 
-                    // Add original follow-up datetime to preserve time component
+                    // Get original follow-up datetime
+                    const originalFollowUp = $("#editLeadForm").data('original-followup');
+                    
+                    // Add original follow-up datetime to form data
                     const formData = $("#editLeadForm").serialize() + 
-                        "&originalFollowUpDateTime=" + encodeURIComponent(lead.follow_up_date || "");
+                        "&originalFollowUpDateTime=" + encodeURIComponent(originalFollowUp);
 
                     $.ajax({
                         type: "POST",
@@ -337,7 +341,6 @@ function editLead(leadId = null) {
                         }
                     });
                 });
-
             } else {
                 alert("Failed to fetch lead details.");
             }
