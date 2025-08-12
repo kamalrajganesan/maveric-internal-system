@@ -270,7 +270,16 @@ function editLead(leadId = null) {
                 $("#editLeadForm #area").val(lead.area || "");
                 $("#editLeadForm #city").val(lead.city || "");
                 $("#editLeadForm #pincode").val(lead.pincode || "");
-                $("#editLeadForm #followUpDt").val(lead.follow_up_date || "");
+                
+                // Fix follow-up date formatting - extract only date part if datetime exists
+                let followUpDateValue = "";
+                if (lead.follow_up_date && lead.follow_up_date !== null && lead.follow_up_date !== "") {
+                    // Extract date part from datetime (YYYY-MM-DD HH:MM:SS -> YYYY-MM-DD)
+                    followUpDateValue = lead.follow_up_date.split(' ')[0];
+                }
+                $("#editLeadForm #followUpDt").val(followUpDateValue);
+                
+                // Fix lead status - ensure proper selection
                 $("#editLeadForm #leadStatus").val(lead.lead_status || "");
 
                 // Handle assignee display
@@ -305,7 +314,9 @@ function editLead(leadId = null) {
                         return false;
                     }
 
-                    const formData = $("#editLeadForm").serialize();
+                    // Add original follow-up datetime to preserve time component
+                    const formData = $("#editLeadForm").serialize() + 
+                        "&originalFollowUpDateTime=" + encodeURIComponent(lead.follow_up_date || "");
 
                     $.ajax({
                         type: "POST",
