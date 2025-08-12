@@ -311,17 +311,30 @@ function viewLead(params = null) {
                     $("#viewLeadForm #area").val(response.data[0].area || "").attr("readonly", true);
                     $("#viewLeadForm #city").val(response.data[0].city || "").attr("readonly", true);
                     $("#viewLeadForm #pincode").val(response.data[0].pincode || "").attr("readonly", true);
-                    $("#viewLeadForm #followUpDt").val(response.data[0].follow_up_date || "").attr("readonly", true);
+                    
+                    // Handle follow_up_date
+                    let followUpDate = response.data[0].follow_up_date || "";
+                    if (followUpDate) {
+                        const dateObj = new Date(followUpDate);
+                        if (!isNaN(dateObj.getTime())) {
+                            followUpDate = dateObj.toISOString().slice(0, 10); // YYYY-MM-DD
+                        } else {
+                            followUpDate = "Not set";
+                        }
+                    } else {
+                        followUpDate = "Not set";
+                    }
+                    $("#viewLeadForm #followUpDt").val(followUpDate).attr("readonly", true);
+                    
                     $("#viewLeadForm #leadStatus").val(response.data[0].lead_status || "").attr("disabled", true);
                     $("#viewLeadForm #createdBy").val(getUserNameById(response.data[0].created_by)).attr("readonly", true);
                     $("#viewLeadForm #updatedBy").val(getUserNameById(response.data[0].updated_by)).attr("readonly", true);
                     $("#viewLeadForm #assignee").val(getUserNameById(response.data[0].assignee)).attr("readonly", true);
 
-                    // Display history using the new structure
+                    // Display history
                     if (response.data[0].history && Array.isArray(response.data[0].history)) {
                         displayLeadHistory(response.data[0].history);
                     } else {
-                        // Fallback to old structure if needed
                         let history = [];
                         try {
                             if (response.data[0].log) {
@@ -332,7 +345,6 @@ function viewLead(params = null) {
                         }
 
                         if (history.length === 0) {
-                            // Create default history entry
                             history = [{
                                 action: 'created',
                                 changed_by: getUserNameById(response.data[0].created_by),
@@ -432,7 +444,20 @@ function editLead(leadId = null) {
                     $("#editLeadForm #area").val(lead.area || "");
                     $("#editLeadForm #city").val(lead.city || "");
                     $("#editLeadForm #pincode").val(lead.pincode || "");
-                    $("#editLeadForm #followUpDt").val(lead.follow_up_date || "");
+                    
+                    // Handle follow_up_date
+                    let followUpDate = lead.follow_up_date || "";
+                    if (followUpDate) {
+                        // Extract only the date portion (YYYY-MM-DD) for type="date" input
+                        const dateObj = new Date(followUpDate);
+                        if (!isNaN(dateObj.getTime())) {
+                            followUpDate = dateObj.toISOString().slice(0, 10); // YYYY-MM-DD
+                        } else {
+                            followUpDate = "";
+                        }
+                    }
+                    $("#editLeadForm #followUpDt").val(followUpDate);
+                    
                     $("#editLeadForm #leadStatus").val(lead.lead_status || "");
 
                     // Populate assignee dropdown
@@ -476,7 +501,7 @@ function editLead(leadId = null) {
                         
                         let formData = $("#editLeadForm").serialize();
                         
-                        // If agent and assignee is disabled, we need to add the current assignee to form data
+                        // If agent and assignee is disabled, add the current assignee
                         if (userType === "agent" && $("#editLeadForm #assignee").prop("disabled")) {
                             formData += "&assignee=" + (lead.assignee || "");
                         }

@@ -104,7 +104,7 @@ if (isset($_POST['leadId'])) {
                 'pincode' => $row['pincode'] ?: '',
                 'city' => $row['city'] ?: '',
                 'area' => $row['area'] ?: '',
-                'follow_up_date' => $row['follow_up_date'] ?: '',
+                'follow_up_date' => $row['follow_up_date'] ?: '', // Send raw datetime
                 'lead_status' => $row['lead_status'] ?: '',
                 'is_active' => (int)$row['is_active'],
                 'assignee' => $row['assignee_id'] !== null ? (int)$row['assignee_id'] : 0,
@@ -112,8 +112,8 @@ if (isset($_POST['leadId'])) {
                 'updated_by' => $row['updated_by_id'] !== null ? (int)$row['updated_by_id'] : 0,
                 'created_at' => $row['created_on'],
                 'updated_at' => $row['updated_on'],
-                'log' => json_encode($history), // For backward compatibility
-                'history' => $history // New proper structure
+                'log' => json_encode($history),
+                'history' => $history
             ];
         }
         echo json_encode(["success" => true, "data" => $data, "message" => "Data found"]);
@@ -129,7 +129,6 @@ function getUserNameForHistory($userId) {
         return 'Admin';
     }
     
-    // Get database connection
     $db = new sqlHelper();
     $sql = "SELECT agent_nm FROM agent WHERE id = ?";
     $db->prepareStatement($sql);
@@ -144,4 +143,4 @@ function getUserNameForHistory($userId) {
     
     return 'Unknown User';
 }
-?> 
+?>

@@ -1,5 +1,4 @@
 <?php
-// lead_call_edit.php - Updated with fixed assignee logic
 require_once("../shared/actions/db/dao.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -40,15 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $currentUserId = intval($_SESSION['user']['id']);
     $currentUserName = $_SESSION['user']['nm'] ?? 'Unknown User';
     $isAdmin = ($_SESSION['userType'] ?? '') === 'admin';
-     date_default_timezone_set('Asia/Kolkata');
-   $followUpDt = $_POST['followUpDt'] ?? '';
-if (!empty($followUpDt)) {
-    $followUpDt = date('Y-m-d H:i:s', strtotime($followUpDt . ' ' . date('H:i:s')));
-} else {
-    $followUpDt = null; // Or set to NOW() if you prefer
-}
-$newData['follow_up_dt'] = $followUpDt;
-
+    
+    date_default_timezone_set('Asia/Kolkata');
+    
     $db = new sqlHelper();
     
     // Get current lead data for comparison
@@ -71,6 +64,27 @@ $newData['follow_up_dt'] = $followUpDt;
     }
     
     $currentData = $result->fetch_assoc();
+    
+    // Handle follow_up_dt
+    $existingFollowUpDt = $currentData['follow_up_dt'] ?? '';
+    $incomingFollowUpDt = $_POST['followUpDt'] ?? '';
+    
+    if (!empty($incomingFollowUpDt)) {
+        // Extract date portion for comparison (YYYY-MM-DD)
+        $existingDate = $existingFollowUpDt ? date('Y-m-d', strtotime($existingFollowUpDt)) : '';
+        $incomingDate = date('Y-m-d', strtotime($incomingFollowUpDt));
+        
+        if ($incomingDate !== $existingDate) {
+            // Date has changed, append current time
+            $newData['follow_up_dt'] = date('Y-m-d H:i:s', strtotime($incomingFollowUpDt . ' ' . date('H:i:s')));
+        } else {
+            // Date unchanged, keep existing follow_up_dt
+            $newData['follow_up_dt'] = $existingFollowUpDt;
+        }
+    } else {
+        // If incoming followUpDt is empty, set to null
+        $newData['follow_up_dt'] = null;
+    }
     
     // Compare data and track changes
     $changes = [];
@@ -119,7 +133,6 @@ $newData['follow_up_dt'] = $followUpDt;
     // For agents: Auto-assign if unassigned, but don't allow changing existing assignment
     if (!$isAdmin) {
         if (!$originalAssignee || $originalAssignee == 0) {
-            // Auto-assign to current agent if unassigned
             $newData['assignee'] = $currentUserId;
             $changes[] = [
                 'field' => 'Assignee',
@@ -127,11 +140,9 @@ $newData['follow_up_dt'] = $followUpDt;
                 'new_value' => $currentUserName
             ];
         } else {
-            // Keep original assignee - agents cannot change assignments
             $newData['assignee'] = $originalAssignee;
         }
     } else {
-        // For admins: Allow assignee changes
         if ($originalAssignee != $requestedAssignee) {
             $oldAssigneeName = getUserNameForHistory($originalAssignee);
             $newAssigneeName = getUserNameForHistory($requestedAssignee);
@@ -154,7 +165,6 @@ $newData['follow_up_dt'] = $followUpDt;
     $existingHistory = [];
     if (!empty($currentData['log'])) {
         $existingHistory = json_decode($currentData['log'], true) ?? [];
-        // Handle old format conversion if needed
         if (!empty($existingHistory) && !isset($existingHistory[0]['action'])) {
             $existingHistory = convertOldHistoryFormat($existingHistory, $currentData);
         }
@@ -237,7 +247,6 @@ function getUserNameForHistory($userId) {
 function convertOldHistoryFormat($oldHistory, $currentData) {
     $newHistory = [];
     
-    // If it's an array of old-style comments
     if (is_array($oldHistory)) {
         foreach ($oldHistory as $comment) {
             if (isset($comment['message']) || isset($comment['status'])) {
@@ -255,7 +264,6 @@ function convertOldHistoryFormat($oldHistory, $currentData) {
         }
     }
     
-    // If no valid history found, create a default creation entry
     if (empty($newHistory)) {
         $creatorName = getUserNameForHistory($currentData['created_by'] ?? 0);
         $newHistory[] = [
