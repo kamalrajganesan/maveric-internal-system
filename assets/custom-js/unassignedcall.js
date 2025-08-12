@@ -1,6 +1,6 @@
 var manageLeadDatatable, currentLead;
 var agents = [];
-
+var userType = '';
 $(document).ready(function () {
     // Promise to fetch agents
     function fetchAgents() {
@@ -100,6 +100,7 @@ $(document).ready(function () {
         });
     });
 });
+
 // Helper function to get user name by ID - Modified existing version
 function getUserNameById(userId) {
     // First check if userId is valid
@@ -160,7 +161,6 @@ function removeLead(params = null) {
 
 
 
-// Helper function to create comment HTML
 function createCommentHtml(status, creatorName, date) {
     return `<li class="d-block">
         <div class="form-check w-100">
@@ -175,14 +175,31 @@ function createCommentHtml(status, creatorName, date) {
 }
 
 // Helper function to format date
-function formatDate(dateString) {
-    if (!dateString) return null;
+function formatDateTime(dateString) {
+    if (!dateString) return 'Unknown Date';
+
     try {
         const date = new Date(dateString);
-        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        if (isNaN(date.getTime())) return 'Invalid Date';
+
+        // Format date as "Jun 15, 2023 02:30 PM"
+        return date.toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
     } catch (e) {
-        return null;
+        console.error('Date formatting error:', e);
+        return dateString; // Return the original string if formatting fails
     }
+}
+
+// Keep this for backward compatibility
+function formatDate(dateString) {
+    return formatDateTime(dateString);
 }
 function viewLead(params = null) {
     if (params) {
@@ -217,59 +234,36 @@ function viewLead(params = null) {
                     $("#viewLeadForm #updatedBy").val(getUserNameById(response.data[0].updated_by)).attr("readonly", true);
                     $("#viewLeadForm #assignee").val(getUserNameById(response.data[0].assignee)).attr("readonly", true);
 
-                    // Get creator ID and name
-                    let creatorId = response.data[0].created_by;
-                    let creatorName = getUserNameById(creatorId);
-                    console.log("Creator Info - ID:", creatorId, "Name:", creatorName);
-
-                    // Populate history
-                    let commentsHtml = '';
-                    let comments = response.data[0].log || '';
-
-                    // Process all comments including "Newly Added"
-                    if (comments && comments.trim() !== '') {
+                    // Display history using the new structure
+                    if (response.data[0].history && Array.isArray(response.data[0].history)) {
+                        displayLeadHistory(response.data[0].history);
+                    } else {
+                        // Fallback to old structure if needed
+                        let history = [];
                         try {
-                            let parsedComments = comments.startsWith('[') ? JSON.parse(comments) : JSON.parse('[' + comments + ']');
-                            if (Array.isArray(parsedComments) && parsedComments.length > 0) {
-                                parsedComments.forEach(function(comment) {
-                                    let commenterId = comment.commentBy || creatorId;
-                                    let commenterName = getUserNameById(commenterId);
-                                    
-                                    commentsHtml += '<li class="d-block">';
-                                    commentsHtml += '<div class="form-check w-100">';
-                                    commentsHtml += '<label class="form-check-label m-0">';
-                                    commentsHtml += (comment.message ? $('<div/>').text(comment.message).html() : 'Lead created') + ' <i class="input-helper rounded"></i></label>';
-                                    
-                                    // Status badge
-                                    let badgeClass = "badge-opacity-light";
-                                    switch (comment.status) {
-                                        case "Newly Added": badgeClass = "badge-opacity-info"; break;
-                                        case "Contacted": badgeClass = "badge-opacity-purple"; break;
-                                        case "Converted": badgeClass = "badge-opacity-success"; break;
-                                        case "Following": badgeClass = "badge-opacity-warning"; break;
-                                        case "Lost": badgeClass = "badge-opacity-danger"; break;
-                                    }
-                                    
-                                    commentsHtml += `<div class="d-flex mt-2"><div class="badge ${badgeClass} me-3">${comment.status || 'Unknown'}</div>`;
-                                    commentsHtml += `<div class="text-small me-3">On <strong>${comment.date ? formatDate(comment.date) : formatDate(response.data[0].created_at) || 'Unknown Date'}</strong></div>`;
-                                    commentsHtml += `<div class="text-small me-3">By <strong>${commenterName}</strong></div></div>`;
-                                    commentsHtml += '</div></li>';
-                                });
-                            } else {
-                                // Fallback for no comments
-                                commentsHtml = createCommentHtml("Newly Added", creatorName, response.data[0].created_at);
+                            if (response.data[0].log) {
+                                history = JSON.parse(response.data[0].log);
                             }
                         } catch (e) {
-                            console.error("Error parsing log:", e, comments);
-                            // Fallback if parsing fails
-                            commentsHtml = createCommentHtml("Newly Added", creatorName, response.data[0].created_at);
+                            console.error("Error parsing history:", e);
                         }
-                    } else {
-                        // No comments case
-                        commentsHtml = createCommentHtml("Newly Added", creatorName, response.data[0].created_at);
+
+                        if (history.length === 0) {
+                            // Create default history entry
+                            history = [{
+                                action: 'created',
+                                changed_by: getUserNameById(response.data[0].created_by),
+                                date: response.data[0].created_at || new Date().toISOString(),
+                                changes: [],
+                                status_change: {
+                                    from: '',
+                                    to: response.data[0].lead_status
+                                }
+                            }];
+                        }
+
+                        displayLeadHistory(history);
                     }
-                    
-                    $("#viewLeadForm #pastCommentsOfThisLead").html(commentsHtml);
                 } else {
                     alert("Failed to Fetch Lead: " + (response.message || "No data found"));
                 }
@@ -290,12 +284,14 @@ function editLead(leadId = null) {
             data: { leadId: leadId },
             dataType: "json",
             success: function (response) {
-                console.log("Edit lead fetch response:", response); // Debug: Log response
+                console.log("Edit lead fetch response:", response);
                 if (response.success === true && response.data && response.data.length > 0) {
                     const lead = response.data[0];
                     currentLead = lead;
-                    $("#currentLeadCode").text(lead.lead_name || "N/A");
-
+                    
+                    // Clear any existing hidden fields
+                    $("#editLeadForm input[name='lId']").remove();
+                    
                     // Populate modal fields
                     $("#currentEditLeadCode").text(lead.lead_name || "N/A");
                     $("#editLeadForm #leadNm").val(lead.lead_name || "");
@@ -311,27 +307,53 @@ function editLead(leadId = null) {
                     $("#editLeadForm #pincode").val(lead.pincode || "");
                     $("#editLeadForm #followUpDt").val(lead.follow_up_date || "");
                     $("#editLeadForm #leadStatus").val(lead.lead_status || "");
-                    $("#editLeadForm #assignee").val(getUserNameById(lead.assignee)).attr("readonly", true);
 
-                    $("#editLeadForm").append('<input type="hidden" name="lId" id="lId" value="' + lead.id + '" />');
-
-                    // Show the modal
-                    $("#editLeadModal").modal("show");
                     // Populate assignee dropdown
                     $("#editLeadForm #assignee").empty();
-                    $("#editLeadForm #assignee").append('<option value="">Unassigned</option>');
+                    
+                    // Add unassigned option for admins only
+                    if (userType === "admin") {
+                        $("#editLeadForm #assignee").append('<option value="">-- Select Assignee --</option>');
+                    }
+                    
+                    // Populate agents
                     $.each(agents, function(id, name) {
-                        if (id != 0) {
-                            const selected = (id == lead.assignee_id) ? 'selected' : '';
+                        if (id != 0) { // Skip admin from dropdown
+                            const selected = (id == lead.assignee) ? 'selected' : '';
                             $("#editLeadForm #assignee").append(`<option value="${id}" ${selected}>${name}</option>`);
                         }
                     });
 
+                    // Handle assignee field based on user type
+                    if (userType === "agent") {
+                        // For agents: make assignee field non-editable
+                        $("#editLeadForm #assignee").prop("disabled", true);
+                        // Show current assignee even if disabled
+                        if (lead.assignee) {
+                            $("#editLeadForm #assignee").val(lead.assignee);
+                        }
+                    } else {
+                        // For admins: keep it editable
+                        $("#editLeadForm #assignee").prop("disabled", false);
+                    }
 
+                    // Add hidden lead ID field
+                    $("#editLeadForm").append('<input type="hidden" name="lId" value="' + lead.id + '" />');
+                    
+                    // Show modal
+                    $("#editLeadModal").modal("show");
+                    
                     // Handle edit form submission
-                    $("#editLeadDataBtn").unbind("click").bind("click", function (e) {
+                    $("#editLeadDataBtn").off("click").on("click", function (e) {
                         e.preventDefault();
-                        const formData = $("#editLeadForm").serialize();
+                        
+                        let formData = $("#editLeadForm").serialize();
+                        
+                        // If agent and assignee is disabled, we need to add the current assignee to form data
+                        if (userType === "agent" && $("#editLeadForm #assignee").prop("disabled")) {
+                            formData += "&assignee=" + (lead.assignee || "");
+                        }
+                        
                         $.ajax({
                             type: "POST",
                             url: "./services/lead_call_edit.php",
@@ -342,12 +364,14 @@ function editLead(leadId = null) {
                                     $("#editLeadForm")[0].reset();
                                     $("#editLeadModal").modal("hide");
                                     manageLeadDatatable.ajax.reload(null, true);
+                                    showToast("Lead updated successfully");
                                 } else {
-                                    alert("Failed to update lead details: " + (response.message || "Unknown error"));
+                                    alert("Failed to update lead: " + (response.message || "Unknown error"));
                                 }
                             },
-                            error: function () {
-                                alert("Error updating lead details.");
+                            error: function (xhr, status, error) {
+                                console.error("Update error:", error, xhr.responseText);
+                                alert("Error updating lead. Please try again.");
                             }
                         });
                     });
@@ -361,6 +385,117 @@ function editLead(leadId = null) {
             }
         });
     }
+}
+
+function displayLeadHistory(history) {
+    const historyContainer = $("#pastCommentsOfThisLead");
+    historyContainer.empty();
+
+    if (!history || !Array.isArray(history) ){
+        historyContainer.append('<li class="text-center py-4 text-muted">No history available</li>');
+        return;
+    }
+
+    // Sort by date (newest first)
+    history.sort((a, b) => new Date(b.date || b.created_at) - new Date(a.date || a.created_at));
+
+    if (history.length === 0) {
+        historyContainer.append('<li class="text-center py-4 text-muted">No history available</li>');
+        return;
+    }
+
+    history.forEach((entry, index) => {
+        if (!entry) return;
+
+        // Determine action type and styling
+        const action = entry.action || 'updated';
+        let actionClass = 'text-muted';
+        let actionIcon = '<i class="fa fa-clock"></i>';
+        
+        if (action === 'created') {
+            actionClass = 'text-success';
+            actionIcon = '<i class="fa fa-plus-circle"></i>';
+        } else if (action === 'updated') {
+            actionClass = 'text-info';
+            actionIcon = '<i class="fa fa-edit"></i>';
+        }
+
+        // Prepare changed by information
+        const changedBy = entry.changed_by || 
+                         entry.user_id || 
+                         (action === 'created' ? currentLead.created_by : currentLead.updated_by) || 
+                         'Unknown User';
+        const changedByName = typeof changedBy === 'number' || typeof changedBy === 'string' 
+                           ? getUserNameById(changedBy) 
+                           : changedBy;
+
+        // Prepare date
+        const entryDate = entry.date || entry.created_at || entry.timestamp;
+        const formattedDate = formatDateTime(entryDate);
+
+        // Prepare changes list
+        let changesHtml = '';
+        if (entry.changes && Array.isArray(entry.changes)) {
+            changesHtml = '<div class="changes-list mt-2">';
+            entry.changes.forEach(change => {
+                if (change && change.field) {
+                    changesHtml += `
+                        <div class="change-item small">
+                            <strong>${change.field}:</strong> 
+                            <span class="text-muted">${change.old_value || 'empty'}</span> 
+                            <i class="fa fa-arrow-right mx-1"></i> 
+                            <span class="text-primary">${change.new_value || 'empty'}</span>
+                        </div>
+                    `;
+                }
+            });
+            changesHtml += '</div>';
+        }
+
+        // Prepare status change
+        let statusChangeHtml = '';
+        const statusChange = entry.status_change || {};
+        if (statusChange.from !== undefined || statusChange.to !== undefined) {
+            const fromStatus = statusChange.from || (action === 'created' ? 'None' : 'Unknown');
+            const toStatus = statusChange.to || 'Unknown';
+            
+            statusChangeHtml = `
+                <div class="status-change mt-2">
+                    <strong>Status:</strong> 
+                    <span class="badge bg-light text-dark">${fromStatus}</span> 
+                    <i class="fa fa-arrow-right mx-1"></i> 
+                    <span class="badge bg-primary">${toStatus}</span>
+                </div>
+            `;
+        }
+
+        // Create the history item HTML
+        const historyItem = `
+            <li class="d-flex border-bottom py-3 ${index === 0 ? 'border-top' : ''}">
+                <div class="flex-shrink-0 me-3">
+                    <div class="history-icon ${actionClass}">
+                        ${actionIcon}
+                    </div>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="fw-bold ${actionClass}">
+                                ${changedByName} ${action} this lead
+                            </div>
+                            <div class="text-muted small">
+                                ${formattedDate}
+                            </div>
+                        </div>
+                    </div>
+                    ${changesHtml}
+                    ${statusChangeHtml}
+                </div>
+            </li>
+        `;
+
+        historyContainer.append(historyItem);
+    });
 }
 
 function openMultiActionModal() {
