@@ -29,7 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $followUpDt = isset($_POST['followUpDt']) ? htmlspecialchars($_POST['followUpDt']) : '';
     $leadStatus = isset($_POST['leadStatus']) ? htmlspecialchars($_POST['leadStatus']) : '';
     $assignee = isset($_POST['assignee']) ? htmlspecialchars($_POST['assignee']) : $_SESSION['user']['id'];
-
+date_default_timezone_set('Asia/Kolkata');
+$followUpDt = $_POST['followUpDt'] ?? '';
+if (!empty($followUpDt)) {
+    // Combine the submitted date with current time
+    $followUpDt = date('Y-m-d H:i:s', strtotime($followUpDt . ' ' . date('H:i:s')));
+} else {
+    $followUpDt = null;
+}
     // Make sure all the required fields are filled
     if (empty($contact) || empty($leadStatus)) {
         

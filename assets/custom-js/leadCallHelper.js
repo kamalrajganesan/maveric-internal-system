@@ -60,15 +60,21 @@ $(document).ready(function () {
 
 
     // Handle form submission
-    $("#addLeadDataBtn").on("click", function (e) {
-        e.preventDefault();
-        var data = $("#addLeadForm").serialize();
-        $.ajax({
-            type: "POST",
-            url: "./services/lead_call_add.php",
-            data: data,
-            dataType: "json",
-            success: function (response) {
+$("#addLeadDataBtn").on("click", function (e) {
+    e.preventDefault();
+    
+    // Get the follow-up date value
+    let followUpDate = $("#addLeadForm #followUpDt").val();
+    
+    // If date is selected but no time, we'll let the server add current time
+    var data = $("#addLeadForm").serialize();
+    
+    $.ajax({
+        type: "POST",
+        url: "./services/lead_call_add.php",
+        data: data,
+        dataType: "json",
+        success: function (response) {
                 if (response.success == true) {
                     manageLeadDatatable.ajax.reload(null, true);
                     $("#addLeadModal").modal("hide");
