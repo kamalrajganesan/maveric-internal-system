@@ -1,6 +1,6 @@
 var manageLeadDatatable, currentLead;
 var agents = [];
-
+var userType = '';
 $(document).ready(function () {
     // Promise to fetch agents
     function fetchAgents() {
@@ -16,7 +16,7 @@ $(document).ready(function () {
                             agents[Number(agent.id)] = agent.name || "Unknown Agent";
                         });
                         agents[0] = "Admin"; // Ensure Admin is always available
-                        console.log("Agents loaded:", agents); // Debug: Verify agents object
+                        console.log("Agents loaded:", agents);
                         resolve();
                     } else {
                         let errorMessage = "";
@@ -46,7 +46,7 @@ $(document).ready(function () {
         });
     }
 
-    // Initialize DataTable after agents are fetched
+
     fetchAgents().then(() => {
         manageLeadDatatable = $("#leadMasterTbl").DataTable({
             method: "POST",
@@ -57,6 +57,7 @@ $(document).ready(function () {
             },
         });
     });
+
 
     // Handle form submission
     $("#addLeadDataBtn").on("click", function (e) {
@@ -106,16 +107,16 @@ function getUserNameById(userId) {
     if (!userId || userId === "0" || userId === 0) {
         return "Admin";
     }
-    
+
     // Check if agents exists and has this userId in any format
     if (agents) {
         // Check direct match
         if (agents[userId] !== undefined) return agents[userId];
-        
+
         // Check numeric version if userId is string
         const numId = Number(userId);
         if (!isNaN(numId) && agents[numId] !== undefined) return agents[numId];
-        
+
         // Check all keys for match (handles string vs number cases)
         for (const id in agents) {
             if (id == userId) { // Loose equality comparison
@@ -123,7 +124,7 @@ function getUserNameById(userId) {
             }
         }
     }
-    
+
     // Final fallback - return ID only
     return userId;
 }
@@ -135,7 +136,6 @@ function getAssigneeNameById(userId) {
     }
     return getUserNameById(userId);
 }
-
 
 function removeLead(params = null) {
     if (params) {
@@ -157,7 +157,127 @@ function removeLead(params = null) {
         });
     }
 }
+// Updated displayLeadHistory function to properly handle the new history structure
+function displayLeadHistory(history) {
+    let historyHtml = '';
 
+    if (history && Array.isArray(history) && history.length > 0) {
+        history.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        history.forEach((entry, index) => {
+            if (!entry || typeof entry !== 'object') return;
+
+            let changesHtml = '';
+            let actionClass = '';
+            let actionIcon = '';
+
+            switch (entry.action) {
+                case 'created':
+                    actionClass = 'text-success';
+                    actionIcon = '<i class="fa fa-plus-circle"></i>';
+                    break;
+                case 'updated':
+                    actionClass = 'text-info';
+                    actionIcon = '<i class="fa fa-edit"></i>';
+                    break;
+                default:
+                    actionClass = 'text-muted';
+                    actionIcon = '<i class="fa fa-clock"></i>';
+            }
+
+            if (entry.changes && Array.isArray(entry.changes) && entry.changes.length > 0) {
+                changesHtml = '<div class="changes-list mt-2">';
+                entry.changes.forEach(change => {
+                    if (change && change.field) {
+                        changesHtml += `
+                            <div class="change-item small">
+                                <strong>${change.field}:</strong> 
+                                <span class="text-muted">${change.old_value || 'empty'}</span> 
+                                <i class="fa fa-arrow-right mx-1"></i> 
+                                <span class="text-primary">${change.new_value || 'empty'}</span>
+                            </div>
+                        `;
+                    }
+                });
+                changesHtml += '</div>';
+            }
+
+            let statusChangeHtml = '';
+            if (entry.status_change && typeof entry.status_change === 'object') {
+                let fromStatus = entry.status_change.from || (entry.action === 'created' ? 'None' : 'Unknown');
+                let toStatus = entry.status_change.to || 'Unknown';
+
+                statusChangeHtml = `
+                    <div class="status-change mt-2">
+                        <strong>Status:</strong> 
+                        <span class="badge bg-light text-dark">${fromStatus}</span> 
+                        <i class="fa fa-arrow-right mx-1"></i> 
+                        <span class="badge bg-primary">${toStatus}</span>
+                    </div>
+                `;
+            }
+
+            const displayName = entry.changed_by || 'Unknown User';
+            const displayDate = formatDateTime(entry.date);
+            const actionText = entry.action === 'created' ? 'created' : 'updated';
+
+            historyHtml += `
+                <li class="d-flex border-bottom py-3 ${index === 0 ? 'border-top' : ''}">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="history-icon ${actionClass}">
+                            ${actionIcon}
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="fw-bold ${actionClass}">
+                                    ${displayName} ${actionText} this lead
+                                </div>
+                                <div class="text-muted small">
+                                    ${displayDate}
+                                </div>
+                            </div>
+                        </div>
+                        ${changesHtml}
+                        ${statusChangeHtml}
+                    </div>
+                </li>
+            `;
+        });
+    } else {
+        historyHtml = '<li class="text-center py-4 text-muted">No history available</li>';
+    }
+
+    $("#pastCommentsOfThisLead").html(historyHtml);
+}
+
+
+// Updated formatDateTime function for better date formatting
+function formatDateTime(dateString) {
+    if (!dateString) return 'Unknown Date';
+
+    try {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Invalid Date';
+
+        const options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        };
+
+        return date.toLocaleDateString('en-US', options);
+    } catch (e) {
+        console.error('Date formatting error:', e);
+        return 'Invalid Date';
+    }
+}
+
+// Updated viewLead function to use the new history structure
 function viewLead(params = null) {
     if (params) {
         $.ajax({
@@ -191,59 +311,36 @@ function viewLead(params = null) {
                     $("#viewLeadForm #updatedBy").val(getUserNameById(response.data[0].updated_by)).attr("readonly", true);
                     $("#viewLeadForm #assignee").val(getUserNameById(response.data[0].assignee)).attr("readonly", true);
 
-                    // Get creator ID and name
-                    let creatorId = response.data[0].created_by;
-                    let creatorName = getUserNameById(creatorId);
-                    console.log("Creator Info - ID:", creatorId, "Name:", creatorName);
-
-                    // Populate history
-                    let commentsHtml = '';
-                    let comments = response.data[0].log || '';
-
-                    // Process all comments including "Newly Added"
-                    if (comments && comments.trim() !== '') {
+                    // Display history using the new structure
+                    if (response.data[0].history && Array.isArray(response.data[0].history)) {
+                        displayLeadHistory(response.data[0].history);
+                    } else {
+                        // Fallback to old structure if needed
+                        let history = [];
                         try {
-                            let parsedComments = comments.startsWith('[') ? JSON.parse(comments) : JSON.parse('[' + comments + ']');
-                            if (Array.isArray(parsedComments) && parsedComments.length > 0) {
-                                parsedComments.forEach(function(comment) {
-                                    let commenterId = comment.commentBy || creatorId;
-                                    let commenterName = getUserNameById(commenterId);
-                                    
-                                    commentsHtml += '<li class="d-block">';
-                                    commentsHtml += '<div class="form-check w-100">';
-                                    commentsHtml += '<label class="form-check-label m-0">';
-                                    commentsHtml += (comment.message ? $('<div/>').text(comment.message).html() : 'Lead created') + ' <i class="input-helper rounded"></i></label>';
-                                    
-                                    // Status badge
-                                    let badgeClass = "badge-opacity-light";
-                                    switch (comment.status) {
-                                        case "Newly Added": badgeClass = "badge-opacity-info"; break;
-                                        case "Contacted": badgeClass = "badge-opacity-purple"; break;
-                                        case "Converted": badgeClass = "badge-opacity-success"; break;
-                                        case "Following": badgeClass = "badge-opacity-warning"; break;
-                                        case "Lost": badgeClass = "badge-opacity-danger"; break;
-                                    }
-                                    
-                                    commentsHtml += `<div class="d-flex mt-2"><div class="badge ${badgeClass} me-3">${comment.status || 'Unknown'}</div>`;
-                                    commentsHtml += `<div class="text-small me-3">On <strong>${comment.date ? formatDate(comment.date) : formatDate(response.data[0].created_at) || 'Unknown Date'}</strong></div>`;
-                                    commentsHtml += `<div class="text-small me-3">By <strong>${commenterName}</strong></div></div>`;
-                                    commentsHtml += '</div></li>';
-                                });
-                            } else {
-                                // Fallback for no comments
-                                commentsHtml = createCommentHtml("Newly Added", creatorName, response.data[0].created_at);
+                            if (response.data[0].log) {
+                                history = JSON.parse(response.data[0].log);
                             }
                         } catch (e) {
-                            console.error("Error parsing log:", e, comments);
-                            // Fallback if parsing fails
-                            commentsHtml = createCommentHtml("Newly Added", creatorName, response.data[0].created_at);
+                            console.error("Error parsing history:", e);
                         }
-                    } else {
-                        // No comments case
-                        commentsHtml = createCommentHtml("Newly Added", creatorName, response.data[0].created_at);
+
+                        if (history.length === 0) {
+                            // Create default history entry
+                            history = [{
+                                action: 'created',
+                                changed_by: getUserNameById(response.data[0].created_by),
+                                date: response.data[0].created_at || new Date().toISOString(),
+                                changes: [],
+                                status_change: {
+                                    from: '',
+                                    to: response.data[0].lead_status
+                                }
+                            }];
+                        }
+
+                        displayLeadHistory(history);
                     }
-                    
-                    $("#viewLeadForm #pastCommentsOfThisLead").html(commentsHtml);
                 } else {
                     alert("Failed to Fetch Lead: " + (response.message || "No data found"));
                 }
@@ -254,6 +351,25 @@ function viewLead(params = null) {
             }
         });
     }
+}
+
+// Helper function to create comment HTML (updated for new structure)
+function createCommentHtml(status, creatorName, date) {
+    return `<li class="d-block">
+        <div class="form-check w-100">
+            <label class="form-check-label m-0">Lead created <i class="input-helper rounded"></i></label>
+            <div class="d-flex mt-2">
+                <div class="badge badge-opacity-info me-3">${status}</div>
+                <div class="text-small me-3">On <strong>${formatDateTime(date)}</strong></div>
+                <div class="text-small me-3">By <strong>${creatorName}</strong></div>
+            </div>
+        </div>
+    </li>`;
+}
+
+// Updated formatDate function (keeping for backward compatibility)
+function formatDate(dateString) {
+    return formatDateTime(dateString);
 }
 
 // Helper function to create comment HTML
@@ -293,39 +409,9 @@ function editLead(leadId = null) {
                 if (response.success === true && response.data && response.data.length > 0) {
                     const lead = response.data[0];
                     currentLead = lead;
-                    $("#currentLeadCode").text(lead.lead_name || "N/A");
-// Show the modal
-                    $("#editLeadModal").modal("show");
-                    // Populate modal fields
-                    $("#currentEditLeadCode").text(lead.lead_name || "N/A");
-                    $("#editLeadForm #leadNm").val(lead.lead_name || "");
-                    $("#editLeadForm #email").val(lead.email || "");
-                    $("#editLeadForm #companyNm").val(lead.company_name || "");
-                    $("#editLeadForm #contact").val(lead.contact || "").attr("readonly", true);
-                    $("#editLeadForm #requirement").val(lead.requirement || "");
-                    $("#editLeadForm #description").val(lead.description || "");
-                    $("#editLeadForm #notes").val(lead.notes || "");
-                    $("#editLeadForm #addressLn").val(lead.address_line || "");
-                    $("#editLeadForm #area").val(lead.area || "");
-                    $("#editLeadForm #city").val(lead.city || "");
-                    $("#editLeadForm #pincode").val(lead.pincode || "");
-                    $("#editLeadForm #followUpDt").val(lead.follow_up_date || "");
-                    $("#editLeadForm #leadStatus").val(lead.lead_status || "");
-
-                    $("#editLeadForm").append('<input type="hidden" name="lId" id="lId" value="' + lead.id + '" />');
-
-                    function editLead(leadId = null) {
-    if (leadId) {
-        $.ajax({
-            type: "POST",
-            url: "./services/lead_call_fetch_single.php",
-            data: { leadId: leadId },
-            dataType: "json",
-            success: function (response) {
-                console.log("Edit lead fetch response:", response);
-                if (response.success === true && response.data && response.data.length > 0) {
-                    const lead = response.data[0];
-                    currentLead = lead;
+                    
+                    // Clear any existing hidden fields
+                    $("#editLeadForm input[name='lId']").remove();
                     
                     // Populate modal fields
                     $("#currentEditLeadCode").text(lead.lead_name || "N/A");
@@ -343,29 +429,52 @@ function editLead(leadId = null) {
                     $("#editLeadForm #followUpDt").val(lead.follow_up_date || "");
                     $("#editLeadForm #leadStatus").val(lead.lead_status || "");
 
-                    // Show the modal
-                    $("#editLeadModal").modal("show");
-
                     // Populate assignee dropdown
                     $("#editLeadForm #assignee").empty();
-                    $("#editLeadForm #assignee").append();
+                    
+                    // Add unassigned option for admins only
+                    if (userType === "admin") {
+                        $("#editLeadForm #assignee").append('<option value="">-- Select Assignee --</option>');
+                    }
+                    
+                    // Populate agents
                     $.each(agents, function(id, name) {
-                        if (id != 0) {
-                            const selected = (id == lead.assignee_id) ? 'selected' : '';
+                        if (id != 0) { // Skip admin from dropdown
+                            const selected = (id == lead.assignee) ? 'selected' : '';
                             $("#editLeadForm #assignee").append(`<option value="${id}" ${selected}>${name}</option>`);
                         }
                     });
 
-                    // Disable assignee for agents
+                    // Handle assignee field based on user type
                     if (userType === "agent") {
+                        // For agents: make assignee field non-editable
                         $("#editLeadForm #assignee").prop("disabled", true);
+                        // Show current assignee even if disabled
+                        if (lead.assignee) {
+                            $("#editLeadForm #assignee").val(lead.assignee);
+                        }
+                    } else {
+                        // For admins: keep it editable
+                        $("#editLeadForm #assignee").prop("disabled", false);
                     }
 
-                    $("#editLeadForm").append('<input type="hidden" name="lId" id="lId" value="' + lead.id + '" />');
+                    // Add hidden lead ID field
+                    $("#editLeadForm").append('<input type="hidden" name="lId" value="' + lead.id + '" />');
+                    
+                    // Show modal
                     $("#editLeadModal").modal("show");
-                    $("#editLeadDataBtn").unbind("click").bind("click", function (e) {
+                    
+                    // Handle edit form submission
+                    $("#editLeadDataBtn").off("click").on("click", function (e) {
                         e.preventDefault();
-                        const formData = $("#editLeadForm").serialize();
+                        
+                        let formData = $("#editLeadForm").serialize();
+                        
+                        // If agent and assignee is disabled, we need to add the current assignee to form data
+                        if (userType === "agent" && $("#editLeadForm #assignee").prop("disabled")) {
+                            formData += "&assignee=" + (lead.assignee || "");
+                        }
+                        
                         $.ajax({
                             type: "POST",
                             url: "./services/lead_call_edit.php",
@@ -373,6 +482,7 @@ function editLead(leadId = null) {
                             dataType: "json",
                             success: function (response) {
                                 if (response.success === true) {
+                                    $("#editLeadForm")[0].reset();
                                     $("#editLeadModal").modal("hide");
                                     manageLeadDatatable.ajax.reload(null, true);
                                     showToast("Lead updated successfully");
@@ -397,83 +507,46 @@ function editLead(leadId = null) {
         });
     }
 }
-                        
 
-                    
-                    
-                    // Handle edit form submission
-                    $("#editLeadDataBtn").unbind("click").bind("click", function (e) {
-                        e.preventDefault();
-                        const formData = $("#editLeadForm").serialize();
-                        $.ajax({
-                            type: "POST",
-                            url: "./services/lead_call_edit.php",
-                            data: formData,
-                            dataType: "json",
-                            success: function (response) {
-                                if (response.success === true) {
-                                    $("#editLeadForm")[0].reset();
-                                    $("#editLeadModal").modal("hide");
-                                    manageLeadDatatable.ajax.reload(null, true);
-                                } else {
-                                    alert("Failed to update lead details: " + (response.message || "Unknown error"));
-                                }
-                            },
-                            error: function () {
-                                alert("Error updating lead details.");
-                            }
-                        });
-                    });
-                } else {
-                    alert("Failed to fetch lead details: " + (response.message || "No data found"));
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("Error fetching lead details:", error, xhr.responseText);
-                alert("Error fetching lead details.");
-            }
-        });
-    }
-}
 
 function openMultiActionModal() {
     $(".selectedLeadCount").empty();
     $("#multiActionLeadForm")[0].reset();
 
-    var selectedEmails = selectedLeads.map(function(innerArray) {
+    var selectedEmails = selectedLeads.map(function (innerArray) {
         return innerArray[1];
     });
-    
+
     let dispHtml = "You have selected " + selectedLeads.length + " record(s), the emails are: <br>";
     for (let i = 0; i < selectedLeads.length; i++) {
         dispHtml += "<strong>" + selectedEmails[i] + " </strong><br> ";
     }
     $(".selectedLeadCount").append(dispHtml);
-    
+
     $("#multiActionLeadModal").modal("show");
 
-    $("#multiActionDataBtn").off("click").on("click", function(e) {
+    $("#multiActionDataBtn").off("click").on("click", function (e) {
         e.preventDefault();
-        
+
         const formData = {
             followUpDt: $("#multiActionLeadForm #followUpDt").val(),
             leadStatus: $("#multiActionLeadForm #leadStatus").val(),
             leads: selectedLeads
         };
-        
+
         const cleanData = {};
         for (const key in formData) {
             if (formData[key] !== null && formData[key] !== '' && formData[key] !== undefined) {
                 cleanData[key] = formData[key];
             }
         }
-        
+
         $.ajax({
             type: "POST",
             url: "./services/lead_email_multi_action.php",
             data: cleanData,
             dataType: "json",
-            success: function(response) {
+            success: function (response) {
                 if (response.success) {
                     manageLeadDatatable.ajax.reload(null, true);
                     $("#multiActionLeadModal").modal("hide");
@@ -481,7 +554,7 @@ function openMultiActionModal() {
                     alert("Error: " + response.message);
                 }
             },
-            error: function() {
+            error: function () {
                 alert("Error updating multiple leads.");
             }
         });

@@ -5,7 +5,6 @@ require_once("../shared/actions/db/dao.php");
 // Check if the form data is posted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-
     if (!session_id()) {
         session_start();
     }
@@ -14,8 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $valid['success'] = false;
     $valid['message'] = "";
-
-    // print_r($_POST);
 
     // Capture form data
     $leadNm = isset($_POST['leadNm']) ? htmlspecialchars($_POST['leadNm']) : '';
@@ -40,24 +37,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $valid['detail'] = 'Some mandatory fields are missing..!.';
     } else {
         
-        $createdBy =  $_SESSION['user']['id'];
+        $createdBy = $_SESSION['user']['id'];
+        $createdByName = $_SESSION['user']['nm'] ?? 'Unknown User';
 
-        $commentsArr = array(
+        // Create proper history entry for creation
+        $historyEntry = [
+            "action" => "created",
+            "changed_by" => $createdByName,
             "date" => date("Y-m-d H:i:s"),
-            "message" => "Created. ".$notes,
-            "status" => $leadStatus,
-            "commentBy" => $_SESSION['user']["nm"]
-        );
+            "changes" => [],
+            "status_change" => [
+                "from" => "",
+                "to" => $leadStatus
+            ]
+        ];
+
+        // Store history as array
+        $historyArray = [$historyEntry];
 
         // Prepare the SQL insert query
         $query = "INSERT INTO lead_call_tracker (
                 lead_nm, contact, company_nm, requirement, notes, description, 
                 address_ln, pincode, city, area, email, follow_up_dt, lead_status, 
-                assignee, log, created_by, updated_by, is_active, is_deleted
+                assignee, log, created_by, updated_by, created_on, updated_on, is_active, is_deleted
             ) VALUES (
                 ?, ?, ?, ?, ?, ?,
                 ?, ?, ?, ?, ?, ?, ?, 
-                ?, ?, ?, ?, 1, 0
+                ?, ?, ?, ?, NOW(), NOW(), 1, 0
             )";
 
         try {
@@ -68,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $params = [
                 $leadNm, $contact, $companyNm, $requirement, $notes, $description,
                 $addressLn, $pincode, $city, $area, $email, $followUpDt, $leadStatus,
-                $assignee, json_encode($commentsArr), $createdBy, $createdBy
+                $assignee, json_encode($historyArray), $createdBy, $createdBy
             ];
 
             // Bind the parameters (types: 's' for string, 'i' for integer)
