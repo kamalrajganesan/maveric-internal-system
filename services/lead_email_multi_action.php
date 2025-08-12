@@ -1,88 +1,91 @@
 <?php
-
 require_once("../shared/actions/db/dao.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    if(!session_id()) {
+    // Start session if not already started
+    if (!session_id()) {
         session_start();
     }
 
-    $valid['success'] = false;
-    $valid['message'] = "";
+    // Initialize response array
+    $response = [
+        'success' => false,
+        'message' => '',
+        'detailed' => ''
+    ];
 
-    // print_r($_POST);
-    
-    // mandatory fields
-    $followUpDate = isset($_POST['followUpDt']) ? htmlspecialchars($_POST['followUpDt']) : "";
-    $leadStatus = isset($_POST['leadStatus']) ? htmlspecialchars($_POST['leadStatus']) : "";
-    $leads = isset($_POST['leads'])? $_POST['leads'] : [];
+    // Validate and sanitize input
+    $followUpDate = !empty($_POST['followUpDt']) ? htmlspecialchars($_POST['followUpDt']) : null;
+    $leadStatus = !empty($_POST['leadStatus']) ? htmlspecialchars($_POST['leadStatus']) : null;
+    $leads = !empty($_POST['leads']) ? $_POST['leads'] : [];
 
-    // auto generating fields
+    // Validate mandatory fields
+    if (empty($leadStatus) || empty($leads)) {
+        $response['message'] = "Mandatory fields missing";
+        $response['detailed'] = "Lead status and leads selection are required";
+        echo json_encode($response);
+        exit();
+    }
+ date_default_timezone_set('Asia/Kolkata');
+    // Validate and format follow-up date
+    if ($followUpDate) {
+        $dateTime = DateTime::createFromFormat('Y-m-d', $followUpDate);
+        if ($dateTime === false) {
+            $response['message'] = "Invalid date format";
+            $response['detailed'] = "Follow-up date must be in YYYY-MM-DD format";
+            echo json_encode($response);
+            exit();
+        }
+        $followUpDate = $dateTime->format('Y-m-d H:i:s'); // Add current time
+    }
+
+    // Extract lead IDs
+    $leadIds = array_column($leads, 0);
     $updatedBy = $_SESSION['user']['id'];
 
-    $validationFlag = true;
-
-
-    // Make sure all the mandatory fields are filled
-    if (empty($leadStatus) || empty($leads)) {
-
-        $validationFlag = false;
-        $valid["message"] = "Mandatory";
-    } 
-
-    if($validationFlag) {
-
-        $leadIds = [];
-        foreach ($leads as $key => $value) {
-            // print_r($value);
-            array_push($leadIds, $value[0]);
-        }
-        
+    try {
         $db = new sqlHelper();
-
+        
+        // Prepare the query with placeholders
         $placeholders = implode(',', array_fill(0, count($leadIds), '?'));
-        $query = 
-            "UPDATE lead_email_tracker SET 
-                follow_up_dt = ?,
-                lead_status = ?,
-                updated_on = NOW(),
-                updated_by = ?
-            WHERE id IN ($placeholders)";
+        $query = "UPDATE lead_email_tracker SET 
+                    follow_up_dt = ?,
+                    lead_status = ?,
+                    updated_on = NOW(),
+                    updated_by = ?
+                  WHERE id IN ($placeholders)";
 
-        try {
+        // Prepare the statement
+        $stmt = $db->prepareStatement($query);
 
-            // Prepare the statement
-            $stmt = $db->prepareStatement($query);
+        // Bind parameters
+        $params = [$followUpDate, $leadStatus, $updatedBy];
+        $params = array_merge($params, $leadIds);
 
-            // Parameters for binding
-            $params = [
-                $followUpDate, 
-                $leadStatus,
-                $updatedBy
-            ];
-            $params = array_merge($params, $leadIds);
+        // Set parameter types (s=string, i=integer)
+        $types = 'sss' . str_repeat('i', count($leadIds));
+        $db->setParameters($params, $types);
 
-            $types = 'sss';
-            $types .= str_repeat('i', count($leadIds));
+        // Execute the statement
+        $result = $db->execPreparedStatement();
 
-            $db->setParameters($params, $types);
-
-            // Execute the statement
-            $db->execPreparedStatement();
-            $valid['success'] = true;
-            $valid["message"] = 'Leads updated successfully!';
-            $valid["detailed"] = "";
-
-        } catch (Exception $e) {
-            $valid['success'] = false;
-            $valid["message"] = 'Error in updating Lead details';
-            $valid["detailed"] = $e->getMessage();
+        if ($result['success']) {
+            $response['success'] = true;
+            $response['message'] = 'Successfully updated ' . count($leadIds) . ' leads';
+            $response['updated_count'] = count($leadIds);
+        } else {
+            $response['message'] = 'Database error';
+            $response['detailed'] = $result['message'];
         }
 
-    } 
-    
-    echo json_encode($valid);
-}
+    } catch (Exception $e) {
+        $response['message'] = 'System error';
+        $response['detailed'] = $e->getMessage();
+    }
 
+    // Return JSON response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
 ?>
