@@ -33,6 +33,50 @@ if (isset($_GET['type'])) {
                 </div>
             </div>
         </div>
+        <!-- Date Filter Section -->
+        <div class="row py-3">
+            <div class="col-sm-12">
+                <div class="card card-rounded">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="transactionDateRange">Transaction Date Range</label>
+                                    <input type="text" class="form-control" id="transactionDateRange" placeholder="DD/MM/YYYY">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="serviceTypeFilter">Service Type</label>
+                                    <select class="form-control" id="serviceTypeFilter" name="serviceTypeFilter">
+                                        <option value="">All Service Types</option>
+                                        <option value="Phone Call">Phone Call</option>
+                                        <option value="Remote">Remote</option>
+                                        <option value="Physical Visit">Physical Visit</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="transactionDate">Transaction Date</label>
+                                    <input type="text" class="form-control" id="transactionDate" placeholder="DD/MM/YYYY">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary me-2" id="filterBtn">Filter</button>
+                                    <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row py-3">
             <div class="col-sm-12">
@@ -45,10 +89,9 @@ if (isset($_GET['type'])) {
                                         <tr>
                                             <th>S. No.</th>
                                             <th>Agent Name</th>
-                                            <th>Phone Call</th>
-                                            <th>Remote</th>
-                                            <th>Physical Visit</th>
-                                            <th>Actions</th>
+                                            <th>Total Transaction Handled</th>
+                                            <th>Last Date Handled</th>
+                                            
                                         </tr>
                                     </thead>
                                 </table>

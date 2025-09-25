@@ -30497,3 +30497,21 @@ table.dataTable tbody td.select-checkbox:after,
 table.dataTable tbody th.select-checkbox:after {
     content: "" !important;
 }
+
+
+#resetAllLeadsBtn {
+    background-color: transparent !important; /* keep it transparent */
+    color: #000 !important; /* text color */
+    border-color: #000 !important; /* border color */
+}
+
+#resetAllLeadsBtn:hover, 
+#resetAllLeadsBtn:focus, 
+#resetAllLeadsBtn:active {
+    background-color: transparent !important; /* no hover background */
+    color: #000 !important; /* keep text same on hover */
+    border-color: #000 !important; /* keep border same */
+    box-shadow: none !important; /* remove focus shadow */
+}
+
+

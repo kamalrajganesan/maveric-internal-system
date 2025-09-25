@@ -23,6 +23,56 @@ require_once("./shared/components/pre-header.php");
             </div>
         </div>
 
+        <!-- Filter Section -->
+        <div class="row py-3">
+            <div class="col-sm-12">
+                <div class="card card-rounded">
+                    <div class="card-body fs-14">
+                        <!-- First Row: Transaction Date Range + Service Type -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="mb-1">Transaction Date Range</label>
+                                    <input type="text" class="form-control" id="dateRange" placeholder="DD/MM/YYYY">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="mb-1">Service Type</label>
+                                    <select class="form-control" id="serviceType">
+                                        <option value="">All Service Types</option>
+                                        <option value="AMC">AMC</option>
+                                        <option value="Tally Subscription">Tally Subscription</option>
+                                        <option value="Cloud">Cloud</option>
+                                        <option value="One Time">One Time</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Second Row: Transaction Date -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="mb-1">Transaction Date</label>
+                                    <input type="text" class="form-control date-picker" id="singleDate" placeholder="DD/MM/YYYY">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Third Row: Filter and Reset Buttons -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary" id="filterBtn">Filter</button>
+                                <button type="button" class="btn btn-info ml-2" id="resetBtn">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
         <div class="row py-3">
             <div class="col-sm-12">
                 <div class="card card-rounded">
@@ -32,10 +82,11 @@ require_once("./shared/components/pre-header.php");
                                 <table id="inactiveCustomerMasterTbl" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>SI.</th>
-                                            <th>Company</th>
-                                            <th>Phone</th>
-                                            <th>Services</th>
+                                            <th>S.No</th>
+                                            <th>Customer Name</th>
+                                            <th>Service Consumed</th>
+                                            <th>Total Service Consumed</th>
+                                          
                                             <th>Last Serviced Date</th>
                                             <th>Actions</th>
                                         </tr>
@@ -241,14 +292,12 @@ require_once("./shared/components/pre-header.php");
 
     <?php require_once("./shared/components/pre-footer.php");  ?>
 
-
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-    
     <script src="assets/default-js/jquery.cookie.js" type="text/javascript"></script>
-    
     <script src="assets/vendors/select2/select2.min.js"></script>
     <script src="assets/default-js/flatpickr.js"></script>
     <script src="assets/custom-js/inactiveCustomerReportHelper.js"></script>
-    
+
+   
 
     <?php require_once("./shared/components/post-footer.php");  ?>

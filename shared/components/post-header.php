@@ -157,21 +157,31 @@
                 </ul>
               </div>
             </li> -->
-            <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="collapse" href="#lead-menus" aria-expanded="false" aria-controls="lead-menus">
-                <i class="menu-icon mdi mdi-account-badge">  </i>
-                <span class="menu-title">Leads</span>
-                <i class="menu-arrow"></i>
-              </a>
-              <div class="collapse" id="lead-menus">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="./call-leads.php"> Call Leads (Assigned)</a></li>
-                   <li class="nav-item"> <a class="nav-link" href="./unassigned-call-leads.php"> Call Leads (Unassigned)</a></li>
-                   <li class="nav-item"> <a class="nav-link" href="./email-leads.php"> Email Leads (Assigned)</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="./Unassigned-email-leads.php"> Email Leads (Unassigned)</a></li>
-                </ul>
-              </div>
-            </li>
+          <li class="nav-item">
+  <a class="nav-link" data-bs-toggle="collapse" href="#lead-menus" aria-expanded="false" aria-controls="lead-menus">
+    <i class="menu-icon mdi mdi-account-badge"></i>
+    <span class="menu-title">Leads</span>
+    <i class="menu-arrow"></i>
+  </a>
+  <div class="collapse" id="lead-menus">
+    <ul class="nav flex-column sub-menu">
+      <li class="nav-item"><a class="nav-link" href="./call-leads.php"> Call Leads (Assigned)</a></li>
+      <li class="nav-item"><a class="nav-link" href="./unassigned-call-leads.php"> Call Leads (Unassigned)</a></li>
+      
+      <?php if ($_SESSION['userType'] === 'admin'): ?>
+      <li class="nav-item"><a class="nav-link" href="./lost-call-leads.php"> Call Leads (Lost)</a></li>
+      <?php endif; ?>
+
+      <li class="nav-item"><a class="nav-link" href="./email-leads.php"> Email Leads (Assigned)</a></li>
+      <li class="nav-item"><a class="nav-link" href="./Unassigned-email-leads.php"> Email Leads (Unassigned)</a></li>
+
+      <?php if ($_SESSION['userType'] === 'admin'): ?>
+      <li class="nav-item"><a class="nav-link" href="./lost-email-leads.php"> Email Leads (Lost)</a></li>
+      <?php endif; ?>
+    </ul>
+  </div>
+</li>
+
             <!-- requirement list -->
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#requirement-menus" aria-expanded="false" aria-controls="requirement-menus">

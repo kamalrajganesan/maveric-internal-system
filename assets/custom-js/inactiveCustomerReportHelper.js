@@ -1,21 +1,86 @@
 var manageInactiveCustomerMasterTbl;
 
-$(document).ready(function () {
-  manageInactiveCustomerMasterTbl = $("#inactiveCustomerMasterTbl").DataTable({
-    type: "Post",
-    scrollX: true,
-    ajax: {
-      url: "./services/getAllInactiveCustomers.php",
-      type: "POST",
-      dataType: "json",
-    },
-  });
+$(document).ready(function() {
+    // Initialize DataTable
+    manageInactiveCustomerMasterTbl = $("#inactiveCustomerMasterTbl").DataTable({
+        scrollX: true,
+        processing: true,
+        serverSide: false, // Set true if data is huge
+        ajax: {
+            url: "./services/getAllInactiveCustomers.php",
+            type: "POST",
+            data: function(d) {
+                d.dateRange   = $("#dateRange").val();
+                d.singleDate  = $("#singleDate").val();
+                d.serviceType = $("#serviceType").val();
+                d.pincode     = $("#pincode").val();
+            }
+        },
+        columnDefs: [
+            { targets: [5,6,7], orderable: false } // last service, pincode, button columns
+        ]
+    });
+
+    // Flatpickr
+    if (typeof flatpickr !== "undefined") {
+        flatpickr("#dateRange", { mode: "range", dateFormat: "d/m/Y" });
+        flatpickr("#singleDate", { dateFormat: "d/m/Y" });
+    }
+
+    // Filter button
+    $("#filterBtn").click(function() {
+        manageInactiveCustomerMasterTbl.ajax.reload();
+    });
+
+    // Reset button
+    $("#resetBtn").click(function() {
+        $("#dateRange, #singleDate, #serviceType, #pincode").val("");
+        if (flatpickr) {
+            document.getElementById('dateRange')._flatpickr.clear();
+            document.getElementById('singleDate')._flatpickr.clear();
+        }
+        manageInactiveCustomerMasterTbl.ajax.reload();
+    });
+
+    // Delegate click for dynamic buttons
+    $('#inactiveCustomerMasterTbl').on('click', '.view-btn', function() {
+        var customerUniqCode = $(this).data('customer');
+        if (customerUniqCode) viewCustomer(customerUniqCode);
+    });
 });
+
+// View customer function
+function viewCustomer(customerUniqCode) {
+    if (!customerUniqCode) return;
+    $.ajax({
+        type: "POST",
+        url: "./services/customer_fetch_single.php",
+        data: { customerId: customerUniqCode },
+        dataType: "json",
+        success: function(res) {
+            if (res.success) {
+                const data = res.data[0];
+                $('#viewCustomerForm').find('input, select').each(function() {
+                    const id = $(this).attr('id');
+                    if(data[id] !== undefined){
+                        $(this).val(data[id]).prop('readonly', true).prop('disabled', true);
+                    }
+                });
+                $("#viewCustomerModal").modal("show");
+            } else {
+                alert("Failed to fetch customer details!");
+            }
+        },
+        error: function() {
+            alert("AJAX error while fetching customer!");
+        }
+    });
+}
+
 
 
 
 function viewCustomer(params = null) {
-  // console.log("params: ", params);
   if (params) {
     $.ajax({
       type: "POST",
@@ -24,7 +89,7 @@ function viewCustomer(params = null) {
       dataType: "json",
       success: function (response) {
         if (response.success == true) {
-          console.log("response: ", response);
+          console.log("Customer view response:", response);
           $("#viewCustomerModal").modal("show");
 
           $("#viewCustomerForm #customerUniqCode").val(response.data[0].customer_uniq_code).attr("readonly", true);
@@ -66,12 +131,64 @@ function viewCustomer(params = null) {
           $("#viewCustomerForm #auditor").val(response.data[0].auditor).attr("readonly", true);
           $("#viewCustomerForm #updatedBy").val(response.data[0].updated_by).attr("readonly", true);
         } else {
+          console.error("Failed to fetch customer:", response);
           alert("Failed to fetch selected customer...!");
         }
       },
-      error: function () {
+      error: function (xhr, status, error) {
+        console.error("AJAX Error:", xhr, status, error);
         alert("Failed to create a request");
       },
     });
   }
+}
+
+// Additional utility functions for filter management
+function getFilterValues() {
+  return {
+    dateRange: $("#dateRange").val(),
+    serviceType: $("#serviceType").val(),
+    singleDate: $("#singleDate").val()
+  };
+}
+
+function applyFilters(filters) {
+  if (filters.dateRange) $("#dateRange").val(filters.dateRange);
+  if (filters.serviceType) $("#serviceType").val(filters.serviceType);
+  if (filters.singleDate) $("#singleDate").val(filters.singleDate);
+  
+  $("#filterBtn").click();
+}
+
+function clearAllFilters() {
+  $("#resetBtn").click();
+}
+
+// Alternative initialization function if you need to reinitialize DataTable programmatically
+function initializeDataTable() {
+  // Destroy existing DataTable if it exists
+  if ($.fn.DataTable.isDataTable('#inactiveCustomerMasterTbl')) {
+    manageInactiveCustomerMasterTbl.destroy();
+  }
+  
+  // Clear the table HTML
+  $('#inactiveCustomerMasterTbl').empty();
+  
+  // Reinitialize
+  manageInactiveCustomerMasterTbl = $("#inactiveCustomerMasterTbl").DataTable({
+    type: "Post",
+    scrollX: true,
+    ajax: {
+      url: "./services/getAllInactiveCustomers.php",
+      type: "POST",
+      dataType: "json",
+      data: function(d) {
+        var filters = getFilterValues();
+        d.dateRange = filters.dateRange;
+        d.serviceType = filters.serviceType;
+        d.singleDate = filters.singleDate;
+        return d;
+      }
+    },
+  });
 }

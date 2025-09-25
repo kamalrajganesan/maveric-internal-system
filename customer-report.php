@@ -27,27 +27,71 @@ if (isset($_GET['type'])) {
 <div class="main-panel">
     <div class="content-wrapper">
 
-        <div class="row">
-            <div class="col-sm-12 short-l">
-                <div class="d-sm-flex align-items-center justify-content-end border-bottom">
+       
+        <!-- Date Filter Section -->
+        <div class="row py-3">
+            <div class="col-sm-12">
+                <div class="card card-rounded">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="transactionDateRange">Transaction Date Range</label>
+                                    <input type="text" class="form-control" id="transactionDateRange" placeholder="DD/MM/YYYY">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="serviceTypeFilter">Service Type</label>
+                                    <select class="form-control" id="serviceTypeFilter" name="serviceTypeFilter">
+                                        <option value="">All Service Types</option>
+                                        <option value="Phone Call">Phone Call</option>
+                                        <option value="Remote">Remote</option>
+                                        <option value="Physical Visit">Physical Visit</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="transactionDate">Transaction Date</label>
+                                    <input type="text" class="form-control" id="transactionDate" placeholder="DD/MM/YYYY">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary me-2" id="filterBtn">Filter</button>
+                                    <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="row py-3">
+        <div class="row">
             <div class="col-sm-12">
                 <div class="card card-rounded">
                     <div class="card-body fs-14">
+                        <div class="row mb-3">
+                            
+                           
+                        </div>
                         <div class="row">
                             <div class="col-sm-12">
                                 <table id="transactionMasterTbl" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>S. No.</th>
-                                            <th>Company</th>
+                                            <th>S.No</th>
+                                            <th>Company Name</th>
                                             <th>Contact</th>
-                                            <th>Service consumed</th>
-                                            <th>Last Serviced Date</th>
+                                            <th>Transactions</th>
+                                            <th>Contact Person</th>
+                                            <th>Lat Serviced Date</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -406,5 +450,72 @@ if (isset($_GET['type'])) {
     <script src="assets/default-js/flatpickr.js"></script>
     <script src="assets/custom-js/transactionsHelper.js"></script>
     
+    <style>
+    #filterBtn, #resetBtn {
+        min-width: 80px;
+        width: auto !important;
+        display: inline-block;
+    }
+    </style>
+    
+    <script>
+    $(document).ready(function() {
+        // Initialize Flatpickr for date inputs
+        $("#transactionDateRange").flatpickr({
+            mode: "range",
+            dateFormat: "d/m/Y",
+            placeholder: "DD/MM/YYYY"
+        });
+        
+        $("#transactionDate").flatpickr({
+            dateFormat: "d/m/Y",
+            placeholder: "DD/MM/YYYY"
+        });
+        
+        // Filter button functionality
+        $("#filterBtn").on('click', function() {
+            var dateRange = $("#transactionDateRange").val();
+            var singleDate = $("#transactionDate").val();
+            var serviceType = $("#serviceTypeFilter").val();
+            
+            // Add your filtering logic here
+            console.log("Date Range:", dateRange);
+            console.log("Single Date:", singleDate);
+            console.log("Service Type:", serviceType);
+            
+            // Example: Reload DataTable with filters
+            if ($.fn.DataTable.isDataTable('#transactionMasterTbl')) {
+                $('#transactionMasterTbl').DataTable().ajax.reload();
+            }
+        });
+        
+        // Reset button functionality
+        $("#resetBtn").on('click', function() {
+            $("#transactionDateRange").val('');
+            $("#transactionDate").val('');
+            $("#serviceTypeFilter").val('');
+            
+            // Reset DataTable
+            if ($.fn.DataTable.isDataTable('#transactionMasterTbl')) {
+                $('#transactionMasterTbl').DataTable().ajax.reload();
+            }
+        });
+        
+        // Entries per page change
+        $("#entriesPerPage").on('change', function() {
+            var pageLength = $(this).val();
+            if ($.fn.DataTable.isDataTable('#transactionMasterTbl')) {
+                $('#transactionMasterTbl').DataTable().page.len(pageLength).draw();
+            }
+        });
+        
+        // Search functionality
+        $("#searchInput").on('keyup', function() {
+            if ($.fn.DataTable.isDataTable('#transactionMasterTbl')) {
+                $('#transactionMasterTbl').DataTable().search(this.value).draw();
+            }
+        });
+    });
+    </script>
 
     <?php require_once("./shared/components/post-footer.php");  ?>

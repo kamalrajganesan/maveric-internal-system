@@ -1,14 +1,65 @@
 var manageAgentDataTbl;
 
 $(document).ready(function () {
+  // Initialize Agent DataTable
   manageAgentDataTbl = $("#manageAgentDataTbl").DataTable({
-    type: "Post",
+    type: "POST",
     ajax: {
-      url: "./services/agent_fetch_all.php",
+      url: "./services/agent_fetch_all.php", // keep your original URL
       type: "POST",
+      data: function (d) {
+        // Add filter params
+        d.transactionDateRange = $("#transactionDateRange").val();
+        d.serviceType = $("#serviceTypeFilter").val();
+      },
       dataType: "json",
     },
   });
+
+  // Initialize flatpickr for date range
+  flatpickr("#transactionDateRange", {
+    mode: "range",
+    dateFormat: "d/m/Y"
+  });
+
+  // Filter button
+  $("#filterBtn").on("click", function () {
+    manageAgentDataTbl.ajax.reload();
+  });
+
+  // Reset button
+  $("#resetBtn").on("click", function () {
+    $("#transactionDateRange").val('');
+    $("#serviceTypeFilter").val('');
+    manageAgentDataTbl.ajax.reload();
+  });
+
+  // Existing Add Agent code remains unchanged
+  $("#addAgentDataBtn").on("click", function (e) {
+    e.preventDefault();
+    var data = $("#addAgentForm").serialize();
+
+    $.ajax({
+      type: "POST",
+      url: "./services/agent_add.php",
+      data: data,
+      dataType: "json",
+      success: function (response) {
+        if (response.success == true) {
+          $("#addAgentForm")[0].reset();
+          $("#addAgentModal").modal("hide");
+          manageAgentDataTbl.ajax.reload(null, true);
+        } else {
+          alert("Failed to Add Agent...!");
+        }
+      },
+      error: function () {
+        alert("Failed to Add Agent");
+      },
+    });
+  });
+
+
 
   $("#addAgentDataBtn").on("click", function (e) {
     e.preventDefault();
