@@ -330,13 +330,14 @@
                                     <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
                                 </div>
 
-                                <div class="form-group view-form-group">
+                               <?php if ($_SESSION['userType'] === 'admin'): ?>
+                                <div class="form-group view-form-group assignee-field">
                                     <label for="assignee">Assignee</label>
                                     <select class="form-control" id="assignee" name="assignee">
-                                        <option value="">Unassigned</option>
+                                        <option value="">-- Select Assignee --</option>
                                     </select>
                                 </div>
-
+                                <?php endif; ?>
                             </div>
                             <div class="col-sm-5">
                                 <div class="form-group view-form-group">

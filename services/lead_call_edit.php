@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Handle assignee logic
-    $originalAssignee = $currentData['assignee'];
+  $originalAssignee = $currentData['assignee'];
 $requestedAssignee = $newData['assignee'];
 
 if (!$isAdmin) {
@@ -140,22 +140,30 @@ if (!$isAdmin) {
         $newData['assignee'] = $originalAssignee;
     }
 } else {
-    // For admins: Always keep assignee unchanged (either original assignee or unassigned)
-    // Admins cannot assign leads to themselves or change assignment
-    $newData['assignee'] = $originalAssignee;
-    
-    // Only track changes if the request tried to change assignment
+    // For admins: Allow assignment changes but prevent self-assignment
     if ($requestedAssignee != $originalAssignee) {
-        $changes[] = [
-            'field' => 'Assignee',
-            'old_value' => getUserNameForHistory($originalAssignee),
-            'new_value' => getUserNameForHistory($originalAssignee) . ' (Admin edit - assignment unchanged)'
-        ];
-    }
- else {
-            // If admin tries to assign to themselves (ID 0), keep unassigned
+        // Prevent admin from assigning to themselves
+        if ($requestedAssignee == $currentUserId) {
+            // Keep original assignment if admin tries to assign to themselves
             $newData['assignee'] = $originalAssignee;
+            $changes[] = [
+                'field' => 'Assignee',
+                'old_value' => getUserNameForHistory($originalAssignee),
+                'new_value' => getUserNameForHistory($originalAssignee) . ' (Cannot assign to admin)'
+            ];
+        } else {
+            // Allow the assignment change
+            $newData['assignee'] = $requestedAssignee;
+            $changes[] = [
+                'field' => 'Assignee',
+                'old_value' => getUserNameForHistory($originalAssignee),
+                'new_value' => getUserNameForHistory($requestedAssignee)
+            ];
         }
+    } else {
+        // No change in assignment
+        $newData['assignee'] = $originalAssignee;
+    }
     }
     
     // Only proceed if there are actual changes
