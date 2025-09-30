@@ -15,7 +15,7 @@ class SessUsers {
 
         $agent['nm'] = $usr["agent_nm"];
         $agent['email'] = $usr["email"];
-        $agent['phone'] = $usr["primary_contact"];
+       $agent['phone'] = $usr["primary_contact"] ?? null;
         $agent['id'] = $usr["id"];
      $agent['role'] = "agent";
         $_SESSION['user'] = $agent;
@@ -29,7 +29,7 @@ class SessUsers {
 
         $agent['nm'] = $usr["nm"];
         $agent['email'] = $usr["email"];
-        $agent['phone'] = $usr["phone"];
+       $agent['phone'] = $usr["phone"] ?? null; // ✅ prevents warning
         $agent['id'] = "0";
       $agent['role'] = "admin";
         $_SESSION['user'] = $agent;

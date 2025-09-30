@@ -27,82 +27,84 @@ if (isset($_GET['type'])) {
 <div class="main-panel">
     <div class="content-wrapper">
 
-       
-        <!-- Date Filter Section -->
-        <div class="row py-3">
-            <div class="col-sm-12">
-                <div class="card card-rounded">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="transactionDateRange">Transaction Date Range</label>
-                                    <input type="text" class="form-control" id="transactionDateRange" placeholder="DD/MM/YYYY">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="serviceTypeFilter">Service Type</label>
-                                    <select class="form-control" id="serviceTypeFilter" name="serviceTypeFilter">
-                                        <option value="">All Service Types</option>
-                                        <option value="Phone Call">Phone Call</option>
-                                        <option value="Remote">Remote</option>
-                                        <option value="Physical Visit">Physical Visit</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="transactionDate">Transaction Date</label>
-                                    <input type="text" class="form-control" id="transactionDate" placeholder="DD/MM/YYYY">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary me-2" id="filterBtn">Filter</button>
-                                    <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col-sm-12 short-l">
+                <div class="d-sm-flex align-items-center justify-content-end border-bottom">
                 </div>
             </div>
         </div>
-
+        <!-- Date Filter Section -->
+       <div class="row py-3">
+  <div class="col-sm-12">
+    <div class="card card-rounded">
+      <div class="card-body">
+        
+        <!-- ✅ First row: 3 filters -->
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card card-rounded">
-                    <div class="card-body fs-14">
-                        <div class="row mb-3">
-                            
-                           
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table id="transactionMasterTbl" class="display nowrap" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>S.No</th>
-                                            <th>Company Name</th>
-                                            <th>Contact</th>
-                                            <th>Transactions</th>
-                                            <th>Contact Person</th>
-                                            <th>Lat Serviced Date</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="transactionDateRange">Transaction Date Range</label>
+              <input type="text" class="form-control" id="transactionDateRange" placeholder="DD/MM/YYYY">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="transactionDate">Transaction Date</label>
+              <input type="text" class="form-control" id="transactionDate" placeholder="DD/MM/YYYY">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="serviceTypeFilter">Lead Type</label>
+              <select class="form-control" id="serviceTypeFilter" name="serviceTypeFilter">
+                <option value="">All Lead Types</option>
+                <option value="Phone Call">Phone Call</option>
+                <option value="Email">Email</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ✅ Second row: buttons -->
+        <div class="row mt-3">
+          <div class="col-auto">
+            <button type="button" class="btn btn-primary me-2" id="filterBtn">Filter</button>
+            <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+       <div class="row py-3">
+    <div class="col-sm-12">
+        <div class="card card-rounded">
+            <div class="card-body fs-14">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="transactionMasterTbl" class="display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Agent Name</th>
+                                    <th>Leads Handled</th>
+                                    <th>Leads In Hand</th>
+                                    <th>Leads Converted</th>
+                                    <th>Leads Lost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be populated by DataTables -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
     <!-- content-wrapper ends -->
 
     <!-- modals -->
@@ -401,7 +403,6 @@ if (isset($_GET['type'])) {
                                     <label for="createdDate">Transaction Created Date</label>
                                     <input type="text" class="form-control" id="createdDate" name="createdDate" placeholder="Created Date" readonly>
                                 </div>
-                                
 
                                 <div class="form-group view-form-group">
                                     <label for="status">Transaction Status <strong><code>*</code></strong></label>
@@ -449,16 +450,7 @@ if (isset($_GET['type'])) {
     
     <script src="assets/vendors/select2/select2.min.js"></script>
     <script src="assets/default-js/flatpickr.js"></script>
-    <script src="assets/custom-js/customerreport.js"></script>
-    
-    <style>
-    #filterBtn, #resetBtn {
-        min-width: 80px;
-        width: auto !important;
-        display: inline-block;
-    }
-    </style>
-    
+    <script src="assets/custom-js/agent-leads.js"></script>
     
 
     <?php require_once("./shared/components/post-footer.php");  ?>

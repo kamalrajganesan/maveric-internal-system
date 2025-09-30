@@ -2,24 +2,27 @@ var manageInactiveCustomerMasterTbl;
 
 $(document).ready(function() {
     // Initialize DataTable
-    manageInactiveCustomerMasterTbl = $("#inactiveCustomerMasterTbl").DataTable({
-        scrollX: true,
-        processing: true,
-        serverSide: false, // Set true if data is huge
-        ajax: {
-            url: "./services/getAllInactiveCustomers.php",
-            type: "POST",
-            data: function(d) {
-                d.dateRange   = $("#dateRange").val();
-                d.singleDate  = $("#singleDate").val();
-                d.serviceType = $("#serviceType").val();
-                d.pincode     = $("#pincode").val();
-            }
-        },
-        columnDefs: [
-            { targets: [5,6,7], orderable: false } // last service, pincode, button columns
-        ]
-    });
+manageInactiveCustomerMasterTbl = $("#inactiveCustomerMasterTbl").DataTable({
+    scrollX: true,
+    processing: true,
+    serverSide: false,
+    ajax: {
+        url: "./services/getAllInactiveCustomers.php",
+        type: "POST",
+        data: function(d) {
+            d.dateRange      = $("#dateRange").val();
+            d.singleDate     = $("#singleDate").val();
+            d.serviceType    = $("#serviceType").val();
+            d.pincode        = $("#pincode").val();
+            d.serviceThrough = $("#serviceThrough").val();
+        }
+    },
+    pageLength: 10,  // ← ADD THIS
+    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],  // ← ADD THIS
+    columnDefs: [
+        { targets: [4,5], orderable: false }
+    ]
+});
 
     // Flatpickr
     if (typeof flatpickr !== "undefined") {
@@ -34,13 +37,13 @@ $(document).ready(function() {
 
     // Reset button
     $("#resetBtn").click(function() {
-        $("#dateRange, #singleDate, #serviceType, #pincode").val("");
-        if (flatpickr) {
-            document.getElementById('dateRange')._flatpickr.clear();
-            document.getElementById('singleDate')._flatpickr.clear();
-        }
-        manageInactiveCustomerMasterTbl.ajax.reload();
-    });
+    $("#dateRange, #singleDate, #serviceType, #pincode, #serviceThrough").val("");
+    if (flatpickr) {
+        document.getElementById('dateRange')._flatpickr.clear();
+        document.getElementById('singleDate')._flatpickr.clear();
+    }
+    manageInactiveCustomerMasterTbl.ajax.reload();
+});
 
     // Delegate click for dynamic buttons
     $('#inactiveCustomerMasterTbl').on('click', '.view-btn', function() {

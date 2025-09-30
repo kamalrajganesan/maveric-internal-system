@@ -23,54 +23,62 @@ require_once("./shared/components/pre-header.php");
             </div>
         </div>
 
-        <!-- Filter Section -->
-        <div class="row py-3">
-            <div class="col-sm-12">
-                <div class="card card-rounded">
-                    <div class="card-body fs-14">
-                        <!-- First Row: Transaction Date Range + Service Type -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="mb-1">Transaction Date Range</label>
-                                    <input type="text" class="form-control" id="dateRange" placeholder="DD/MM/YYYY">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="mb-1">Service Type</label>
-                                    <select class="form-control" id="serviceType">
-                                        <option value="">All Service Types</option>
-                                        <option value="AMC">AMC</option>
-                                        <option value="Tally Subscription">Tally Subscription</option>
-                                        <option value="Cloud">Cloud</option>
-                                        <option value="One Time">One Time</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Second Row: Transaction Date -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="mb-1">Transaction Date</label>
-                                    <input type="text" class="form-control date-picker" id="singleDate" placeholder="DD/MM/YYYY">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Third Row: Filter and Reset Buttons -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-primary" id="filterBtn">Filter</button>
-                                <button type="button" class="btn btn-info ml-2" id="resetBtn">Reset</button>
-                            </div>
-                        </div>
+       <!-- Filter Section -->
+<div class="row py-3">
+    <div class="col-sm-12">
+        <div class="card card-rounded">
+            <div class="card-body fs-14">
+                <!-- First Row: Transaction Date Range + Transaction Date + Service Type + Service Through -->
+<div class="row mb-3">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="mb-1">Transaction Date Range</label>
+            <input type="text" class="form-control" id="dateRange" placeholder="DD/MM/YYYY">
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="mb-1">Transaction Date</label>
+            <input type="text" class="form-control date-picker" id="singleDate" placeholder="DD/MM/YYYY">
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="mb-1">Service Type</label>
+            <select class="form-control" id="serviceType">
+                <option value="">All Service Types</option>
+                <option value="AMC">AMC</option>
+                <option value="Tally Subscription">Tally Subscription</option>
+                <option value="Cloud">Cloud</option>
+                <option value="One Time">One Time</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="mb-1">Service Through</label>
+            <select class="form-control" id="serviceThrough">
+                <option value="">All</option>
+                <option value="Phone Call">Phone Call</option>
+                <option value="Remote">Remote</option>
+                <option value="Physical Visit">Physical Visit</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+                <!-- Second Row: Filter and Reset Buttons -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-primary" id="filterBtn">Filter</button>
+                        <button type="button" class="btn btn-info ml-2" id="resetBtn">Reset</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
 
         <!-- Table Section -->
         <div class="row py-3">
@@ -79,19 +87,20 @@ require_once("./shared/components/pre-header.php");
                     <div class="card-body fs-14">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="inactiveCustomerMasterTbl" class="display nowrap" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>S.No</th>
-                                            <th>Customer Name</th>
-                                            <th>Service Consumed</th>
-                                            <th>Total Service Consumed</th>
-                                          
-                                            <th>Last Serviced Date</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                                <table id="inactiveCustomerMasterTbl" class="display nowrap ">
+    <thead>
+        <tr>
+            <th>S. No.</th>
+            <th>Company Name</th>
+            <th>Service Consumed</th>
+            <th>Total Services Consumed</th>
+            <th>Last Service Date</th>
+            <th>Days Since Last Service</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
                             </div>
                         </div>
                     </div>
