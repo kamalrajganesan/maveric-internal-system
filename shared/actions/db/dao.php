@@ -29,7 +29,27 @@ class sqlHelper
         
         $this->query->bind_param($type, ...$params);
     }
-
+public function executeQuery($sql) {
+    try {
+        $result = $this->conn->query($sql);
+        if ($result === false) {
+            $this->logError($this->conn->error, ['sql' => $sql]);
+            return false;
+        }
+        $rows = [];
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        return $rows;
+    } catch (Exception $e) {
+        $this->logError($e->getMessage(), ['sql' => $sql, 'exception' => $e]);
+        return false;
+    }
+}
+public function getConnection() {
+    return $this->conn;
+}
+    
     public function execPreparedStatement() {
      
         $resp["success"] = false;

@@ -1,9 +1,7 @@
 <?php
-// Error handling (log errors, do not display in JSON)
-ini_set('display_errors', 0); // Disable error display for production
-ini_set('log_errors', 1);
-ini_set('error_log', 'C:/xampp/logs/php_errors.log'); // Adjust to your error log path
+ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 header('Content-Type: application/json; charset=utf-8');
 
 require_once("../shared/actions/db/dao.php");

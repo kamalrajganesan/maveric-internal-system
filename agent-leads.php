@@ -41,6 +41,27 @@ if (isset($_GET['type'])) {
         
         <!-- ✅ First row: 3 filters -->
         <div class="row">
+            <div class="col-md-4">
+    <div class="form-group">
+        <label for="leadStatus">Lead Status <strong><code>*</code></strong></label>
+        <select class="form-control" id="leadStatus" name="leadStatus">
+            <option value="">All Statuses</option>
+            <!-- Call Leads Options -->
+            <option value="New" class="call-lead">Newly Added</option>
+            <option value="Contacted" class="call-lead">Contacted</option>
+            <option value="Following" class="call-lead">Following up</option>
+            <option value="Converted" class="call-lead">Converted</option>
+            <option value="Lost" class="call-lead">Lost</option>
+            <!-- Email Leads Options -->
+            <option value="New" class="email-lead">Newly Added</option>
+            <option value="Emailed and Waiting for reply" class="email-lead">Emailed and Waiting for reply</option>
+            <option value="Following" class="email-lead">Following up</option>
+            <option value="Converted" class="email-lead">Converted</option>
+            <option value="Lost" class="email-lead">Lost</option>
+        </select>
+    </div>
+</div>
+
           <div class="col-md-4">
             <div class="form-group">
               <label for="transactionDateRange">Transaction Date Range</label>

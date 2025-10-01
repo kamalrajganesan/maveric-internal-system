@@ -7,30 +7,43 @@ ini_set('display_errors', 1);
 header('Content-Type: application/json');
 
 // Include DB connection
-require_once('../config/db.php'); // adjust path if needed
+require_once('../shared/php/connect.php'); // adjust path if needed
+
+$conn = createConn();
+if (!$conn) {
+    throw new Exception("Database connection failed");
+}
 
 try {
     // Read POST params
     $dateRange  = isset($_POST['dateRange']) ? trim($_POST['dateRange']) : '';
     $singleDate = isset($_POST['singleDate']) ? trim($_POST['singleDate']) : '';
     $leadType   = isset($_POST['leadType']) ? trim($_POST['leadType']) : '';
+    $leadStatus = isset($_POST['leadStatus']) ? trim($_POST['leadStatus']) : '';
 
-    // Default conditions
+    // Prepare date filters
     $dateWhereCall  = "1=1";
     $dateWhereEmail = "1=1";
 
-    // Handle date filters
     if (!empty($dateRange) && strpos($dateRange, ' to ') !== false) {
-        $dates = explode(' to ', $dateRange);
-        $startDate = date('Y-m-d', strtotime(str_replace('/', '-', $dates[0])));
-        $endDate   = date('Y-m-d', strtotime(str_replace('/', '-', $dates[1])));
-
+        list($start, $end) = explode(' to ', $dateRange);
+        $startDate = date('Y-m-d', strtotime(str_replace('/', '-', $start)));
+        $endDate   = date('Y-m-d', strtotime(str_replace('/', '-', $end)));
         $dateWhereCall  = "DATE(lct.created_on) BETWEEN '$startDate' AND '$endDate'";
         $dateWhereEmail = "DATE(let.created_on) BETWEEN '$startDate' AND '$endDate'";
     } elseif (!empty($singleDate)) {
         $date = date('Y-m-d', strtotime(str_replace('/', '-', $singleDate)));
         $dateWhereCall  = "DATE(lct.created_on) = '$date'";
         $dateWhereEmail = "DATE(let.created_on) = '$date'";
+    }
+
+    // Add lead status filter
+    if (!empty($leadStatus)) {
+        if ($leadType === 'Phone Call') {
+            $dateWhereCall .= " AND lct.lead_status = '" . mysqli_real_escape_string($conn, $leadStatus) . "'";
+        } elseif ($leadType === 'Email') {
+            $dateWhereEmail .= " AND let.lead_status = '" . mysqli_real_escape_string($conn, $leadStatus) . "'";
+        }
     }
 
     // Base query
@@ -131,32 +144,27 @@ try {
 
     $query .= " GROUP BY a.id, a.agent_nm ORDER BY leads_handled DESC";
 
-    // Run query
+    // Execute query
     $data = [];
     $counter = 1;
 
-    if (isset($conn)) {
-        $result = mysqli_query($conn, $query);
-        if (!$result) {
-            throw new Exception("MySQL error: " . mysqli_error($conn));
-        }
-        while ($row = mysqli_fetch_assoc($result)) {
-            $data[] = [
-                'sno'             => $counter++,
-                'agent_name'      => htmlspecialchars($row['agent_nm']),
-                'leads_handled'   => (int)$row['leads_handled'],
-                'leads_in_hand'   => (int)$row['leads_in_hand'],
-                'leads_converted' => (int)$row['leads_converted'],
-                'leads_lost'      => (int)$row['leads_lost']
-            ];
-        }
-    } else {
-        throw new Exception("DB connection not found");
+    $result = mysqli_query($conn, $query);
+    if (!$result) {
+        throw new Exception("MySQL error: " . mysqli_error($conn));
     }
 
-    // ✅ Clean output buffer before returning JSON
-    if (ob_get_length()) ob_clean();
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = [
+            'sno'             => $counter++,
+            'agent_name'      => htmlspecialchars($row['agent_nm']),
+            'leads_handled'   => (int)$row['leads_handled'],
+            'leads_in_hand'   => (int)$row['leads_in_hand'],
+            'leads_converted' => (int)$row['leads_converted'],
+            'leads_lost'      => (int)$row['leads_lost']
+        ];
+    }
 
+    // Return JSON
     echo json_encode([
         'success' => true,
         'data' => $data
@@ -164,7 +172,6 @@ try {
     exit;
 
 } catch (Exception $e) {
-    if (ob_get_length()) ob_clean();
     http_response_code(500);
     echo json_encode([
         'success' => false,
