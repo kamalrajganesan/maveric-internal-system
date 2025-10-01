@@ -5,8 +5,19 @@ $(document).ready(function () {
             url: "./services/agent_report_fetch.php",
             type: "POST",
             data: function (d) {
-                d.transactionDateRange = $("#transactionDateRange").val();
-                d.serviceType = $("#serviceTypeFilter").val();
+                var dateRange = $("#transactionDateRange").val();
+                var singleDate = $("#transactionDate").val();
+                
+                // Only send one date filter at a time - single date has priority
+                if (singleDate) {
+                    d.transactionDate = singleDate;
+                    d.transactionDateRange = ''; // Clear range when single date is used
+                } else {
+                    d.transactionDateRange = dateRange;
+                    d.transactionDate = ''; // Clear single date when range is used
+                }
+                
+                d.serviceType = $("#serviceTypeFilter").val(); // Keep service type filter
             },
             dataType: "json",
             dataSrc: function(json) {
@@ -33,11 +44,23 @@ $(document).ready(function () {
     // Initialize flatpickr
     flatpickr("#transactionDateRange", {
         mode: "range",
-        dateFormat: "d/m/Y"
+        dateFormat: "d/m/Y",
+        onChange: function(selectedDates, dateStr, instance) {
+            // Clear single date when range is selected
+            if (dateStr) {
+                $("#transactionDate").val('');
+            }
+        }
     });
 
     flatpickr("#transactionDate", {
-        dateFormat: "d/m/Y"
+        dateFormat: "d/m/Y",
+        onChange: function(selectedDates, dateStr, instance) {
+            // Clear date range when single date is selected
+            if (dateStr) {
+                $("#transactionDateRange").val('');
+            }
+        }
     });
 
     // Filter button
@@ -45,13 +68,16 @@ $(document).ready(function () {
         transactionMasterTbl.ajax.reload();
     });
 
-    // Reset button
-    $("#resetBtn").on("click", function () {
-        $("#transactionDateRange").val('');
-        $("#transactionDate").val('');
-        $("#serviceTypeFilter").val('');
-        transactionMasterTbl.ajax.reload();
-    });
+ // Reset button - CORRECTED: Reset serviceTypeFilter to 'all' 
+$("#resetBtn").on("click", function () {
+    $("#transactionDateRange").val('');
+    $("#transactionDate").val('');
+    
+    // Reset service type filter
+    $("#serviceTypeFilter").val('all').prop('selectedIndex', 0);
+    
+    transactionMasterTbl.ajax.reload();
+});
 
     // Remove duplicate add agent code and fix table reference
     $("#addAgentDataBtn").on("click", function (e) {
