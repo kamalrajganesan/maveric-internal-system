@@ -9,7 +9,6 @@ $serviceThru = trim($_POST['serviceThrough'] ?? '');
 $serviceType = trim($_POST['serviceType'] ?? '');
 $dateRange   = trim($_POST['dateRange'] ?? '');
 $singleDate  = trim($_POST['singleDate'] ?? '');
-$pincode     = trim($_POST['pincode'] ?? '');
 
 // ----------------------
 // Build filter conditions for tickets
@@ -57,34 +56,43 @@ if ($serviceThru !== '' && strtolower($serviceThru) !== 'all') {
 }
 
 // ----------------------
-// Determine the label based on service_thru filter
+// Determine the label based on filters
 // ----------------------
-$serviceLabel = 'Transactions';
-if ($serviceThru !== '' && strtolower($serviceThru) !== 'all') {
-    $serviceLabel = $serviceThru;
-}
+$hasTicketFilters = ($singleDate !== '' || $dateRange !== '' || 
+                     ($serviceThru !== '' && strtolower($serviceThru) !== 'all') ||
+                     ($serviceType !== '' && strtolower($serviceType) !== 'all'));
 
 // ----------------------
-// Main query - Always show customer's actual services
+// Main query
 // ----------------------
 $sql = "
 SELECT
     c.id AS customer_id,
     c.customer_uniq_code,
     c.company_nm,
+    c.pincode,
     COALESCE(c.service_type, 'No Service') AS services,
-    COALESCE(CONCAT(t.total_count, ' $serviceLabel'), '0 $serviceLabel') AS total_services,
-    t.last_service_date
+    COALESCE(total_tickets.total_count, 0) AS total_count,
+    COALESCE(filtered_tickets.filtered_count, 0) AS filtered_count,
+    filtered_tickets.last_service_date
 FROM cust_mstr c
 LEFT JOIN (
     SELECT 
+        customer_id,
+        COUNT(*) AS total_count
+    FROM ticket
+    WHERE is_deleted = 0
+    GROUP BY customer_id
+) total_tickets ON c.id = total_tickets.customer_id
+LEFT JOIN (
+    SELECT 
         tk.customer_id,
-        COUNT(*) AS total_count,
+        COUNT(*) AS filtered_count,
         MAX(tk.created_on) AS last_service_date
     FROM ticket tk
     WHERE $ticketFilterSql
     GROUP BY tk.customer_id
-) t ON c.id = t.customer_id
+) filtered_tickets ON c.id = filtered_tickets.customer_id
 WHERE c.is_active = 1 AND c.is_deleted = 0
 ";
 
@@ -92,19 +100,14 @@ WHERE c.is_active = 1 AND c.is_deleted = 0
 $customerParams = [];
 $customerTypes  = '';
 
-// Pincode filter
-if ($pincode !== '') {
-    $sql .= " AND c.pincode LIKE ?";
-    $customerParams[] = "%$pincode%";
-    $customerTypes .= 's';
-}
-
 // Service type filter at customer level
 if ($serviceType !== '' && strtolower($serviceType) !== 'all') {
     $sql .= " AND c.service_type LIKE ?";
     $customerParams[] = "%$serviceType%";
     $customerTypes .= 's';
 }
+
+$sql .= " ORDER BY c.company_nm ASC";
 
 // ----------------------
 // Bind parameters
@@ -135,14 +138,25 @@ if ($resp['success']) {
                 .'data-customer="'.htmlspecialchars($row['customer_uniq_code']).'">'
                 .htmlspecialchars($row['company_nm']).'</button>';
 
-            // Clean up service display - remove brackets and quotes if present
+            // Clean up service display
             $services = $row['services'];
             $services = str_replace(['"', '[', ']'], '', $services);
             if (empty(trim($services))) {
                 $services = 'No Service';
             }
 
-            $totalServices = $row['total_services'];
+            // Calculate counts
+            $totalCount = (int)($row['total_count'] ?? 0);
+            $filteredCount = (int)($row['filtered_count'] ?? 0);
+
+            // Determine label for Total Services Consumed
+            if ($serviceThru !== '' && strtolower($serviceThru) !== 'all') {
+                $totalServices = $filteredCount . ' ' . $serviceThru;
+            } elseif ($hasTicketFilters) {
+                $totalServices = $filteredCount . ' Transactions';
+            } else {
+                $totalServices = $totalCount . ' Transactions';
+            }
 
             $lastServiceDate = $row['last_service_date']
                 ? date('d-m-Y H:i', strtotime($row['last_service_date']))
@@ -153,12 +167,13 @@ if ($resp['success']) {
                 : "Never";
 
             $resultData[] = [
-                $i,
-                $customerBtn,
-                $services,
-                $totalServices,
-                $lastServiceDate,
-                $daysSince
+                $i,                         // Column 0: S.No
+                $customerBtn,               // Column 1: Company Name
+                $services,                  // Column 2: Service Consumed
+                $row['pincode'],            // Column 3: Pincode (hidden but searchable)
+                $totalServices,             // Column 4: Total Services Consumed
+                $lastServiceDate,           // Column 5: Last Service Date
+                $daysSince                  // Column 6: Days Since Last Service
             ];
             $i++;
         }

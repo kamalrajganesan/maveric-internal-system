@@ -2,15 +2,7 @@
 
 require_once("./shared/components/pre-header.php");
 
-if (isset($_GET['type'])) {
-    
-    $type = htmlspecialchars($_GET['type']);    // serviceType (or) serviceThrough
-    echo "<script>
-        var report_type = '" . $type . "'
-    </script>";
-} else {
-    echo "No data received.";
-}
+
 
 
 ?>
