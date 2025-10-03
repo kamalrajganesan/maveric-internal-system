@@ -28,53 +28,54 @@ echo "<script>
             </div>
         </div>
         <!-- Date Filter Section -->
-        <div class="row py-3">
-            <div class="col-sm-12">
-                <div class="card card-rounded">
-                    <div class="card-body">
+       <div class="row py-3">
+    <div class="col-sm-12">
+        <div class="card card-rounded">
+            <div class="card-body">
 
-                        <!-- ✅ One row: 4 filters -->
-                        <div class="row">
+                <!-- ✅ One row: 3 filters -->
+                <div class="row">
 
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="transactionDateRange">Transaction Date Range</label>
-                                    <input type="text" class="form-control" id="transactionDateRange" placeholder="DD/MM/YYYY">
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="transactionDate">Transaction Date</label>
-                                    <input type="text" class="form-control" id="transactionDate" placeholder="DD/MM/YYYY">
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="serviceTypeFilter">Lead Type</label>
-                                    <select class="form-control" id="serviceTypeFilter" name="serviceTypeFilter">
-                                        <option value="">All Lead Types</option>
-                                        <option value="Phone Call">Call Lead</option>
-                                        <option value="Email">Email Lead</option>
-                                    </select>
-                                </div>
-                            </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="transactionDateRange">Transaction Date Range</label>
+                            <input type="text" class="form-control" id="transactionDateRange" placeholder="DD/MM/YYYY">
                         </div>
+                    </div>
 
-                        <!-- ✅ Buttons row -->
-                        <div class="row mt-3">
-                            <div class="col-auto">
-                                <button type="button" class="btn btn-primary me-2" id="filterBtn">Filter</button>
-                                <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
-                            </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="transactionDate">Transaction Date</label>
+                            <input type="text" class="form-control" id="transactionDate" placeholder="DD/MM/YYYY">
                         </div>
+                    </div>
 
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="serviceTypeFilter">Lead Type</label>
+                            <select class="form-control" id="serviceTypeFilter" name="serviceTypeFilter">
+                                <option value="">All Lead Types</option>
+                                <option value="Phone Call">Call Lead</option>
+                                <option value="Email">Email Lead</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div> <!-- end row -->
+
+                <!-- ✅ Buttons row -->
+                <div class="row mt-3">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary me-2" id="filterBtn">Filter</button>
+                        <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
+</div>
+
 
 
         <div class="row py-3">
