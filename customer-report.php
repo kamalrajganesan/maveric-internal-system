@@ -2,18 +2,12 @@
 
 require_once("./shared/components/pre-header.php");
 
-if (isset($_GET['type'])) {
-    
-    $type = htmlspecialchars($_GET['type']);    // serviceType (or) serviceThrough
-    echo "<script>
-        var report_type = '" . $type . "'
-    </script>";
-} else {
-    echo "No data received.";
-}
-
-
+$type = $_GET['type'] ?? null; // Get type if exists, otherwise null
 ?>
+<script>
+    var report_type = "<?php echo $type ?? ''; ?>";
+</script>
+
 
 <title> My Reports - Tejas </title>
 
@@ -29,49 +23,53 @@ if (isset($_GET['type'])) {
 
        
         <!-- Date Filter Section -->
-        <div class="row py-3">
-            <div class="col-sm-12">
-                <div class="card card-rounded">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="transactionDateRange">Transaction Date Range</label>
-                                    <input type="text" class="form-control" id="transactionDateRange" placeholder="DD/MM/YYYY">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="serviceTypeFilter">Service Type</label>
-                                    <select class="form-control" id="serviceTypeFilter" name="serviceTypeFilter">
-                                        <option value="">All Service Types</option>
-                                        <option value="Phone Call">Phone Call</option>
-                                        <option value="Remote">Remote</option>
-                                        <option value="Physical Visit">Physical Visit</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="transactionDate">Transaction Date</label>
-                                    <input type="text" class="form-control" id="transactionDate" placeholder="DD/MM/YYYY">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary me-2" id="filterBtn">Filter</button>
-                                    <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+       <div class="row py-3">
+  <div class="col-sm-12">
+    <div class="card card-rounded">
+      <div class="card-body">
+
+        <!-- First Row: Filters -->
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="transactionDateRange">Transaction Date Range</label>
+              <input type="text" class="form-control" id="transactionDateRange" placeholder="DD/MM/YYYY">
             </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="transactionDate">Transaction Date</label>
+              <input type="text" class="form-control" id="transactionDate" placeholder="DD/MM/YYYY">
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="serviceTypeFilter">Service Through</label>
+              <select class="form-control" id="serviceTypeFilter" name="serviceTypeFilter">
+                <option value="">All Service Types</option>
+                <option value="Phone Call">Phone Call</option>
+                <option value="Remote">Remote</option>
+                <option value="Physical Visit">Physical Visit</option>
+              </select>
+            </div>
+          </div>
         </div>
+
+        <!-- Second Row: Buttons -->
+        <div class="row mt-3">
+          <div class="col-auto">
+            <button type="button" class="btn btn-primary me-2" id="filterBtn">Filter</button>
+            <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 
         <div class="row">
             <div class="col-sm-12">
@@ -106,6 +104,39 @@ if (isset($_GET['type'])) {
     <!-- content-wrapper ends -->
 
     <!-- modals -->
+     <!-- Customer Details Modal -->
+<div class="modal fade" id="customerDetailsModal" tabindex="-1" role="dialog" aria-labelledby="customerDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customerDetailsModalLabel">Customer Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="customerInfo" class="mb-3">
+          <!-- Customer Name & Contact will be injected here -->
+        </div>
+        <table class="table table-bordered" id="customerTransactionsTbl">
+          <thead>
+            <tr>
+              <th>Date of Service</th>
+              <th>Service Type</th>
+             
+              <th>Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Transactions will be injected here -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <!-- add transaction modal -->
     <div class="modal fade" id="addTransactionModal" tabindex="-1" role="dialog" aria-labelledby="addTransactionModalLabel" aria-hidden="true">
