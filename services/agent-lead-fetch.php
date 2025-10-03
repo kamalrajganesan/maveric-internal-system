@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 header('Content-Type: application/json');
 
 // Include DB connection
-require_once('../shared/php/connect.php'); // adjust path if needed
+require_once('../shared/php/connect.php');
 
 $conn = createConn();
 if (!$conn) {
@@ -21,30 +21,76 @@ try {
     $leadType   = isset($_POST['leadType']) ? trim($_POST['leadType']) : '';
     $leadStatus = isset($_POST['leadStatus']) ? trim($_POST['leadStatus']) : '';
 
-    // Prepare date filters
+    // Prepare date filters with proper conversion
     $dateWhereCall  = "1=1";
     $dateWhereEmail = "1=1";
 
     if (!empty($dateRange) && strpos($dateRange, ' to ') !== false) {
         list($start, $end) = explode(' to ', $dateRange);
-        $startDate = date('Y-m-d', strtotime(str_replace('/', '-', $start)));
-        $endDate   = date('Y-m-d', strtotime(str_replace('/', '-', $end)));
-        $dateWhereCall  = "DATE(lct.created_on) BETWEEN '$startDate' AND '$endDate'";
-        $dateWhereEmail = "DATE(let.created_on) BETWEEN '$startDate' AND '$endDate'";
+        
+        // Convert DD/MM/YYYY to YYYY-MM-DD
+        $startParts = explode('/', trim($start));
+        $endParts = explode('/', trim($end));
+        
+        if (count($startParts) === 3 && count($endParts) === 3) {
+            $startDate = $startParts[2] . '-' . str_pad($startParts[1], 2, '0', STR_PAD_LEFT) . '-' . str_pad($startParts[0], 2, '0', STR_PAD_LEFT);
+            $endDate = $endParts[2] . '-' . str_pad($endParts[1], 2, '0', STR_PAD_LEFT) . '-' . str_pad($endParts[0], 2, '0', STR_PAD_LEFT);
+            
+            $startDateEsc = mysqli_real_escape_string($conn, $startDate);
+            $endDateEsc = mysqli_real_escape_string($conn, $endDate);
+            
+            $dateWhereCall  = "DATE(lct.created_on) BETWEEN '$startDateEsc' AND '$endDateEsc'";
+            $dateWhereEmail = "DATE(let.created_on) BETWEEN '$startDateEsc' AND '$endDateEsc'";
+        }
     } elseif (!empty($singleDate)) {
-        $date = date('Y-m-d', strtotime(str_replace('/', '-', $singleDate)));
-        $dateWhereCall  = "DATE(lct.created_on) = '$date'";
-        $dateWhereEmail = "DATE(let.created_on) = '$date'";
-    }
-
-    // Add lead status filter
-    if (!empty($leadStatus)) {
-        if ($leadType === 'Phone Call') {
-            $dateWhereCall .= " AND lct.lead_status = '" . mysqli_real_escape_string($conn, $leadStatus) . "'";
-        } elseif ($leadType === 'Email') {
-            $dateWhereEmail .= " AND let.lead_status = '" . mysqli_real_escape_string($conn, $leadStatus) . "'";
+        // Convert DD/MM/YYYY to YYYY-MM-DD
+        $dateParts = explode('/', trim($singleDate));
+        
+        if (count($dateParts) === 3) {
+            $date = $dateParts[2] . '-' . str_pad($dateParts[1], 2, '0', STR_PAD_LEFT) . '-' . str_pad($dateParts[0], 2, '0', STR_PAD_LEFT);
+            $dateEsc = mysqli_real_escape_string($conn, $date);
+            
+            $dateWhereCall  = "DATE(lct.created_on) = '$dateEsc'";
+            $dateWhereEmail = "DATE(let.created_on) = '$dateEsc'";
         }
     }
+
+    // Handle lead status mapping
+    $callStatusFilter = "";
+    $emailStatusFilter = "";
+    
+    if (!empty($leadStatus)) {
+        $leadStatusEsc = mysqli_real_escape_string($conn, $leadStatus);
+        
+        // Map status values for call leads
+        $callStatusMap = [
+            'New' => 'New',
+            'Contacted' => 'Contacted',
+            'Following' => 'Following',
+            'Converted' => 'Converted',
+            'Lost' => 'Lost'
+        ];
+        
+        // Map status values for email leads
+        $emailStatusMap = [
+            'New' => 'New',
+            'Contacted' => 'Contacted',
+            'Following' => 'Following',
+            'Converted' => 'Converted',
+            'Lost' => 'Lost',
+            'Emailed and Waiting for reply' => 'Emailed and Waiting for reply'
+        ];
+        
+        if (isset($callStatusMap[$leadStatus])) {
+            $callStatusFilter = " AND lct.lead_status = '$leadStatusEsc'";
+        }
+        
+        if (isset($emailStatusMap[$leadStatus])) {
+            $emailStatusFilter = " AND let.lead_status = '$leadStatusEsc'";
+        }
+    }
+
+    $leadTypeEsc = mysqli_real_escape_string($conn, $leadType);
 
     // Base query
     $query = "
@@ -52,97 +98,147 @@ try {
             a.id as agent_id,
             a.agent_nm,
 
-            -- Total leads handled
+            -- Leads Handled: ALL leads (no date or status filtering, just count everything)
             (
                 SELECT COUNT(DISTINCT lct.id) 
                 FROM lead_call_tracker lct 
                 WHERE lct.assignee = a.id 
                 AND lct.is_deleted = 0
-                AND $dateWhereCall
             ) + 
             (
                 SELECT COUNT(DISTINCT let.id) 
                 FROM lead_email_tracker let 
-                WHERE let.created_by = a.id 
+                WHERE let.assignee = a.id 
                 AND let.is_deleted = 0
-                AND $dateWhereEmail
             ) as leads_handled,
 
-            -- Leads in hand
-            (
-                SELECT COUNT(DISTINCT lct.id) 
-                FROM lead_call_tracker lct 
-                WHERE lct.assignee = a.id 
-                AND lct.is_deleted = 0
-                AND lct.lead_status IN ('New', 'Contacted/Pending', 'Following Up')
-                AND $dateWhereCall
-            ) + 
-            (
-                SELECT COUNT(DISTINCT let.id) 
-                FROM lead_email_tracker let 
-                WHERE let.created_by = a.id 
-                AND let.is_deleted = 0
-                AND let.lead_status IN ('New', 'Contacted/Pending', 'Following Up')
-                AND $dateWhereEmail
-            ) as leads_in_hand,
+            -- Leads In Hand: Apply date, lead type, and status filters
+            CASE 
+                WHEN '$leadTypeEsc' = 'Phone Call' THEN
+                    (
+                        SELECT COUNT(DISTINCT lct.id) 
+                        FROM lead_call_tracker lct 
+                        WHERE lct.assignee = a.id 
+                        AND lct.is_deleted = 0
+                        AND lct.lead_status IN ('New', 'Contacted', 'Following')
+                        AND $dateWhereCall
+                        $callStatusFilter
+                    )
+                WHEN '$leadTypeEsc' = 'Email' THEN
+                    (
+                        SELECT COUNT(DISTINCT let.id) 
+                        FROM lead_email_tracker let 
+                        WHERE let.assignee = a.id 
+                        AND let.is_deleted = 0
+                        AND let.lead_status IN ('New', 'Contacted', 'Following', 'Emailed and Waiting for reply')
+                        AND $dateWhereEmail
+                        $emailStatusFilter
+                    )
+                ELSE
+                    (
+                        SELECT COUNT(DISTINCT lct.id) 
+                        FROM lead_call_tracker lct 
+                        WHERE lct.assignee = a.id 
+                        AND lct.is_deleted = 0
+                        AND lct.lead_status IN ('New', 'Contacted', 'Following')
+                        AND $dateWhereCall
+                        $callStatusFilter
+                    ) + 
+                    (
+                        SELECT COUNT(DISTINCT let.id) 
+                        FROM lead_email_tracker let 
+                        WHERE let.assignee = a.id 
+                        AND let.is_deleted = 0
+                        AND let.lead_status IN ('New', 'Contacted', 'Following', 'Emailed and Waiting for reply')
+                        AND $dateWhereEmail
+                        $emailStatusFilter
+                    )
+            END as leads_in_hand,
 
-            -- Leads converted
-            (
-                SELECT COUNT(DISTINCT lct.id) 
-                FROM lead_call_tracker lct 
-                WHERE lct.assignee = a.id 
-                AND lct.is_deleted = 0
-                AND lct.lead_status = 'Closed'
-                AND $dateWhereCall
-            ) + 
-            (
-                SELECT COUNT(DISTINCT let.id) 
-                FROM lead_email_tracker let 
-                WHERE let.created_by = a.id 
-                AND let.is_deleted = 0
-                AND let.lead_status = 'Closed'
-                AND $dateWhereEmail
-            ) as leads_converted,
+            -- Leads Converted: Apply date and lead type filters
+            CASE 
+                WHEN '$leadTypeEsc' = 'Phone Call' THEN
+                    (
+                        SELECT COUNT(DISTINCT lct.id) 
+                        FROM lead_call_tracker lct 
+                        WHERE lct.assignee = a.id 
+                        AND lct.is_deleted = 0
+                        AND lct.lead_status = 'Converted'
+                        AND $dateWhereCall
+                    )
+                WHEN '$leadTypeEsc' = 'Email' THEN
+                    (
+                        SELECT COUNT(DISTINCT let.id) 
+                        FROM lead_email_tracker let 
+                        WHERE let.assignee = a.id 
+                        AND let.is_deleted = 0
+                        AND let.lead_status = 'Converted'
+                        AND $dateWhereEmail
+                    )
+                ELSE
+                    (
+                        SELECT COUNT(DISTINCT lct.id) 
+                        FROM lead_call_tracker lct 
+                        WHERE lct.assignee = a.id 
+                        AND lct.is_deleted = 0
+                        AND lct.lead_status = 'Converted'
+                        AND $dateWhereCall
+                    ) + 
+                    (
+                        SELECT COUNT(DISTINCT let.id) 
+                        FROM lead_email_tracker let 
+                        WHERE let.assignee = a.id 
+                        AND let.is_deleted = 0
+                        AND let.lead_status = 'Converted'
+                        AND $dateWhereEmail
+                    )
+            END as leads_converted,
 
-            -- Leads lost
-            (
-                SELECT COUNT(DISTINCT lct.id) 
-                FROM lead_call_tracker lct 
-                WHERE lct.assignee = a.id 
-                AND lct.is_deleted = 0
-                AND lct.lead_status = 'Lost'
-                AND $dateWhereCall
-            ) + 
-            (
-                SELECT COUNT(DISTINCT let.id) 
-                FROM lead_email_tracker let 
-                WHERE let.created_by = a.id 
-                AND let.is_deleted = 0
-                AND let.lead_status = 'Lost'
-                AND $dateWhereEmail
-            ) as leads_lost
+            -- Leads Lost: Apply date and lead type filters
+            CASE 
+                WHEN '$leadTypeEsc' = 'Phone Call' THEN
+                    (
+                        SELECT COUNT(DISTINCT lct.id) 
+                        FROM lead_call_tracker lct 
+                        WHERE lct.assignee = a.id 
+                        AND lct.is_deleted = 0
+                        AND lct.lead_status = 'Lost'
+                        AND $dateWhereCall
+                    )
+                WHEN '$leadTypeEsc' = 'Email' THEN
+                    (
+                        SELECT COUNT(DISTINCT let.id) 
+                        FROM lead_email_tracker let 
+                        WHERE let.assignee = a.id 
+                        AND let.is_deleted = 0
+                        AND let.lead_status = 'Lost'
+                        AND $dateWhereEmail
+                    )
+                ELSE
+                    (
+                        SELECT COUNT(DISTINCT lct.id) 
+                        FROM lead_call_tracker lct 
+                        WHERE lct.assignee = a.id 
+                        AND lct.is_deleted = 0
+                        AND lct.lead_status = 'Lost'
+                        AND $dateWhereCall
+                    ) + 
+                    (
+                        SELECT COUNT(DISTINCT let.id) 
+                        FROM lead_email_tracker let 
+                        WHERE let.assignee = a.id 
+                        AND let.is_deleted = 0
+                        AND let.lead_status = 'Lost'
+                        AND $dateWhereEmail
+                    )
+            END as leads_lost
 
         FROM agent a
         WHERE a.is_deleted = 0 
         AND a.is_active = 1
+        GROUP BY a.id, a.agent_nm 
+        ORDER BY leads_handled DESC
     ";
-
-    // Lead type filter
-    if (!empty($leadType)) {
-        if ($leadType === 'Phone Call') {
-            $query .= " AND EXISTS (
-                SELECT 1 FROM lead_call_tracker lct 
-                WHERE lct.assignee = a.id AND lct.is_deleted = 0 AND $dateWhereCall
-            )";
-        } elseif ($leadType === 'Email') {
-            $query .= " AND EXISTS (
-                SELECT 1 FROM lead_email_tracker let 
-                WHERE let.created_by = a.id AND let.is_deleted = 0 AND $dateWhereEmail
-            )";
-        }
-    }
-
-    $query .= " GROUP BY a.id, a.agent_nm ORDER BY leads_handled DESC";
 
     // Execute query
     $data = [];
@@ -167,7 +263,14 @@ try {
     // Return JSON
     echo json_encode([
         'success' => true,
-        'data' => $data
+        'data' => $data,
+        'totalRecords' => count($data),
+        'filters' => [
+            'dateRange' => $dateRange,
+            'singleDate' => $singleDate,
+            'leadType' => $leadType,
+            'leadStatus' => $leadStatus
+        ]
     ], JSON_UNESCAPED_UNICODE);
     exit;
 
@@ -180,3 +283,4 @@ try {
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
+?>
