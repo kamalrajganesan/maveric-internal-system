@@ -30515,63 +30515,17 @@ table.dataTable tbody th.select-checkbox:after {
 }
 
 
-.view-btn {
-    background-color: #d6ddf6;   /* light bluish background */
-    border: none;
-    border-radius: 8px;         /* small rounded corners (not circle) */
-    width: 48px;                /* rectangular width */
-    height: 36px;               /* smaller height */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    margin: 2px;
-    cursor: pointer;
+
+.custom-view-btn {
+    background-color: #d6ddf6 !important;  /* your requested color */
+    border: none !important;
+    color: #0d2ca0 !important;  /* dark blue for contrast */
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 4px 10px;
 }
 
-.view-btn .action-dots {
-    font-size: 20px;
-    color: #1f3bb3;             /* blue dots */
-    line-height: 1;
-}
-
-.view-btn:hover {
-    background-color: #c5d3f5;  /* slightly darker on hover */
-}
-
-
-#customerTransactionsTbl {
-    width: 100%;
-    table-layout: fixed;  /* make columns even */
-    border-collapse: collapse;
-}
-
-#customerTransactionsTbl th,
-#customerTransactionsTbl td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-    vertical-align: top;
-    word-wrap: break-word;
-    white-space: normal;
-}
-
-#customerTransactionsTbl th:nth-child(1),
-#customerTransactionsTbl td:nth-child(1) {
-    width: 8%;   /* S.No */
-}
-
-#customerTransactionsTbl th:nth-child(2),
-#customerTransactionsTbl td:nth-child(2) {
-    width: 20%;  /* Date */
-}
-
-#customerTransactionsTbl th:nth-child(3),
-#customerTransactionsTbl td:nth-child(3) {
-    width: 20%;  /* Service Type */
-}
-
-#customerTransactionsTbl th:nth-child(4),
-#customerTransactionsTbl td:nth-child(4) {
-    width: 52%;  /* Comments / Message */
+.custom-view-btn:hover {
+    background-color: #c1c9f0 !important; /* hover shade */
+    color: #0a1d80 !important;
 }

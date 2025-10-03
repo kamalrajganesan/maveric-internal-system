@@ -49,12 +49,13 @@ $(document).ready(function() {
                 title: "Actions",
                 className: "text-center",
                 render: function(data, type, row) {
-                    return `
-                        <button class="btn btn-sm view-btn" data-id="${data}" title="View">
-                            <span class="action-dots">⋮</span>
-                        </button>
-                    `;
-                }
+    return `
+        <button class="btn btn-sm view-btn custom-view-btn" data-id="${data}" title="View Info">
+            <i class="fa fa-eye"></i> View 
+        </button>
+    `;
+}
+
             }
         ]
     });
