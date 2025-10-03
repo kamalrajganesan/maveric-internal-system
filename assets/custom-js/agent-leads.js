@@ -245,6 +245,26 @@ $(document).ready(function () {
         const format = $(this).data('format');
         exportData(format);
     });
+function showNotification(message, type = "info") {
+    const icon = type === "error" ? "error" :
+                 type === "success" ? "success" :
+                 type === "warning" ? "warning" : "info";
+
+    if (typeof Swal !== "undefined") {
+        Swal.fire({
+            icon: icon,
+            title: message,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+    } else {
+        // fallback
+        alert(message);
+    }
+}
 
     function exportData(format) {
         const params = {

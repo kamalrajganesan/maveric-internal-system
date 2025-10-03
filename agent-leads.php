@@ -1,19 +1,13 @@
 <?php
-
 require_once("./shared/components/pre-header.php");
 
-if (isset($_GET['type'])) {
+$type = isset($_GET['type']) ? htmlspecialchars($_GET['type']) : ''; // Default to empty if not set
 
-    $type = htmlspecialchars($_GET['type']);    // serviceType (or) serviceThrough
-    echo "<script>
-        var report_type = '" . $type . "'
-    </script>";
-} else {
-    echo "No data received.";
-}
-
-
+echo "<script>
+    var report_type = '" . $type . "';
+</script>";
 ?>
+
 
 <title> My Reports - Tejas </title>
 
@@ -21,7 +15,7 @@ if (isset($_GET['type'])) {
 <link rel="stylesheet" href="./assets/vendors/select2/select2.min.css">
 <link rel="stylesheet" href="./assets/css/flatpickr.min.css">
 <link rel="stylesheet" href="./assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <?php require_once("./shared/components/post-header.php");  ?>
 
 <div class="main-panel">
@@ -62,8 +56,8 @@ if (isset($_GET['type'])) {
                                     <label for="serviceTypeFilter">Lead Type</label>
                                     <select class="form-control" id="serviceTypeFilter" name="serviceTypeFilter">
                                         <option value="">All Lead Types</option>
-                                        <option value="Phone Call">Phone Call</option>
-                                        <option value="Email">Email</option>
+                                        <option value="Phone Call">Call Lead</option>
+                                        <option value="Email">Email Lead</option>
                                     </select>
                                 </div>
                             </div>
@@ -131,6 +125,6 @@ if (isset($_GET['type'])) {
         <script src="assets/vendors/select2/select2.min.js"></script>
         <script src="assets/default-js/flatpickr.js"></script>
         <script src="assets/custom-js/agent-leads.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
         <?php require_once("./shared/components/post-footer.php");  ?>
