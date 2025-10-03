@@ -75,44 +75,18 @@ $(document).ready(function () {
                 showNotification("Failed to load data. Please try again.", "error");
             }
         },
-        columns: [
-            { 
-                data: "sno",
-                className: "text-center"
-            },
-            { 
-                data: "agent_name",
-                className: "text-left"
-            },
-            { 
-                data: "leads_handled",
-                className: "text-center",
-                render: function(data, type, row) {
-                    return '<span class="badge badge-primary">' + data + '</span>';
-                }
-            },
-            { 
-                data: "leads_in_hand",
-                className: "text-center",
-                render: function(data, type, row) {
-                    return '<span class="badge badge-info">' + data + '</span>';
-                }
-            },
-            { 
-                data: "leads_converted",
-                className: "text-center",
-                render: function(data, type, row) {
-                    return '<span class="badge badge-success">' + data + '</span>';
-                }
-            },
-            { 
-                data: "leads_lost",
-                className: "text-center",
-                render: function(data, type, row) {
-                    return '<span class="badge badge-danger">' + data + '</span>';
-                }
-            }
-        ],
+     columns: [
+    { data: "sno", className: "text-center" },
+    { data: "agent_name", className: "text-left" },
+    { data: "new_leads", className: "text-center", render: d => `<span class="badge badge-primary">${d}</span>` },
+    { data: "following_up", className: "text-center", render: d => `<span class="badge badge-info">${d}</span>` },
+    { data: "converted", className: "text-center", render: d => `<span class="badge badge-success">${d}</span>` },
+    { data: "contacted_emailed", className: "text-center", render: d => `<span class="badge badge-warning">${d}</span>` },
+    { data: "lost", className: "text-center", render: d => `<span class="badge badge-danger">${d}</span>` },
+    { data: "leads_handled", className: "text-center", render: d => `<span class="badge badge-dark">${d}</span>` }
+]
+,
+
         language: {
             emptyTable: "No data available in table",
             zeroRecords: "No matching records found"
@@ -160,7 +134,7 @@ $(document).ready(function () {
     // Status filter change handler
     $("#leadStatus").on("change", function () {
         const status = $(this).val();
-        let newTitle = "Leads In Hand";
+        let newTitle = "News";
         
         // Update column title based on status
         switch(status) {
@@ -181,7 +155,7 @@ $(document).ready(function () {
                 newTitle = "Lost Leads";
                 break;
             default:
-                newTitle = "Leads In Hand";
+                newTitle = "New";
         }
         
         $("#transactionMasterTbl thead th").eq(3).text(newTitle);
@@ -219,7 +193,7 @@ $(document).ready(function () {
         $("#transactionDateRange").prop("disabled", false);
 
         // Reset column title
-        $("#transactionMasterTbl thead th").eq(3).text("Leads In Hand");
+        $("#transactionMasterTbl thead th").eq(3).text("New");
 
         // Reset status options
         updateStatusOptions();
