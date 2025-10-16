@@ -88,7 +88,7 @@ $type = $_GET['type'] ?? null; // Get type if exists, otherwise null
                                             <th>Company Name</th>
                                             <th>Contact</th>
                                             <th>Transactions</th>
-                                            <th>Contact Person</th>
+                                            
                                             <th>Lat Serviced Date</th>
                                             <th>Actions</th>
                                         </tr>
@@ -104,7 +104,7 @@ $type = $_GET['type'] ?? null; // Get type if exists, otherwise null
     <!-- content-wrapper ends -->
 
     <!-- modals -->
-     <!-- Customer Details Modal -->
+    <!-- Customer Details Modal - Replace existing modal -->
 <div class="modal fade" id="customerDetailsModal" tabindex="-1" role="dialog" aria-labelledby="customerDetailsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -119,10 +119,12 @@ $type = $_GET['type'] ?? null; // Get type if exists, otherwise null
         <table class="table table-bordered" id="customerTransactionsTbl">
           <thead>
             <tr>
+              <th>S.No</th>
               <th>Date of Service</th>
               <th>Service Type</th>
-             
+               <th>Agent</th>
               <th>Comments</th>
+             
             </tr>
           </thead>
           <tbody>
@@ -136,7 +138,6 @@ $type = $_GET['type'] ?? null; // Get type if exists, otherwise null
     </div>
   </div>
 </div>
-
 
     <!-- add transaction modal -->
     <div class="modal fade" id="addTransactionModal" tabindex="-1" role="dialog" aria-labelledby="addTransactionModalLabel" aria-hidden="true">

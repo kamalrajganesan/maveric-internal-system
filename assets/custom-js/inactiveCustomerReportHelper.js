@@ -1,7 +1,6 @@
 var manageInactiveCustomerMasterTbl;
 
 $(document).ready(function() {
-    // Initialize DataTable
     manageInactiveCustomerMasterTbl = $("#inactiveCustomerMasterTbl").DataTable({
         scrollX: true,
         processing: true,
@@ -11,7 +10,7 @@ $(document).ready(function() {
             type: "POST",
             data: function(d) {
                 d.dateRange      = $("#dateRange").val() || '';
-                d.singleDate     = $("#singleDate").val() || '';
+                d.pincode        = $("#pincode").val() || '';
                 d.serviceType    = $("#serviceType").val() || '';
                 d.serviceThrough = $("#serviceThrough").val() || '';
             },
@@ -25,16 +24,19 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
         columns: [
-            { title: "S. No." },                      // Column 0
-            { title: "Company Name" },                // Column 1
-            { title: "Service Consumed" },            // Column 2
-            { title: "Pincode", visible: false },     // Column 3 - HIDDEN BUT SEARCHABLE
-            { title: "Total Services Consumed" },     // Column 4
-            { title: "Last Service Date" },           // Column 5
-            { title: "Days Since Last Service" }      // Column 6
+            { title: "S. No." },
+            { title: "Company Name" },
+           { title: "Total Services Consumed" },
+            { title: "Last Service Date" },
+            { title: "Days Since Last Service" },
+            { title: "Service Consumed" },
+            { title: "Pincode" },
+              { title: "Area" },
+           
+           
         ],
         columnDefs: [
-            { targets: [5, 6], orderable: false }
+            { targets: [6, 7], orderable: false }
         ],
         language: {
             emptyTable: "No data found",
@@ -42,10 +44,9 @@ $(document).ready(function() {
         }
     });
 
-    // Flatpickr initialization
+    // Flatpickr initialization for dateRange (range)
     if (typeof flatpickr !== "undefined") {
         flatpickr("#dateRange", { mode: "range", dateFormat: "d/m/Y" });
-        flatpickr("#singleDate", { dateFormat: "d/m/Y" });
     }
 
     // Filter button
@@ -54,33 +55,38 @@ $(document).ready(function() {
         manageInactiveCustomerMasterTbl.ajax.reload();
     });
 
-    // Reset button
+    // Reset button - clears dateRange and pincode + others
     $("#resetBtn").on('click', function(e) {
         e.preventDefault();
-        $("#dateRange, #singleDate, #serviceType, #serviceThrough").val("");
-        
+        $("#dateRange, #pincode, #serviceType, #serviceThrough").val("");
+
         if (typeof flatpickr !== "undefined") {
             var dateRangeEl = document.getElementById('dateRange');
-            var singleDateEl = document.getElementById('singleDate');
-            
             if (dateRangeEl && dateRangeEl._flatpickr) {
                 dateRangeEl._flatpickr.clear();
             }
-            if (singleDateEl && singleDateEl._flatpickr) {
-                singleDateEl._flatpickr.clear();
-            }
         }
-        
+
         manageInactiveCustomerMasterTbl.ajax.reload();
     });
 
-    // Delegate click for dynamic buttons
+    // Delegate click for view buttons (unchanged)
     $('#inactiveCustomerMasterTbl').on('click', '.view-btn', function() {
         var customerUniqCode = $(this).data('customer');
         if (customerUniqCode) {
             viewCustomer(customerUniqCode);
         }
     });
+
+    // Press Enter to trigger filter for inputs/selects
+    $("#dateRange, #pincode, #serviceType, #serviceThrough").on('keypress', function(e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            $("#filterBtn").trigger('click');
+        }
+    });
+
+
 
     // Enter key to filter
     $("#dateRange, #singleDate, #serviceType, #serviceThrough").on('keypress', function(e) {

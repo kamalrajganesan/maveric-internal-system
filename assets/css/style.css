@@ -30529,3 +30529,38 @@ table.dataTable tbody th.select-checkbox:after {
     background-color: #c1c9f0 !important; /* hover shade */
     color: #0a1d80 !important;
 }
+
+
+
+/* Fix for customer details table - prevent long comments from expanding container */
+#customerDetailsModal .modal-body {
+    overflow-x: hidden;
+}
+
+#customerTransactionsTbl {
+    table-layout: fixed;
+    width: 100%;
+}
+
+#customerTransactionsTbl th:nth-child(1) { width: 50px; }  /* S.No */
+#customerTransactionsTbl th:nth-child(2) { width: 60px; } /* Date */
+#customerTransactionsTbl th:nth-child(3) { width: 60px; } /* Service Type */
+#customerTransactionsTbl th:nth-child(4) { width: 60px; }   /* Comments - flexible but constrained */
+#customerTransactionsTbl th:nth-child(5) { width: 100px; } /* Agent */
+
+#customerTransactionsTbl td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+/* Specific fix for comments column */
+#customerTransactionsTbl td:nth-child(4) {
+    max-width: 300px;
+    word-break: break-word;
+}
+
+/* Ensure table responsive container works */
+.table-responsive {
+    overflow-x: auto;
+}

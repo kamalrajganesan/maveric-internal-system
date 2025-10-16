@@ -1,3 +1,4 @@
+
 <?php
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
@@ -59,21 +60,29 @@ try {
             exit;
         }
 
-        $ticketSql = "
-            SELECT 
-                id,
-                created_on,
-                service_thru,
-                service_typ,
-                comments,
-                notes,
-                problem_stmt,
-                problem_desc
-            FROM ticket
-            WHERE customer_id = $custIdEsc
-              AND is_deleted = 0
-            ORDER BY created_on DESC, id DESC
-        ";
+        // Modified query to include agent information
+    // --- Fetch all tickets for the customer (with proper agent fallback) ---
+$ticketSql = "
+    SELECT 
+        t.id,
+        t.created_on,
+        t.service_thru,
+        t.service_typ,
+        t.comments,
+        t.notes,
+        t.problem_stmt,
+        t.problem_desc,
+        CASE 
+            WHEN a.agent_nm IS NOT NULL THEN a.agent_nm
+            WHEN t.assignd_agent_id IS NULL AND t.created_by <> '' THEN t.created_by
+            ELSE 'Unassigned'
+        END AS agent_name
+    FROM ticket t
+    LEFT JOIN agent a ON a.id = t.assignd_agent_id
+    WHERE t.customer_id = $custIdEsc
+      AND (t.is_deleted = 0 OR t.is_deleted IS NULL)
+    ORDER BY t.created_on DESC, t.id DESC
+";
         $tRes = $conn->query($ticketSql);
         $transactions = [];
 
@@ -81,53 +90,50 @@ try {
             while ($r = $tRes->fetch_assoc()) {
                 $serviceUsed = trim($r['service_thru'] ?? $r['service_typ'] ?? "Not Specified");
 
-           // --- Comment Parsing ---
-// --- Comment Parsing ---
-$comment = '-';
-if (!empty($r['comments'])) {
-    $decoded = json_decode($r['comments'], true);
+                // --- Comment Parsing ---
+                $comment = '-';
+                if (!empty($r['comments'])) {
+                    $decoded = json_decode($r['comments'], true);
 
-    if (json_last_error() === JSON_ERROR_NONE) {
-        // Case 1: Array of comment objects
-        if (is_array($decoded) && isset($decoded[0])) {
-            $messages = [];
-            foreach ($decoded as $entry) {
-                if (is_array($entry) && isset($entry['message'])) {
-                    $messages[] = trim($entry['message']);
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        // Case 1: Array of comment objects
+                        if (is_array($decoded) && isset($decoded[0])) {
+                            $messages = [];
+                            foreach ($decoded as $entry) {
+                                if (is_array($entry) && isset($entry['message'])) {
+                                    $messages[] = trim($entry['message']);
+                                }
+                            }
+                            $comment = !empty($messages) ? implode(" | ", $messages) : '-';
+                        }
+                        // Case 2: Single object
+                        elseif (isset($decoded['message']) || isset($decoded['msg'])) {
+                            $comment = trim($decoded['message'] ?? $decoded['msg']);
+                        }
+                    } else {
+                        // Case 3: Stored as JSON string but not valid array
+                        // Try to clean and extract text between "message":"..."
+                        if (preg_match_all('/"message"\s*:\s*"([^"]+)"/', $r['comments'], $matches)) {
+                            $comment = implode(" | ", array_map('trim', $matches[1]));
+                        } else {
+                            // Otherwise plain text
+                            $comment = trim($r['comments']);
+                        }
+                    }
+                } elseif (!empty($r['notes'])) {
+                    $comment = trim($r['notes']);
+                } elseif (!empty($r['problem_stmt'])) {
+                    $comment = trim($r['problem_stmt']);
+                } elseif (!empty($r['problem_desc'])) {
+                    $comment = trim($r['problem_desc']);
                 }
-            }
-            $comment = !empty($messages) ? implode(" | ", $messages) : '-';
-        }
-        // Case 2: Single object
-        elseif (isset($decoded['message']) || isset($decoded['msg'])) {
-            $comment = trim($decoded['message'] ?? $decoded['msg']);
-        }
-    } else {
-        // Case 3: Stored as JSON string but not valid array
-        // Try to clean and extract text between "message":"..."
-        if (preg_match_all('/"message"\s*:\s*"([^"]+)"/', $r['comments'], $matches)) {
-            $comment = implode(" | ", array_map('trim', $matches[1]));
-        } else {
-            // Otherwise plain text
-            $comment = trim($r['comments']);
-        }
-    }
-} elseif (!empty($r['notes'])) {
-    $comment = trim($r['notes']);
-} elseif (!empty($r['problem_stmt'])) {
-    $comment = trim($r['problem_stmt']);
-} elseif (!empty($r['problem_desc'])) {
-    $comment = trim($r['problem_desc']);
-}
-
-
-
 
                 $transactions[] = [
                     'ticket_id'    => (int)$r['id'],
                     'created_on'   => !empty($r['created_on']) ? date("d-m-Y", strtotime($r['created_on'])) : '',
                     'service_type' => $serviceUsed,
-                    'comments'     => $comment
+                    'comments'     => $comment,
+                    'agent_name'   => $r['agent_name'] ?? 'N/A'  // Added agent information after comments
                 ];
             }
         }

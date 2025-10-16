@@ -42,7 +42,7 @@ $(document).ready(function() {
             },
             { data: "contact_number", title: "Contact" },
             { data: "transactions_count", title: "Transactions" },
-            { data: "contact_person", title: "Contact Person" },
+           
             { data: "last_serviced_date", title: "Last Serviced Date" },
             { 
                 data: "id",
@@ -60,60 +60,65 @@ $(document).ready(function() {
         ]
     });
 
-    // --- View button click ---
-    $(document).on('click', '.customer-detail-link, .view-btn', function() {
-        const customerId = $(this).data('id');
+    // --- View button click --- (Replace the existing view button click handler)
+$(document).on('click', '.customer-detail-link, .view-btn', function() {
+    const customerId = $(this).data('id');
 
-        $.ajax({
-            url: './services/customer_report_fetch.php',
-            type: 'POST',
-            dataType: 'json',
-            data: { customerIdForPopup: customerId },
-            success: function(response) {
-                if(response.success && response.popupCustomer){
-                    let customer = response.popupCustomer;
-                    $('#customerInfo').html(`
-                        <p><strong>Customer Name:</strong> ${customer.customer_name}</p>
-                        <p><strong>Contact:</strong> ${customer.contact_number}</p>
-                    `);
+    $.ajax({
+        url: './services/customer_report_fetch.php',
+        type: 'POST',
+        dataType: 'json',
+        data: { customerIdForPopup: customerId },
+        success: function(response) {
+            if(response.success && response.popupCustomer){
+                let customer = response.popupCustomer;
+                $('#customerInfo').html(`
+                    <p><strong>Customer Name:</strong> ${customer.customer_name}</p>
+                    <p><strong>Contact:</strong> ${customer.contact_number}</p>
+                `);
 
-                    let rows = '';
-                    if(customer.transactions.length > 0) {
-                        customer.transactions.forEach((t, index) => {
-                            rows += `<tr>
-                                <td>${index+1}</td>
-                                <td>${t.created_on}</td>
-                                <td>${t.service_type}</td>
-                                <td>${t.comments || '-'}</td>
-                            </tr>`;
-                        });
-                    } else {
-                        rows = '<tr><td colspan="4" class="text-center">No transactions found</td></tr>';
-                    }
-                    
-                    $('#customerTransactionsTbl thead').html(`
-                        <tr>
-                            <th>S.No</th>
-                            <th>Date of Service</th>
-                            <th>Service Type</th>
-                            <th>Comments</th>
-                        </tr>
-                    `);
-                    
-                    $('#customerTransactionsTbl tbody').html(rows);
-
-                    $('#customerDetailsModal').modal('show');
+                let rows = '';
+                if(customer.transactions.length > 0) {
+                    customer.transactions.forEach((t, index) => {
+                        rows += `<tr>
+                            <td>${index+1}</td>
+                            <td>${t.created_on}</td>
+                            <td>${t.service_type}</td>
+                             <td>${t.agent_name}</td>
+                            <td>${t.comments || '-'}</td>
+                            
+                            
+                        </tr>`;
+                    });
                 } else {
-                    alert("No customer data found.");
+                    rows = '<tr><td colspan="6" class="text-center">No transactions found</td></tr>';
                 }
-            },
-            error: function(xhr) {
-                console.error(xhr.responseText);
-                alert("Error fetching customer transactions.");
-            }
-        });
-    });
+                
+                $('#customerTransactionsTbl thead').html(`
+                    <tr>
+                        <th>S.No</th>
+                        <th>Date of Service</th>
+                        <th>Service Type</th>
+                        <th>Agent</th>
+                        <th>Comments</th>
+                        
+                        
+                    </tr>
+                `);
+                
+                $('#customerTransactionsTbl tbody').html(rows);
 
+                $('#customerDetailsModal').modal('show');
+            } else {
+                alert("No customer data found.");
+            }
+        },
+        error: function(xhr) {
+            console.error(xhr.responseText);
+            alert("Error fetching customer transactions.");
+        }
+    });
+});
     // Filters
     $("#filterBtn").click(() => manageTicketDataTbl.ajax.reload());
     $("#resetBtn").click(() => {

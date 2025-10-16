@@ -1,37 +1,29 @@
 <?php
+// services/getAllInactiveCustomers.php
 require_once("../shared/actions/db/dao.php");
 $db = new sqlHelper();
 
 if (!session_id()) session_start();
 
-// --- Get filters ---
+// --- Get filters from POST ---
+$dateRange   = trim($_POST['dateRange'] ?? ''); // format: "DD/MM/YYYY to DD/MM/YYYY" from flatpickr range
+$pincode     = trim($_POST['pincode'] ?? '');
 $serviceThru = trim($_POST['serviceThrough'] ?? '');
 $serviceType = trim($_POST['serviceType'] ?? '');
-$dateRange   = trim($_POST['dateRange'] ?? '');
-$singleDate  = trim($_POST['singleDate'] ?? '');
 
 // ----------------------
-// Build filter conditions for tickets
+// Build ticket-level filter conditions
 // ----------------------
 $ticketFilterSql = "tk.is_deleted = 0";
 $ticketParams = [];
 $ticketTypes = '';
 
-// Single date filter
-if ($singleDate !== '') {
-    $parts = explode('/', $singleDate);
-    if (count($parts) === 3) {
-        $ticketFilterSql .= " AND DATE(tk.created_on) = ?";
-        $ticketParams[] = $parts[2] . '-' . str_pad($parts[1],2,'0',STR_PAD_LEFT) . '-' . str_pad($parts[0],2,'0',STR_PAD_LEFT);
-        $ticketTypes .= 's';
-    }
-}
-// Date range filter
-elseif ($dateRange !== '' && strpos($dateRange, ' to ') !== false) {
+// Date range filter on tickets
+if ($dateRange !== '' && strpos($dateRange, ' to ') !== false) {
     $dates = explode(' to ', $dateRange);
     if (count($dates) === 2) {
-        $start = explode('/', $dates[0]);
-        $end   = explode('/', $dates[1]);
+        $start = explode('/', trim($dates[0]));
+        $end   = explode('/', trim($dates[1]));
         if (count($start) === 3 && count($end) === 3) {
             $ticketFilterSql .= " AND DATE(tk.created_on) BETWEEN ? AND ?";
             $ticketParams[] = $start[2] . '-' . str_pad($start[1],2,'0',STR_PAD_LEFT) . '-' . str_pad($start[0],2,'0',STR_PAD_LEFT);
@@ -41,14 +33,14 @@ elseif ($dateRange !== '' && strpos($dateRange, ' to ') !== false) {
     }
 }
 
-// Service Type filter (AMC, Tally Subscription, Cloud, One Time)
+// Service Type filter (ticket-level)
 if ($serviceType !== '' && strtolower($serviceType) !== 'all') {
     $ticketFilterSql .= " AND tk.service_typ = ?";
     $ticketParams[] = $serviceType;
     $ticketTypes .= 's';
 }
 
-// Service Through filter (Remote, Phone Call, Physical Visit)
+// Service Through filter (ticket-level)
 if ($serviceThru !== '' && strtolower($serviceThru) !== 'all') {
     $ticketFilterSql .= " AND tk.service_thru = ?";
     $ticketParams[] = $serviceThru;
@@ -56,14 +48,14 @@ if ($serviceThru !== '' && strtolower($serviceThru) !== 'all') {
 }
 
 // ----------------------
-// Determine the label based on filters
+// Determine if ticket filters exist (for label text decisions)
 // ----------------------
-$hasTicketFilters = ($singleDate !== '' || $dateRange !== '' || 
+$hasTicketFilters = ($dateRange !== '' ||
                      ($serviceThru !== '' && strtolower($serviceThru) !== 'all') ||
                      ($serviceType !== '' && strtolower($serviceType) !== 'all'));
 
 // ----------------------
-// Main query
+// Main query - include pincode and area columns
 // ----------------------
 $sql = "
 SELECT
@@ -71,7 +63,8 @@ SELECT
     c.customer_uniq_code,
     c.company_nm,
     c.pincode,
-    COALESCE(c.service_type, 'No Service') AS services,
+    c.area,
+    COALESCE(c.service_type, '') AS services,
     COALESCE(total_tickets.total_count, 0) AS total_count,
     COALESCE(filtered_tickets.filtered_count, 0) AS filtered_count,
     filtered_tickets.last_service_date
@@ -96,12 +89,22 @@ LEFT JOIN (
 WHERE c.is_active = 1 AND c.is_deleted = 0
 ";
 
-// Customer-level filters
+// ----------------------
+// Customer-level filters (pincode & service_type)
 $customerParams = [];
 $customerTypes  = '';
 
-// Service type filter at customer level
+// Pincode filter (customer level) - partial match for quick search.
+// For exact match change LIKE to '=' and remove % wrappers below.
+if ($pincode !== '') {
+    $sql .= " AND c.pincode LIKE ?";
+    $customerParams[] = "%$pincode%";
+    $customerTypes .= 's';
+}
+
+// Service type filter at customer level (optional)
 if ($serviceType !== '' && strtolower($serviceType) !== 'all') {
+    // Keep this to filter customers who have that service type set
     $sql .= " AND c.service_type LIKE ?";
     $customerParams[] = "%$serviceType%";
     $customerTypes .= 's';
@@ -110,14 +113,12 @@ if ($serviceType !== '' && strtolower($serviceType) !== 'all') {
 $sql .= " ORDER BY c.company_nm ASC";
 
 // ----------------------
-// Bind parameters
-// ----------------------
+// Bind params (ticket params first as they are used in the subquery)
 $allParams = array_merge($ticketParams, $customerParams);
 $allTypes  = $ticketTypes . $customerTypes;
 
 // ----------------------
-// Execute
-// ----------------------
+// Prepare and execute
 $db->prepareStatement($sql);
 if (!empty($allParams)) {
     $db->setParameters($allParams, $allTypes);
@@ -125,8 +126,7 @@ if (!empty($allParams)) {
 $resp = $db->execPreparedStatement();
 
 // ----------------------
-// Process results
-// ----------------------
+// Process results and respond JSON
 $resultData = [];
 if ($resp['success']) {
     $rs = $db->getResultSet();
@@ -145,11 +145,11 @@ if ($resp['success']) {
                 $services = 'No Service';
             }
 
-            // Calculate counts
+            // Counts
             $totalCount = (int)($row['total_count'] ?? 0);
             $filteredCount = (int)($row['filtered_count'] ?? 0);
 
-            // Determine label for Total Services Consumed
+            // Label for total services consumed column
             if ($serviceThru !== '' && strtolower($serviceThru) !== 'all') {
                 $totalServices = $filteredCount . ' ' . $serviceThru;
             } elseif ($hasTicketFilters) {
@@ -166,14 +166,23 @@ if ($resp['success']) {
                 ? (new DateTime())->diff(new DateTime($row['last_service_date']))->days
                 : "Never";
 
+            $pincodeOut = htmlspecialchars($row['pincode'] ?? '');
+            $areaOut = htmlspecialchars($row['area'] ?? '');
+
+            // Arrange data in the desired order:
+            // 1. S.No, 2. Company Name, 3. Service Consumed, 4. Total Services Consumed, 
+            // 5. Last Service Date, 6. Days Since Last Service, 7. Pincode, 8. Area
             $resultData[] = [
-                $i,                         // Column 0: S.No
-                $customerBtn,               // Column 1: Company Name
-                $services,                  // Column 2: Service Consumed
-                $row['pincode'],            // Column 3: Pincode (hidden but searchable)
-                $totalServices,             // Column 4: Total Services Consumed
-                $lastServiceDate,           // Column 5: Last Service Date
-                $daysSince                  // Column 6: Days Since Last Service
+                $i,                          // S.No
+                $customerBtn,                // Company Name
+                
+                $totalServices,              // Total Services Consumed
+                $lastServiceDate,            // Last Service Date
+                $daysSince,                  // Days Since Last Service
+                $services,                   // Service Consumed
+                $pincodeOut ,                // Pincode
+                 $areaOut                     // Area
+               
             ];
             $i++;
         }
