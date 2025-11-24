@@ -213,6 +213,7 @@
                   <li class="nav-item"> <a class="nav-link" href="./customer-report.php"> Customers </a></li>
                   <li class="nav-item"> <a class="nav-link" href="./inactive-customer-report.php"> Less Service Provided </a></li>
                   <li class="nav-item"> <a class="nav-link" href="./agent-leads.php"> Agent Leads </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="./expiring-services.php"> Expiring Services </a></li>
                 </ul>
               </div>
             </li>

@@ -1,96 +1,68 @@
 <?php 
-
 require_once("./shared/components/pre-header.php");
-
 ?>
 
-<title> My Reports - Tejas </title>
+<title>Expiring Services - Tejas</title>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-<link rel="stylesheet" href="./assets/vendors/select2/select2.min.css">
 <link rel="stylesheet" href="./assets/css/flatpickr.min.css">
-<link rel="stylesheet" href="./assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
 
-<?php require_once("./shared/components/post-header.php");  ?>
+<?php require_once("./shared/components/post-header.php"); ?>
 
 <div class="main-panel">
     <div class="content-wrapper">
 
         <div class="row">
             <div class="col-sm-12 short-l">
-                <div class="d-sm-flex align-items-center justify-content-end border-bottom">
+                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                    <h4 class="font-weight-bold mb-3">Expiring Services</h4>
                 </div>
             </div>
         </div>
 
-     <!-- Filter Section -->
-<div class="row py-3">
-    <div class="col-sm-12">
-        <div class="card card-rounded">
-            <div class="card-body fs-14">
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="mb-1">Transaction Date Range</label>
-                            <input type="text" class="form-control" id="dateRange" placeholder="DD/MM/YYYY">
-                        </div>
-                    </div>
+        <!-- Filter Section -->
+        <div class="row py-3">
+            <div class="col-sm-12">
+                <div class="card card-rounded">
+                    <div class="card-body fs-14">
+                       <div class="row mb-3">
+    <!-- Expiry Date Range -->
+    <div class="col-md-4">
+        <div class="form-group">
+            <label class="mb-1">Expiry Date Range</label>
+            <input type="text" class="form-control" id="dateRange" placeholder="DD/MM/YYYY to DD/MM/YYYY">
+        </div>
+    </div>
 
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="mb-1">Pincode</label>
-                            <input type="text" class="form-control" id="pincode" placeholder="Enter Pincode">
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="mb-1">Area</label>
-                            <select class="form-control select2" id="area" style="width: 100%;">
-                                <option value="">All Areas</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="mb-1">Service Type</label>
-                            <select class="form-control" id="serviceType">
-                                <option value="">All Service Types</option>
-                                <option value="AMC">AMC</option>
-                                <option value="Tally Subscription">Tally Subscription</option>
-                                <option value="Cloud">Cloud</option>
-                                <option value="One Time">One Time</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="mb-1">Service Through</label>
-                            <select class="form-control" id="serviceThrough">
-                                <option value="">All</option>
-                                <option value="Phone Call">Phone Call</option>
-                                <option value="Remote">Remote</option>
-                                <option value="Physical Visit">Physical Visit</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Buttons -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <button type="button" class="btn btn-primary" id="filterBtn">Filter</button>
-                        <button type="button" class="btn btn-info ml-2" id="resetBtn">Reset</button>
-                    </div>
-                </div>
-            </div>
+    <!-- Service Type -->
+    <div class="col-md-4">
+        <div class="form-group">
+            <label class="mb-1">Service Type</label>
+            <select id="serviceFilter" class="form-control">
+                <option value="">All Services</option>
+                <option value="AMC">AMC</option>
+                <option value="Tally Subscription">Tally Subscription</option>
+                <option value="Cloud">Cloud</option>
+               
+            </select>
         </div>
     </div>
 </div>
+
+
+                        
+
+                        <!-- Buttons -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary" id="filterBtn">Filter</button>
+                                <button type="button" class="btn btn-info ml-2" id="resetBtn">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Table Section -->
         <div class="row py-3">
@@ -99,17 +71,16 @@ require_once("./shared/components/pre-header.php");
                     <div class="card-body fs-14">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="inactiveCustomerMasterTbl" class="display nowrap ">
+                                <table id="expiringServicesTable" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>S. No.</th>
                                             <th>Company Name</th>
-                                            <th>Total Services Consumed</th>
-                                            <th>Last Service Date</th>
-                                            <th>Days Since Last Service</th>
-                                            <th>Service Consumed</th>
-                                            <th>Pincode</th>
-                                            <th>Area</th>
+                                            <th>Agent Name</th>
+                                            <th>Contact Number</th>
+                                            <th>Services Offered</th>
+                                            <th>Expiry Date</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -123,9 +94,7 @@ require_once("./shared/components/pre-header.php");
     </div>
     <!-- content-wrapper ends -->
 
-    <!-- modals -->
-
-    <!-- view customer modal -->
+    <!-- View Customer Modal -->
     <div class="modal fade" id="viewCustomerModal" tabindex="-1" role="dialog" aria-labelledby="viewCustomerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -187,7 +156,7 @@ require_once("./shared/components/pre-header.php");
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="Active Status">Customer Status</label>
+                                    <label for="customerStatus">Customer Status</label>
                                     <select class="form-control" id="customerStatus" name="customerStatus" required aria-readonly="true">
                                         <option value="1">Active</option>
                                         <option value="0">Inactive</option>
@@ -208,7 +177,7 @@ require_once("./shared/components/pre-header.php");
                             <div class="col-sm-5">
                                 
                                 <div class="form-group view-form-group">
-                                    <label for="serviceType"> Service Type  <strong><code>*</code></strong></label>
+                                    <label for="serviceType">Service Type <strong><code>*</code></strong></label>
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input" name="serviceType" value="AMC"> AMC </label>
@@ -234,36 +203,36 @@ require_once("./shared/components/pre-header.php");
 
                                 <div class="form-group view-form-group AMCService">
                                     <label for="amcStartDate">AMC Service Start Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="amcStartDate" name="amcStartDate" >
+                                    <input type="date" class="form-control" id="amcStartDate" name="amcStartDate">
                                 </div>
 
                                 <div class="form-group view-form-group AMCService">
                                     <label for="amcEndDate">AMC Service End Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="amcEndDate" name="amcEndDate" >
+                                    <input type="date" class="form-control" id="amcEndDate" name="amcEndDate">
                                 </div>
 
                                 <div class="form-group view-form-group tallyService">
                                     <label for="tallyStartDate">Tally Subscription Start Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="tallyStartDate" name="tallyStartDate" >
+                                    <input type="date" class="form-control" id="tallyStartDate" name="tallyStartDate">
                                 </div>
 
                                 <div class="form-group view-form-group tallyService">
                                     <label for="tallyEndDate">Tally Subscription End Date <strong><code>*</code></strong></label>
-                                    <input type="date" class="form-control" id="tallyEndDate" name="tallyEndDate" >
+                                    <input type="date" class="form-control" id="tallyEndDate" name="tallyEndDate">
                                 </div>
 
                                 <div class="form-group view-form-group cloudService">
-                                    <label for="cloudStartDate">Cloud Start Date </label>
-                                    <input type="date" class="form-control" id="cloudStartDate" name="cloudStartDate" >
+                                    <label for="cloudStartDate">Cloud Start Date</label>
+                                    <input type="date" class="form-control" id="cloudStartDate" name="cloudStartDate">
                                 </div>
 
                                 <div class="form-group view-form-group cloudService">
-                                    <label for="cloudEndDate">Cloud End Date </label>
-                                    <input type="date" class="form-control" id="cloudEndDate" name="cloudEndDate" >
+                                    <label for="cloudEndDate">Cloud End Date</label>
+                                    <input type="date" class="form-control" id="cloudEndDate" name="cloudEndDate">
                                 </div>
 
                                 <div class="form-group view-form-group tallyService">
-                                    <label for="licenseType"> License Type  <strong><code>*</code></strong></label>
+                                    <label for="licenseType">License Type <strong><code>*</code></strong></label>
                                     <select class="form-control" id="licenseType" name="licenseType" disabled aria-readonly="true">
                                         <option value="" selected hidden>Select the License Type</option>
                                         <option value="Single User">Single User</option>
@@ -275,7 +244,7 @@ require_once("./shared/components/pre-header.php");
 
                                 <div class="form-group view-form-group tallyService">
                                     <label for="tallyEmail">Tally Mail Id <strong><code>*</code></strong></label>
-                                    <input type="email" class="form-control" id="tallyEmail" name="tallyEmail" placeholder="System Email" >
+                                    <input type="email" class="form-control" id="tallyEmail" name="tallyEmail" placeholder="System Email">
                                 </div>
 
                                 <div class="form-group view-form-group">
@@ -289,7 +258,7 @@ require_once("./shared/components/pre-header.php");
                                 </div>
 
                                 <div class="form-group view-form-group">
-                                    <label for="auditor">Customer's Auditor </label>
+                                    <label for="auditor">Customer's Auditor</label>
                                     <input type="text" class="form-control" id="auditor" name="auditor" placeholder="Customer's Auditor">
                                 </div>
 
@@ -303,23 +272,18 @@ require_once("./shared/components/pre-header.php");
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"> Close</button>
-                </div> <!-- /modal-footer -->
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-    <!-- end view customer modal -->
+    <!-- End View Customer Modal -->
 
-    <!-- end modals -->
-
-    <?php require_once("./shared/components/pre-footer.php");  ?>
+    <?php require_once("./shared/components/pre-footer.php"); ?>
 
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
     <script src="assets/default-js/jquery.cookie.js" type="text/javascript"></script>
-    <script src="assets/vendors/select2/select2.min.js"></script>
     <script src="assets/default-js/flatpickr.js"></script>
-    <script src="assets/custom-js/inactiveCustomerReportHelper.js"></script>
+    <script src="assets/custom-js/expiringservices.js"></script>
 
-   
-
-    <?php require_once("./shared/components/post-footer.php");  ?>
+    <?php require_once("./shared/components/post-footer.php"); ?>

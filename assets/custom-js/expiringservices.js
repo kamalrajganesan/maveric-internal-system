@@ -1,107 +1,24 @@
-var manageInactiveCustomerMasterTbl;
+var expiringServicesTable;
 
 $(document).ready(function() {
-    
-    // Initialize Select2 for area dropdown with search
-    $('#area').select2({
-        placeholder: "Select or search area",
-        allowClear: true,
-        width: '100%',
-        matcher: matchCustom
-    });
-    
-    // Custom matcher function for Select2 to search within area names
-    function matchCustom(params, data) {
-        // If there are no search terms, return all data
-        if ($.trim(params.term) === '') {
-            return data;
-        }
 
-        // Do not display the item if there is no 'text' property
-        if (typeof data.text === 'undefined') {
-            return null;
-        }
-
-        // Search term
-        var term = params.term.toUpperCase();
-        var text = data.text.toUpperCase();
-
-        // Check if the text contains the term
-        if (text.indexOf(term) > -1) {
-            return data;
-        }
-
-        // Return `null` if the term should not be displayed
-        return null;
-    }
-    
-    // Load areas into dropdown
-    $.ajax({
-        url: "./services/getAllInactiveCustomers.php",
-        type: "POST",
-        data: { getAreas: 'true' },
-        dataType: "json",
-        success: function(response) {
-            if (response.success && response.data) {
-                var areaSelect = $("#area");
-                
-                // Clear existing options except the first one (All Areas)
-                areaSelect.find('option:not(:first)').remove();
-                
-                // Remove only exact duplicates (case-insensitive)
-                var uniqueAreas = [];
-                var seenLower = [];
-                
-                response.data.forEach(function(area) {
-                    if (area && area.trim() !== '') {
-                        var areaLower = area.toLowerCase();
-                        if (seenLower.indexOf(areaLower) === -1) {
-                            uniqueAreas.push(area.trim());
-                            seenLower.push(areaLower);
-                        }
-                    }
-                });
-                
-                // Sort areas alphabetically
-                uniqueAreas.sort();
-                
-                // Add all unique areas to dropdown
-                uniqueAreas.forEach(function(area) {
-                    areaSelect.append('<option value="' + area + '">' + area + '</option>');
-                });
-                
-                // Reinitialize Select2 after adding options
-                $('#area').select2({
-                    placeholder: "Select or search area",
-                    allowClear: true,
-                    width: '100%',
-                    matcher: matchCustom
-                });
-                
-                console.log("Loaded " + uniqueAreas.length + " areas");
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("Failed to load areas:", error);
-        }
-    });
-
-    manageInactiveCustomerMasterTbl = $("#inactiveCustomerMasterTbl").DataTable({
+    // Initialize DataTable
+    expiringServicesTable = $("#expiringServicesTable").DataTable({
         scrollX: true,
         processing: true,
         serverSide: false,
         ajax: {
-            url: "./services/getAllInactiveCustomers.php",
+            url: "./services/expiring_services_fetch.php",
             type: "POST",
             data: function(d) {
-                d.dateRange      = $("#dateRange").val() || '';
-                d.pincode        = $("#pincode").val() || '';
-                d.area           = $("#area").val() || '';
-                d.serviceType    = $("#serviceType").val() || '';
-                d.serviceThrough = $("#serviceThrough").val() || '';
+                d.dateRange = $("#dateRange").val() || '';
+                // send single selected service (select) as 'service' and also in 'services' array to be flexible
+                var svc = $("#serviceFilter").val() || '';
+                d.service = svc;
+                d.services = svc ? [svc] : [];
             },
             dataSrc: function(json) {
-                if (json.success && json.data) {
+                if (json && json.success && json.data) {
                     return json.data;
                 }
                 return [];
@@ -112,15 +29,14 @@ $(document).ready(function() {
         columns: [
             { title: "S. No." },
             { title: "Company Name" },
-            { title: "Total Services Consumed" },
-            { title: "Last Service Date" },
-            { title: "Days Since Last Service" },
-            { title: "Service Consumed" },
-            { title: "Pincode" },
-            { title: "Area" },
+            { title: "Agent Name" },
+            { title: "Contact Number" },
+            { title: "Services Offered" },
+            { title: "Expiry Date" },
+            { title: "Action" }
         ],
         columnDefs: [
-            { targets: [6, 7], orderable: false }
+            { targets: [6], orderable: false }
         ],
         language: {
             emptyTable: "No data found",
@@ -128,24 +44,26 @@ $(document).ready(function() {
         }
     });
 
-    // Flatpickr initialization for dateRange (range)
+    // Flatpickr initialization for dateRange (if loaded)
     if (typeof flatpickr !== "undefined") {
-        flatpickr("#dateRange", { mode: "range", dateFormat: "d/m/Y" });
+        flatpickr("#dateRange", { 
+            mode: "range", 
+            dateFormat: "d/m/Y",
+            // use 'to' as separator for compatibility with server parsing (we accept both)
+            conjunction: " to "
+        });
     }
 
     // Filter button
     $("#filterBtn").on('click', function(e) {
         e.preventDefault();
-        manageInactiveCustomerMasterTbl.ajax.reload();
+        expiringServicesTable.ajax.reload(null, false);
     });
 
-    // Reset button - clears dateRange, pincode, area and others
+    // Reset button
     $("#resetBtn").on('click', function(e) {
         e.preventDefault();
-        $("#dateRange, #pincode, #serviceType, #serviceThrough").val("");
-        
-        // Clear Select2 dropdown
-        $('#area').val(null).trigger('change');
+        $("#dateRange").val("");
 
         if (typeof flatpickr !== "undefined") {
             var dateRangeEl = document.getElementById('dateRange');
@@ -154,33 +72,30 @@ $(document).ready(function() {
             }
         }
 
-        manageInactiveCustomerMasterTbl.ajax.reload();
+        $("#serviceFilter").val("");
+        expiringServicesTable.ajax.reload();
     });
 
-    // Delegate click for view buttons
-    $('#inactiveCustomerMasterTbl').on('click', '.view-btn', function() {
-        var customerUniqCode = $(this).data('customer');
-        if (customerUniqCode) {
-            viewCustomer(customerUniqCode);
-        }
-    });
-
-    // Press Enter to trigger filter for inputs/selects
-    $("#dateRange, #pincode, #serviceType, #serviceThrough").on('keypress', function(e) {
+    // Press Enter to trigger filter (on dateRange)
+    $("#dateRange").on('keypress', function(e) {
         if (e.which === 13) {
             e.preventDefault();
             $("#filterBtn").trigger('click');
         }
     });
-    
-    // Select2 change event for area
-    $('#area').on('select2:select', function (e) {
-        // Optional: Auto-filter when area is selected
-        // $("#filterBtn").trigger('click');
+
+
+
+    // Delegate click for view buttons (existing modal behavior)
+    $('#expiringServicesTable').on('click', '.view-btn', function() {
+        var customerUniqCode = $(this).data('customer');
+        if (customerUniqCode) {
+            viewCustomer(customerUniqCode);
+        }
     });
 });
 
-// View customer function
+// View customer function (keeps your existing modal population logic; adjust field names if your customer_fetch_single returns different keys)
 function viewCustomer(customerUniqCode) {
     if (!customerUniqCode) return;
     

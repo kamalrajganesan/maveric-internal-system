@@ -5,9 +5,72 @@ $db = new sqlHelper();
 
 if (!session_id()) session_start();
 
+// Handle area dropdown request
+if (isset($_POST['getAreas']) && $_POST['getAreas'] === 'true') {
+    $areaSql = "SELECT DISTINCT TRIM(area) as area
+                FROM cust_mstr 
+                WHERE is_deleted = 0 
+                AND area IS NOT NULL 
+                AND TRIM(area) != '' 
+                ORDER BY area ASC";
+    
+    $db->prepareStatement($areaSql);
+    $areaResp = $db->execPreparedStatement();
+    
+    $areas = [];
+    
+    if ($areaResp['success']) {
+        $rs = $db->getResultSet();
+        if ($rs->num_rows > 0) {
+            while ($row = $rs->fetch_assoc()) {
+                $area = trim($row['area']);
+                if ($area !== '') {
+                    $areas[] = $area;
+                }
+            }
+        }
+    }
+    
+    // NEW: Extract base area name (first word/phrase before comma or special chars)
+    $uniqueAreas = [];
+    $seenBaseNames = [];
+    
+    foreach ($areas as $area) {
+        // Extract the primary area name (everything before comma, dash with space, or just trim)
+        $baseName = $area;
+        
+        // Split by comma and take first part
+        if (strpos($baseName, ',') !== false) {
+            $baseName = explode(',', $baseName)[0];
+        }
+        
+        // Split by " - " and take first part
+        if (strpos($baseName, ' - ') !== false) {
+            $baseName = explode(' - ', $baseName)[0];
+        }
+        
+        // Remove trailing punctuation and trim
+        $baseName = rtrim(trim($baseName), '.,;:-');
+        $baseNameLower = strtolower($baseName);
+        
+        // Only add if we haven't seen this base name before
+        if ($baseName !== '' && !in_array($baseNameLower, $seenBaseNames)) {
+            $uniqueAreas[] = strtoupper($baseName); // Normalize to uppercase
+            $seenBaseNames[] = $baseNameLower;
+        }
+    }
+    
+    // Sort alphabetically
+    sort($uniqueAreas);
+    
+    echo json_encode(['success' => true, 'data' => $uniqueAreas]);
+    exit;
+}
+
 // --- Get filters from POST ---
 $dateRange   = trim($_POST['dateRange'] ?? ''); // format: "DD/MM/YYYY to DD/MM/YYYY" from flatpickr range
 $pincode     = trim($_POST['pincode'] ?? '');
+$area        = trim($_POST['area'] ?? '');
 $serviceThru = trim($_POST['serviceThrough'] ?? '');
 $serviceType = trim($_POST['serviceType'] ?? '');
 
@@ -90,7 +153,7 @@ WHERE c.is_active = 1 AND c.is_deleted = 0
 ";
 
 // ----------------------
-// Customer-level filters (pincode & service_type)
+// Customer-level filters (pincode, area & service_type)
 $customerParams = [];
 $customerTypes  = '';
 
@@ -100,6 +163,15 @@ if ($pincode !== '') {
     $sql .= " AND c.pincode LIKE ?";
     $customerParams[] = "%$pincode%";
     $customerTypes .= 's';
+}
+
+// MODIFIED: Area filter (customer level) - PATTERN MATCH to catch all variations
+if ($area !== '' && strtolower($area) !== 'all') {
+    // This will match: AMBATTUR, AMBATTUR., AMBATTUR,, AMBATTUR INDUSTRIAL ESTATE, etc.
+    $sql .= " AND (c.area LIKE ? OR c.area LIKE ?)";
+    $customerParams[] = $area; // Exact match
+    $customerParams[] = $area . "%"; // Starts with (covers punctuation and extensions)
+    $customerTypes .= 'ss';
 }
 
 // Service type filter at customer level (optional)
@@ -175,14 +247,12 @@ if ($resp['success']) {
             $resultData[] = [
                 $i,                          // S.No
                 $customerBtn,                // Company Name
-                
                 $totalServices,              // Total Services Consumed
                 $lastServiceDate,            // Last Service Date
                 $daysSince,                  // Days Since Last Service
                 $services,                   // Service Consumed
-                $pincodeOut ,                // Pincode
-                 $areaOut                     // Area
-               
+                $pincodeOut,                 // Pincode
+                $areaOut                     // Area
             ];
             $i++;
         }
