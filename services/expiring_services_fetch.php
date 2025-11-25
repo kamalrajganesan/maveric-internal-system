@@ -32,7 +32,6 @@ if (!empty($selectedService) && $selectedService !== '' && $selectedService !== 
         'AMC'               => 'AMC',
         'Tally Subscription'=> 'Tally',
         'Cloud'             => 'Cloud'
-        // 'One Time' is intentionally excluded
     ];
     $dbValue = $map[$selectedService] ?? $selectedService;
     $sql .= " AND c.service_type LIKE ?";
@@ -62,11 +61,10 @@ if (!empty($dateRange) && strpos($dateRange, ' to ') !== false) {
 // APPLY DATE FILTER
 if ($hasDateRange) {
     if (!empty($selectedService) && $selectedService !== '' && $selectedService !== 'One Time') {
-        // Single service selected (AMC / Tally / Cloud only)
         $field = '';
-        if ($selectedService === 'AMC')               $field = 'c.amc_end_date';
+        if ($selectedService === 'AMC') $field = 'c.amc_end_date';
         elseif ($selectedService === 'Tally Subscription') $field = 'c.tally_end_date';
-        elseif ($selectedService === 'Cloud')         $field = 'c.cloud_end_date';
+        elseif ($selectedService === 'Cloud') $field = 'c.cloud_end_date';
 
         if ($field) {
             $sql .= " AND $field >= ? AND $field <= ? AND $field != '0000-00-00' AND $field IS NOT NULL";
@@ -75,7 +73,6 @@ if ($hasDateRange) {
             $types .= 'ss';
         }
     } else {
-        // ALL SERVICES + DATE RANGE — Only AMC, Tally, Cloud (One Time ignored)
         $sql .= " AND (
             (c.amc_end_date >= ? AND c.amc_end_date <= ? AND c.amc_end_date != '0000-00-00' AND c.amc_end_date IS NOT NULL) OR
             (c.tally_end_date >= ? AND c.tally_end_date <= ? AND c.tally_end_date != '0000-00-00' AND c.tally_end_date IS NOT NULL) OR
@@ -85,7 +82,6 @@ if ($hasDateRange) {
         $types .= 'ssssss';
     }
 } else {
-    // NO DATE RANGE → Show only future AMC/Tally/Cloud (One Time never appears)
     $sql .= " AND (
         c.amc_end_date >= ? OR
         c.tally_end_date >= ? OR
@@ -110,48 +106,110 @@ if ($resp['success']) {
         $agentName   = htmlspecialchars($row['agent_name'] ?? 'N/A');
         $contact     = htmlspecialchars($row['contact'] ?? 'N/A');
 
-        // Services Offered — "One Time" never shown
-        $servicesOffered = 'No Service';
-        if (!empty($selectedService) && $selectedService !== '' && $selectedService !== 'One Time') {
-            $displayMap = [
-                'AMC'               => 'AMC',
-                'Tally Subscription'=> 'Tally Subscription',
-                'Cloud'             => 'Cloud'
-            ];
-            $servicesOffered = htmlspecialchars($displayMap[$selectedService] ?? $selectedService);
-        } else {
-            $services = trim(str_replace(['"', '[', ']'], '', $row['services_offered'] ?? ''));
-            // Remove "One Time" from display if present
-            $services = str_replace(['One Time', ',One Time', 'One Time,'], '', $services);
-            $services = trim(str_replace(',,', ',', $services), ', ');
-            $servicesOffered = htmlspecialchars(empty($services) ? 'No Service' : $services);
-        }
+        // Get raw services
+        $rawServices = $row['services_offered'] ?? '';
+        $rawServices = str_replace(['"', '[', ']'], '', $rawServices);
+        $rawServices = trim($rawServices);
 
-        // Expiry Date — Only AMC, Tally, Cloud considered
+        // Determine expiring service
+        $expiringService = '';
         $expiryDate = null;
-        if ($hasDateRange) {
-            $candidates = [];
-            if (!empty($row['amc_end_date']) && $row['amc_end_date'] >= $startDate && $row['amc_end_date'] <= $endDate && $row['amc_end_date'] !== '0000-00-00')
-                $candidates[] = $row['amc_end_date'];
-            if (!empty($row['tally_end_date']) && $row['tally_end_date'] >= $startDate && $row['tally_end_date'] <= $endDate && $row['tally_end_date'] !== '0000-00-00')
-                $candidates[] = $row['tally_end_date'];
-            if (!empty($row['cloud_end_date']) && $row['cloud_end_date'] >= $startDate && $row['cloud_end_date'] <= $endDate && $row['cloud_end_date'] !== '0000-00-00')
-                $candidates[] = $row['cloud_end_date'];
-            if (!empty($candidates)) {
-                sort($candidates);
-                $expiryDate = $candidates[0];
+
+        if (!empty($selectedService) && $selectedService !== '' && $selectedService !== 'One Time') {
+
+            if ($selectedService === 'AMC') {
+                $expiringService = 'AMC';
+                if (!empty($row['amc_end_date']) && $row['amc_end_date'] !== '0000-00-00') {
+                    $expiryDate = $row['amc_end_date'];
+                }
+            } elseif ($selectedService === 'Tally Subscription') {
+                $expiringService = 'Tally';
+                if (!empty($row['tally_end_date']) && $row['tally_end_date'] !== '0000-00-00') {
+                    $expiryDate = $row['tally_end_date'];
+                }
+            } elseif ($selectedService === 'Cloud') {
+                $expiringService = 'Cloud';
+                if (!empty($row['cloud_end_date']) && $row['cloud_end_date'] !== '0000-00-00') {
+                    $expiryDate = $row['cloud_end_date'];
+                }
             }
+
         } else {
-            $dates = [];
-            if (!empty($row['amc_end_date']) && $row['amc_end_date'] >= $today && $row['amc_end_date'] !== '0000-00-00') $dates[] = $row['amc_end_date'];
-            if (!empty($row['tally_end_date']) && $row['tally_end_date'] >= $today && $row['tally_end_date'] !== '0000-00-00') $dates[] = $row['tally_end_date'];
-            if (!empty($row['cloud_end_date']) && $row['cloud_end_date'] >= $today && $row['cloud_end_date'] !== '0000-00-00') $dates[] = $row['cloud_end_date'];
-            if (!empty($dates)) {
-                sort($dates);
-                $expiryDate = $dates[0];
+
+            if ($hasDateRange) {
+                $candidates = [];
+                if (!empty($row['amc_end_date']) && $row['amc_end_date'] >= $startDate && $row['amc_end_date'] <= $endDate) {
+                    $candidates[] = ['date' => $row['amc_end_date'], 'service' => 'AMC'];
+                }
+                if (!empty($row['tally_end_date']) && $row['tally_end_date'] >= $startDate && $row['tally_end_date'] <= $endDate) {
+                    $candidates[] = ['date' => $row['tally_end_date'], 'service' => 'Tally'];
+                }
+                if (!empty($row['cloud_end_date']) && $row['cloud_end_date'] >= $startDate && $row['cloud_end_date'] <= $endDate) {
+                    $candidates[] = ['date' => $row['cloud_end_date'], 'service' => 'Cloud'];
+                }
+                if (!empty($candidates)) {
+                    usort($candidates, fn($a,$b)=>strcmp($a['date'],$b['date']));
+                    $expiryDate = $candidates[0]['date'];
+                    $expiringService = $candidates[0]['service'];
+                }
+            } else {
+                $dates = [];
+                if (!empty($row['amc_end_date']) && $row['amc_end_date'] >= $today) {
+                    $dates[] = ['date' => $row['amc_end_date'], 'service' => 'AMC'];
+                }
+                if (!empty($row['tally_end_date']) && $row['tally_end_date'] >= $today) {
+                    $dates[] = ['date' => $row['tally_end_date'], 'service' => 'Tally'];
+                }
+                if (!empty($row['cloud_end_date']) && $row['cloud_end_date'] >= $today) {
+                    $dates[] = ['date' => $row['cloud_end_date'], 'service' => 'Cloud'];
+                }
+                if (!empty($dates)) {
+                    usort($dates, fn($a,$b)=>strcmp($a['date'],$b['date']));
+                    $expiryDate = $dates[0]['date'];
+                    $expiringService = $dates[0]['service'];
+                }
             }
         }
 
+        // DISPLAY ALL SERVICES — WITH PROPER HIGHLIGHTING
+        $servicesOffered = 'No Service';
+        if (!empty($rawServices)) {
+            $serviceArray = explode(',', $rawServices);
+            $displayServices = [];
+
+            foreach ($serviceArray as $svc) {
+                $svc = trim($svc);
+                if (empty($svc)) continue;
+                if ($svc === 'One Time') continue;
+
+                // NORMALIZE names for comparison
+                $normalized = $svc;
+                if ($svc === 'Tally Subscription') $normalized = 'Tally';
+
+                // Should highlight?
+                $shouldHighlight = ($normalized === $expiringService);
+
+                // Display name mapping
+                if ($normalized === 'Tally') {
+                    $displayName = 'Tally Subscription';
+                } else {
+                    $displayName = htmlspecialchars($svc);
+                }
+
+                // Apply highlight
+                if ($shouldHighlight) {
+                    $displayServices[] = "<strong>$displayName</strong>";
+                } else {
+                    $displayServices[] = $displayName;
+                }
+            }
+
+            if (!empty($displayServices)) {
+                $servicesOffered = implode(', ', $displayServices);
+            }
+        }
+
+        // EXPIRY DISPLAY
         $expiryDisplay = 'No Expiry';
         if ($expiryDate && $expiryDate !== '0000-00-00') {
             $diff = (new DateTime($today))->diff(new DateTime($expiryDate));
@@ -166,7 +224,15 @@ if ($resp['success']) {
                          <i class="fa fa-eye"></i> View
                       </button>';
 
-        $resultData[] = [$i++, $companyName, $agentName, $contact, $servicesOffered, $expiryDisplay, $actionBtn];
+        $resultData[] = [
+            $i++,
+            $companyName,
+            $contact,
+            $servicesOffered,
+            $expiryDisplay,
+            $agentName,
+            $actionBtn
+        ];
     }
 }
 

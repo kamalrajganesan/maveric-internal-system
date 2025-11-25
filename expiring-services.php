@@ -33,19 +33,15 @@ require_once("./shared/components/pre-header.php");
             <input type="text" class="form-control" id="dateRange" placeholder="DD/MM/YYYY to DD/MM/YYYY">
         </div>
     </div>
-
-    <!-- Service Type -->
-    <div class="col-md-4">
-        <div class="form-group">
-            <label class="mb-1">Service Type</label>
-            <select id="serviceFilter" class="form-control">
-                <option value="">All Services</option>
-                <option value="AMC">AMC</option>
-                <option value="Tally Subscription">Tally Subscription</option>
-                <option value="Cloud">Cloud</option>
-               
-            </select>
-        </div>
+<!-- Service Type dropdown - Removed "All Services" option, AMC is now default -->
+<div class="col-md-4">
+    <div class="form-group">
+        <label class="mb-1">Service Type</label>
+        <select id="serviceFilter" class="form-control">
+            <option value="AMC">AMC</option>
+            <option value="Tally Subscription">Tally Subscription</option>
+            <option value="Cloud">Cloud</option>
+        </select>
     </div>
 </div>
 
@@ -71,20 +67,21 @@ require_once("./shared/components/pre-header.php");
                     <div class="card-body fs-14">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="expiringServicesTable" class="display nowrap" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>S. No.</th>
-                                            <th>Company Name</th>
-                                            <th>Agent Name</th>
-                                            <th>Contact Number</th>
-                                            <th>Services Offered</th>
-                                            <th>Expiry Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
+                               <!-- Update your table header to match the new column order -->
+<table id="expiringServicesTable" class="display nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>S. No.</th>
+            <th>Company Name</th>
+            <th>Contact Number</th>
+            <th>Services Offered</th>
+            <th>Expiry Date</th>
+            <th>Agent Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,26 @@ var expiringServicesTable;
 
 $(document).ready(function() {
 
-    // Initialize DataTable
+    // Set default date range (today to 1 month from today)
+    var today = new Date();
+    var oneMonthLater = new Date();
+    oneMonthLater.setMonth(today.getMonth() + 1);
+    
+    // Format dates as DD/MM/YYYY
+    var formatDate = function(date) {
+        var day = String(date.getDate()).padStart(2, '0');
+        var month = String(date.getMonth() + 1).padStart(2, '0');
+        var year = date.getFullYear();
+        return day + '/' + month + '/' + year;
+    };
+    
+    var defaultDateRange = formatDate(today) + ' to ' + formatDate(oneMonthLater);
+    $("#dateRange").val(defaultDateRange);
+    
+    // Set default service type to AMC
+    $("#serviceFilter").val("AMC");
+
+    // Initialize DataTable with reordered columns
     expiringServicesTable = $("#expiringServicesTable").DataTable({
         scrollX: true,
         processing: true,
@@ -12,7 +31,6 @@ $(document).ready(function() {
             type: "POST",
             data: function(d) {
                 d.dateRange = $("#dateRange").val() || '';
-                // send single selected service (select) as 'service' and also in 'services' array to be flexible
                 var svc = $("#serviceFilter").val() || '';
                 d.service = svc;
                 d.services = svc ? [svc] : [];
@@ -29,10 +47,10 @@ $(document).ready(function() {
         columns: [
             { title: "S. No." },
             { title: "Company Name" },
-            { title: "Agent Name" },
             { title: "Contact Number" },
             { title: "Services Offered" },
             { title: "Expiry Date" },
+            { title: "Agent Name" },
             { title: "Action" }
         ],
         columnDefs: [
@@ -44,13 +62,13 @@ $(document).ready(function() {
         }
     });
 
-    // Flatpickr initialization for dateRange (if loaded)
+    // Flatpickr initialization for dateRange with default value
     if (typeof flatpickr !== "undefined") {
-        flatpickr("#dateRange", { 
+        var dateRangePicker = flatpickr("#dateRange", { 
             mode: "range", 
             dateFormat: "d/m/Y",
-            // use 'to' as separator for compatibility with server parsing (we accept both)
-            conjunction: " to "
+            conjunction: " to ",
+            defaultDate: [today, oneMonthLater]
         });
     }
 
@@ -60,23 +78,38 @@ $(document).ready(function() {
         expiringServicesTable.ajax.reload(null, false);
     });
 
-    // Reset button
-    $("#resetBtn").on('click', function(e) {
-        e.preventDefault();
-        $("#dateRange").val("");
+   // Reset button - reset to default 1 month range
+$("#resetBtn").on('click', function(e) {
+    e.preventDefault();
+    
+    // Reset to default date range (today to 1 month)
+    var today = new Date();
+    var oneMonthLater = new Date();
+    oneMonthLater.setMonth(today.getMonth() + 1);
+    
+    var formatDate = function(date) {
+        var day = String(date.getDate()).padStart(2, '0');
+        var month = String(date.getMonth() + 1).padStart(2, '0');
+        var year = date.getFullYear();
+        return day + '/' + month + '/' + year;
+    };
+    
+    var defaultDateRange = formatDate(today) + ' to ' + formatDate(oneMonthLater);
+    $("#dateRange").val(defaultDateRange);
 
-        if (typeof flatpickr !== "undefined") {
-            var dateRangeEl = document.getElementById('dateRange');
-            if (dateRangeEl && dateRangeEl._flatpickr) {
-                dateRangeEl._flatpickr.clear();
-            }
+    if (typeof flatpickr !== "undefined") {
+        var dateRangeEl = document.getElementById('dateRange');
+        if (dateRangeEl && dateRangeEl._flatpickr) {
+            dateRangeEl._flatpickr.setDate([today, oneMonthLater]);
         }
+    }
 
-        $("#serviceFilter").val("");
-        expiringServicesTable.ajax.reload();
-    });
+    // Set default service type to AMC instead of empty
+    $("#serviceFilter").val("AMC");
+    expiringServicesTable.ajax.reload();
+});
 
-    // Press Enter to trigger filter (on dateRange)
+    // Press Enter to trigger filter
     $("#dateRange").on('keypress', function(e) {
         if (e.which === 13) {
             e.preventDefault();
@@ -84,9 +117,7 @@ $(document).ready(function() {
         }
     });
 
-
-
-    // Delegate click for view buttons (existing modal behavior)
+    // Delegate click for view buttons
     $('#expiringServicesTable').on('click', '.view-btn', function() {
         var customerUniqCode = $(this).data('customer');
         if (customerUniqCode) {
@@ -95,7 +126,7 @@ $(document).ready(function() {
     });
 });
 
-// View customer function (keeps your existing modal population logic; adjust field names if your customer_fetch_single returns different keys)
+// View customer function
 function viewCustomer(customerUniqCode) {
     if (!customerUniqCode) return;
     
