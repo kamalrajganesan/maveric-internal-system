@@ -112,6 +112,7 @@ $(document).ready(function() {
         columns: [
             { title: "S. No." },
             { title: "Company Name" },
+            { title: "Contact Number" },
             { title: "Total Services Consumed" },
             { title: "Last Service Date" },
             { title: "Days Since Last Service" },

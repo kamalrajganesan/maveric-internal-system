@@ -104,6 +104,7 @@ require_once("./shared/components/pre-header.php");
                                         <tr>
                                             <th>S. No.</th>
                                             <th>Company Name</th>
+                                            <th>Contact Number</th>
                                             <th>Total Services Consumed</th>
                                             <th>Last Service Date</th>
                                             <th>Days Since Last Service</th>

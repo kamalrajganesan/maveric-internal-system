@@ -98,8 +98,8 @@ if ($dateRange !== '' && strpos($dateRange, ' to ') !== false) {
 
 // Service Type filter (ticket-level)
 if ($serviceType !== '' && strtolower($serviceType) !== 'all') {
-    $ticketFilterSql .= " AND tk.service_typ = ?";
-    $ticketParams[] = $serviceType;
+    $ticketFilterSql .= " AND tk.service_typ LIKE ?";
+    $ticketParams[] = "%$serviceType%";
     $ticketTypes .= 's';
 }
 
@@ -125,6 +125,7 @@ SELECT
     c.id AS customer_id,
     c.customer_uniq_code,
     c.company_nm,
+    c.contact,
     c.pincode,
     c.area,
     COALESCE(c.service_type, '') AS services,
@@ -240,13 +241,15 @@ if ($resp['success']) {
 
             $pincodeOut = htmlspecialchars($row['pincode'] ?? '');
             $areaOut = htmlspecialchars($row['area'] ?? '');
+            $contactNo = htmlspecialchars($row['contact'] ?? '');
 
             // Arrange data in the desired order:
-            // 1. S.No, 2. Company Name, 3. Service Consumed, 4. Total Services Consumed, 
-            // 5. Last Service Date, 6. Days Since Last Service, 7. Pincode, 8. Area
+            // 1. S.No, 2. Company Name, 3. Contact 4. Service Consumed, 5. Total Services Consumed, 
+            // 6. Last Service Date, 7. Days Since Last Service, 8. Pincode, 9. Area
             $resultData[] = [
                 $i,                          // S.No
                 $customerBtn,                // Company Name
+                $contactNo,                  // Contact
                 $totalServices,              // Total Services Consumed
                 $lastServiceDate,            // Last Service Date
                 $daysSince,                  // Days Since Last Service
